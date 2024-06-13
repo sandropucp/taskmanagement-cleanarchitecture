@@ -1,0 +1,12 @@
+C:\dev\github\TasksManagement\src\TaskManagement.Domain\bin\Debug\net8.0\TaskManagement.Domain.deps.json
+C:\dev\github\TasksManagement\src\TaskManagement.Domain\bin\Debug\net8.0\TaskManagement.Domain.dll
+C:\dev\github\TasksManagement\src\TaskManagement.Domain\bin\Debug\net8.0\TaskManagement.Domain.pdb
+C:\dev\github\TasksManagement\src\TaskManagement.Domain\obj\Debug\net8.0\TaskManagement.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\dev\github\TasksManagement\src\TaskManagement.Domain\obj\Debug\net8.0\TaskManagement.Domain.AssemblyInfoInputs.cache
+C:\dev\github\TasksManagement\src\TaskManagement.Domain\obj\Debug\net8.0\TaskManagement.Domain.AssemblyInfo.cs
+C:\dev\github\TasksManagement\src\TaskManagement.Domain\obj\Debug\net8.0\TaskManagement.Domain.csproj.CoreCompileInputs.cache
+C:\dev\github\TasksManagement\src\TaskManagement.Domain\obj\Debug\net8.0\TaskManagement.Domain.dll
+C:\dev\github\TasksManagement\src\TaskManagement.Domain\obj\Debug\net8.0\refint\TaskManagement.Domain.dll
+C:\dev\github\TasksManagement\src\TaskManagement.Domain\obj\Debug\net8.0\TaskManagement.Domain.pdb
+C:\dev\github\TasksManagement\src\TaskManagement.Domain\obj\Debug\net8.0\ref\TaskManagement.Domain.dll
+C:\dev\github\TasksManagement\src\TaskManagement.Domain\obj\Debug\net8.0\TaskManagement.Domain.csproj.AssemblyReference.cache

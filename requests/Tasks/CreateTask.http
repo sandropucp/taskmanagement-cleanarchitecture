@@ -1,0 +1,8 @@
+@HostAddress = http://localhost:5205
+
+POST {{HostAddress}}/tasks/
+Content-Type: application/json
+
+{
+  "Name": "Task 3"
+}
