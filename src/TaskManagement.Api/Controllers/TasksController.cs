@@ -1,8 +1,8 @@
-using ErrorOr;
 using TaskManagement.Application.Tasks.Commands.CreateTask;
 using TaskManagement.Contracts.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using DomainTaskStatus = TaskManagement.Domain.Tasks.TaskStatus;
 
 namespace TaskManagement.Api.Controllers;
 
@@ -20,8 +20,17 @@ public class TasksController : ApiController
     public async Task<IActionResult> CreateTask(
         CreateTaskRequest request)
     {
-        var command = new CreateTaskCommand(
-            request.Name);
+        if (!DomainTaskStatus.TryFromName(
+            request.TaskStatus.ToString(),
+            out var taskStatus))
+        {
+            return Problem(
+                statusCode: StatusCodes.Status400BadRequest,
+                detail: "Invalid task status");
+        }
+
+        var command = new CreateTaskCommand(request.Name, request.Description,
+            request.DueDate, taskStatus, request.CategoryId, request.UserId);
 
         var createTaskResult = await _mediator.Send(command);
         return createTaskResult.MatchFirst(

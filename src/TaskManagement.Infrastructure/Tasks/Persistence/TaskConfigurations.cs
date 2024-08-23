@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Local = TaskManagement.Domain.Tasks;
 using TaskManagement.Infrastructure.Common.Persistence;
 
-namespace GymManagement.Infrastructure.Subscriptions.Persistence;
+namespace TaskManagement.Infrastructure.Subscriptions.Persistence;
 
 public class SubscriptionConfigurations : IEntityTypeConfiguration<Local.Task>
 {
@@ -13,6 +13,11 @@ public class SubscriptionConfigurations : IEntityTypeConfiguration<Local.Task>
 
         builder.Property(s => s.Id)
             .ValueGeneratedNever();
+
+        builder.Property(s => s.Status)
+            .HasConversion(
+                taskStatus => taskStatus.Value,
+                value => Local.TaskStatus.FromValue(value));
 
         builder.Property(s => s.Name)
             .HasMaxLength(100)

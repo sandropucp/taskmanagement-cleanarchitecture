@@ -1,0 +1,4 @@
+@HostAddress = http://localhost:5205
+@categoryId=d1515e19-bb42-4e12-a78b-2b1cf1866de9
+
+DELETE {{HostAddress}}/categories/{{categoryId}}

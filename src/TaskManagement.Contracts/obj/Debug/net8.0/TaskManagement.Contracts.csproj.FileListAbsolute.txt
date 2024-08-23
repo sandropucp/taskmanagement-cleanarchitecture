@@ -9,3 +9,4 @@ C:\dev\github\TasksManagement\src\TaskManagement.Contracts\obj\Debug\net8.0\Task
 C:\dev\github\TasksManagement\src\TaskManagement.Contracts\obj\Debug\net8.0\refint\TaskManagement.Contracts.dll
 C:\dev\github\TasksManagement\src\TaskManagement.Contracts\obj\Debug\net8.0\TaskManagement.Contracts.pdb
 C:\dev\github\TasksManagement\src\TaskManagement.Contracts\obj\Debug\net8.0\ref\TaskManagement.Contracts.dll
+C:\dev\github\TasksManagement\src\TaskManagement.Contracts\obj\Debug\net8.0\TaskManagement.Contracts.sourcelink.json

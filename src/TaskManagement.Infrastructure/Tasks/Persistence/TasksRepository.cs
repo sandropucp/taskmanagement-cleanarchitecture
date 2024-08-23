@@ -17,4 +17,24 @@ public class TasksRepository : ITasksRepository
     {
         await _dbContext.Tasks.AddAsync(task);
     }
+
+    public Task<bool> ExistsAsync(Guid id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<List<Local.Task>> GetAllAsync()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<Local.Task> GetByIdAsync(Guid taskId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task UpdateTaskAsync(Local.Task task)
+    {
+        throw new NotImplementedException();
+    }
 }

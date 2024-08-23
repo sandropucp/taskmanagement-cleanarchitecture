@@ -1,14 +1,16 @@
 {
   "version": 2,
-  "dgSpecHash": "wNjX8Cy2XFSjpCqgC6NEAC3oYQHkkqgAKrpU5RuVc76G7AQTjqfYpCz3X7rPN5JSIHPNYy7ScUrSq2HiYNyezQ==",
+  "dgSpecHash": "13DrFrenxgF+HgRJCeFs/lS5kn30O+u7UP/qsjBOJmVZtMfA2s62k96kp/6wcUynJx9m+WPOcWp3dYwxaNNWmg==",
   "success": true,
-  "projectFilePath": "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Application\\TaskManagement.Application.csproj",
+  "projectFilePath": "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Application\\TaskManagement.Application.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\sandr\\.nuget\\packages\\ardalis.smartenum\\8.0.0\\ardalis.smartenum.8.0.0.nupkg.sha512",
     "C:\\Users\\sandr\\.nuget\\packages\\erroror\\2.0.1\\erroror.2.0.1.nupkg.sha512",
     "C:\\Users\\sandr\\.nuget\\packages\\mediatr\\12.3.0\\mediatr.12.3.0.nupkg.sha512",
     "C:\\Users\\sandr\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",
     "C:\\Users\\sandr\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.1\\microsoft.extensions.dependencyinjection.abstractions.8.0.1.nupkg.sha512",
     "C:\\Users\\sandr\\.nuget\\packages\\oneof\\3.0.216\\oneof.3.0.216.nupkg.sha512",
+    "C:\\Users\\sandr\\.nuget\\packages\\system.componentmodel.annotations\\5.0.0\\system.componentmodel.annotations.5.0.0.nupkg.sha512",
     "C:\\Users\\sandr\\.nuget\\packages\\throw\\1.4.0\\throw.1.4.0.nupkg.sha512"
   ],
   "logs": []

@@ -13,3 +13,4 @@ C:\dev\github\TasksManagement\src\TaskManagement.Application\obj\Debug\net8.0\Ta
 C:\dev\github\TasksManagement\src\TaskManagement.Application\obj\Debug\net8.0\refint\TaskManagement.Application.dll
 C:\dev\github\TasksManagement\src\TaskManagement.Application\obj\Debug\net8.0\TaskManagement.Application.pdb
 C:\dev\github\TasksManagement\src\TaskManagement.Application\obj\Debug\net8.0\ref\TaskManagement.Application.dll
+C:\dev\github\TasksManagement\src\TaskManagement.Application\obj\Debug\net8.0\TaskManagement.Application.sourcelink.json

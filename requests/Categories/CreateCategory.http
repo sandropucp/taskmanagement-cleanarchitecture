@@ -1,0 +1,8 @@
+@HostAddress = http://localhost:5205
+
+POST {{HostAddress}}/categories/
+Content-Type: application/json
+
+{
+  "Name": "Category02"
+}

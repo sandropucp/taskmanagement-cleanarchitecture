@@ -1,0 +1,4 @@
+@HostAddress = http://localhost:5205
+@categoryId=b77df9b2-bf88-43dc-8041-43d028b203d6
+
+GET {{HostAddress}}/categories/{{categoryId}}

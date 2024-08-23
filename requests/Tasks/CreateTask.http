@@ -4,5 +4,6 @@ POST {{HostAddress}}/tasks/
 Content-Type: application/json
 
 {
-  "Name": "Task 3"
+  "Name": "Task 3",
+  "Description": "Task 3 Description"
 }

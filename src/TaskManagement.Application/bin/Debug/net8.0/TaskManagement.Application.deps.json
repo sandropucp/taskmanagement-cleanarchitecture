@@ -17,6 +17,17 @@
           "TaskManagement.Application.dll": {}
         }
       },
+      "Ardalis.SmartEnum/8.0.0": {
+        "dependencies": {
+          "System.ComponentModel.Annotations": "5.0.0"
+        },
+        "runtime": {
+          "lib/net8.0/Ardalis.SmartEnum.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.0.0"
+          }
+        }
+      },
       "ErrorOr/2.0.1": {
         "runtime": {
           "lib/net6.0/ErrorOr.dll": {
@@ -61,6 +72,7 @@
           }
         }
       },
+      "System.ComponentModel.Annotations/5.0.0": {},
       "Throw/1.4.0": {
         "dependencies": {
           "OneOf": "3.0.216"
@@ -74,6 +86,7 @@
       },
       "TaskManagement.Domain/1.0.0": {
         "dependencies": {
+          "Ardalis.SmartEnum": "8.0.0",
           "ErrorOr": "2.0.1",
           "Throw": "1.4.0"
         },
@@ -88,6 +101,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "Ardalis.SmartEnum/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-qGIfpKhSQeLouycBLosGD4qFqgPa5NKzzkH/59oSHyfs3FSbaO6JChpNEMnkslOyQRLbRXj2ImkA0uZdX19IZA==",
+      "path": "ardalis.smartenum/8.0.0",
+      "hashPath": "ardalis.smartenum.8.0.0.nupkg.sha512"
     },
     "ErrorOr/2.0.1": {
       "type": "package",
@@ -123,6 +143,13 @@
       "sha512": "sha512-hvSxx7O9Z50ZK/HZaqxcEiO1skihnHcsziy0cVRqSq7LrETM9swcRcMZuG+0irai7jq8FYYCHTrB/pSHSah6ug==",
       "path": "oneof/3.0.216",
       "hashPath": "oneof.3.0.216.nupkg.sha512"
+    },
+    "System.ComponentModel.Annotations/5.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-dMkqfy2el8A8/I76n2Hi1oBFEbG1SfxD2l5nhwXV3XjlnOmwxJlQbYpJH4W51odnU9sARCSAgv7S3CyAFMkpYg==",
+      "path": "system.componentmodel.annotations/5.0.0",
+      "hashPath": "system.componentmodel.annotations.5.0.0.nupkg.sha512"
     },
     "Throw/1.4.0": {
       "type": "package",

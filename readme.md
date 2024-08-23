@@ -58,6 +58,7 @@ cd src
 
 dotnet add TaskManagement.Domain package ErrorOr
 dotnet add TaskManagement.Domain package Throw
+dotnet add TaskManagement.Domain package Ardalis.SmartEnum
 dotnet add TaskManagement.Application package ErrorOr
 dotnet add TaskManagement.Application package MediatR
 dotnet add TaskManagement.Application package Microsoft.Extensions.DependencyInjection.Abstractions

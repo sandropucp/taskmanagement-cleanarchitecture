@@ -10,3 +10,4 @@ C:\dev\github\TasksManagement\src\TaskManagement.Domain\obj\Debug\net8.0\refint\
 C:\dev\github\TasksManagement\src\TaskManagement.Domain\obj\Debug\net8.0\TaskManagement.Domain.pdb
 C:\dev\github\TasksManagement\src\TaskManagement.Domain\obj\Debug\net8.0\ref\TaskManagement.Domain.dll
 C:\dev\github\TasksManagement\src\TaskManagement.Domain\obj\Debug\net8.0\TaskManagement.Domain.csproj.AssemblyReference.cache
+C:\dev\github\TasksManagement\src\TaskManagement.Domain\obj\Debug\net8.0\TaskManagement.Domain.sourcelink.json
