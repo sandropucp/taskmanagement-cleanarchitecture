@@ -1,0 +1,4 @@
+@HostAddress = http://localhost:5205
+@taskId=1981b797-f007-4df3-b876-65acbe9430b6
+
+DELETE {{HostAddress}}/tasks/{{taskId}}

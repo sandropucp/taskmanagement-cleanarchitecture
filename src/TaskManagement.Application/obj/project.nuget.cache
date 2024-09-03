@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "13DrFrenxgF+HgRJCeFs/lS5kn30O+u7UP/qsjBOJmVZtMfA2s62k96kp/6wcUynJx9m+WPOcWp3dYwxaNNWmg==",
+  "dgSpecHash": "5SR1b2fIotAdVkwMS0HfvhclzPQdrb6u3MtE5emkZ6BRhDtiHV04qvoFjlMPAhwRKqpf2NJCoz9p2KNkWKMfAw==",
   "success": true,
   "projectFilePath": "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Application\\TaskManagement.Application.csproj",
   "expectedPackageFiles": [

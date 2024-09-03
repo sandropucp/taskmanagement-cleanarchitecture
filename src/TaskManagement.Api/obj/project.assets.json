@@ -3352,11 +3352,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Api\\TaskManagement.Api.csproj",
+      "projectUniqueName": "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Api\\TaskManagement.Api.csproj",
       "projectName": "TaskManagement.Api",
-      "projectPath": "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Api\\TaskManagement.Api.csproj",
+      "projectPath": "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Api\\TaskManagement.Api.csproj",
       "packagesPath": "C:\\Users\\sandr\\.nuget\\packages\\",
-      "outputPath": "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Api\\obj\\",
+      "outputPath": "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Api\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -3384,8 +3384,8 @@
             "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Contracts\\TaskManagement.Contracts.csproj": {
               "projectPath": "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Contracts\\TaskManagement.Contracts.csproj"
             },
-            "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Infrastructure\\TaskManagement.Infrastructure.csproj": {
-              "projectPath": "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Infrastructure\\TaskManagement.Infrastructure.csproj"
+            "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Infrastructure\\TaskManagement.Infrastructure.csproj": {
+              "projectPath": "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Infrastructure\\TaskManagement.Infrastructure.csproj"
             }
           }
         }

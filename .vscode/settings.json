@@ -1,0 +1,4 @@
+{
+  "appService.defaultWebAppToDeploy": "undefined/subscriptions/81fad219-5471-431a-b6f5-6d6d1c4610d9/resourceGroups/ApiTaskManagement_group/providers/Microsoft.Web/sites/Test01SSS",
+  "appService.deploySubpath": "src\\TaskManagement.Api"
+}

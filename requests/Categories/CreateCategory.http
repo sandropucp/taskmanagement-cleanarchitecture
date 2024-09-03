@@ -4,5 +4,5 @@ POST {{HostAddress}}/categories/
 Content-Type: application/json
 
 {
-  "Name": "Category02"
+  "Name": "Category01"
 }

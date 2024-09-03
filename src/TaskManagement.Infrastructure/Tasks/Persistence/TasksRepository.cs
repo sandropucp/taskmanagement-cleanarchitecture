@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using TaskManagement.Application.Common.Interfaces;
 using TaskManagement.Infrastructure.Common.Persistence;
 using Local = TaskManagement.Domain.Tasks;
@@ -23,18 +24,24 @@ public class TasksRepository : ITasksRepository
         throw new NotImplementedException();
     }
 
-    public Task<List<Local.Task>> GetAllAsync()
+    public async Task<List<Local.Task>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        return await _dbContext.Tasks.ToListAsync();
     }
 
-    public Task<Local.Task> GetByIdAsync(Guid taskId)
+    public async Task<Local.Task?> GetByIdAsync(Guid taskId)
     {
-        throw new NotImplementedException();
+        return await _dbContext.Tasks.FirstOrDefaultAsync(task => task.Id == taskId);
     }
 
     public Task UpdateTaskAsync(Local.Task task)
     {
         throw new NotImplementedException();
+    }
+
+    Task ITasksRepository.RemoveTaskAsync(Local.Task task)
+    {
+        _dbContext.Tasks.Remove(task);
+        return Task.CompletedTask;
     }
 }

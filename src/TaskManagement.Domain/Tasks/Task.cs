@@ -16,7 +16,6 @@ public class Task
     public string Name { get; init; } = null!;
     public string Description { get; init; } = null!;
     public DateTime DueDate { get; init; }
-    //public TaskStatus Status { get; private set; } = TaskStatus.NotStarted;
     public TaskStatus Status { get; private set; } = null!;
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
     public string? CreatedBy { get; private set; }

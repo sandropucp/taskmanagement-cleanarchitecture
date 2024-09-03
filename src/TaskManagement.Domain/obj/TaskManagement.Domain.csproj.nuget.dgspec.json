@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Domain\\TaskManagement.Domain.csproj": {}
+    "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Domain\\TaskManagement.Domain.csproj": {}
   },
   "projects": {
-    "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Domain\\TaskManagement.Domain.csproj": {
+    "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Domain\\TaskManagement.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Domain\\TaskManagement.Domain.csproj",
+        "projectUniqueName": "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Domain\\TaskManagement.Domain.csproj",
         "projectName": "TaskManagement.Domain",
-        "projectPath": "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Domain\\TaskManagement.Domain.csproj",
+        "projectPath": "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Domain\\TaskManagement.Domain.csproj",
         "packagesPath": "C:\\Users\\sandr\\.nuget\\packages\\",
-        "outputPath": "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Domain\\obj\\",
+        "outputPath": "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
