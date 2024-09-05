@@ -3378,8 +3378,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Application\\TaskManagement.Application.csproj": {
-              "projectPath": "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Application\\TaskManagement.Application.csproj"
+            "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Application\\TaskManagement.Application.csproj": {
+              "projectPath": "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Application\\TaskManagement.Application.csproj"
             },
             "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Contracts\\TaskManagement.Contracts.csproj": {
               "projectPath": "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Contracts\\TaskManagement.Contracts.csproj"
