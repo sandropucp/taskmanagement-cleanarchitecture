@@ -5,14 +5,14 @@ using TaskManagement.Infrastructure.Common.Persistence;
 namespace TaskManagement.Infrastructure.Attachments.Persistence;
 public class AttachmentsRepository(TaskManagementDbContext dbContext) : IAttachmentsRepository
 {
-    private readonly TaskManagementDbContext _dbContext = dbContext;
+    private readonly TaskManagementDbContext dbContext = dbContext;
 
     public Task AddAttachmentAsync(Attachment attachment) => throw new NotImplementedException();
 
     public async Task<Attachment> CreateAttachmentAsync(Attachment attachment)
     {
-        await _dbContext.Attachments.AddAsync(attachment);
-        await _dbContext.SaveChangesAsync();
+        await dbContext.Attachments.AddAsync(attachment);
+        await dbContext.SaveChangesAsync();
         return attachment;
     }
 

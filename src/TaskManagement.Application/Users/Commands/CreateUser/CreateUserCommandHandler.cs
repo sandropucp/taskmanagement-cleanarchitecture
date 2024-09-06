@@ -7,12 +7,12 @@ namespace TaskManagement.Application.Users.Commands.CreateUser;
 
 public class CreateUserCommandHandler(IUsersRepository usersRepository) : IRequestHandler<CreateUserCommand, ErrorOr<User>>
 {
-    private readonly IUsersRepository _usersRepository = usersRepository;
+    private readonly IUsersRepository usersRepository = usersRepository;
 
     public async Task<ErrorOr<User>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
         var user = new User(request.Name, request.Email);
-        await _usersRepository.AddUserAsync(user);
+        await usersRepository.AddUserAsync(user);
         return user;
     }
 }

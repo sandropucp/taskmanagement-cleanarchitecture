@@ -7,12 +7,12 @@ namespace TaskManagement.Application.Tasks.Queries.ListTasks;
 
 public class ListTasksQueryHandler(ITasksRepository tasksRepository) : IRequestHandler<ListTasksQuery, ErrorOr<List<Local.Task>>>
 {
-    private readonly ITasksRepository _tasksRepository = tasksRepository;
+    private readonly ITasksRepository tasksRepository = tasksRepository;
 
     public async Task<ErrorOr<List<Local.Task>>> Handle(ListTasksQuery request,
         CancellationToken cancellationToken)
     {
-        var tasks = await _tasksRepository.GetAllAsync();
+        var tasks = await tasksRepository.GetAllAsync();
         return tasks;
     }
 }

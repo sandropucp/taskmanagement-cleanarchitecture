@@ -7,11 +7,11 @@ namespace TaskManagement.Application.Categories.Queries.ListCategories;
 
 public class ListCategoriesQueryHandler(ICategoriesRepository categoriesRepository) : IRequestHandler<ListCategoriesQuery, ErrorOr<List<Category>>>
 {
-    private readonly ICategoriesRepository _categoriesRepository = categoriesRepository;
+    private readonly ICategoriesRepository categoriesRepository = categoriesRepository;
 
     public async Task<ErrorOr<List<Category>>> Handle(ListCategoriesQuery request, CancellationToken cancellationToken)
     {
-        var categories = await _categoriesRepository.GetAllAsync();
+        var categories = await categoriesRepository.GetAllAsync();
         return categories.ToList();
     }
 }

@@ -8,15 +8,15 @@ namespace TaskManagement.Application.Categories.Commands.CreateCategory;
 public class CreateCategoryCommandHandler(ICategoriesRepository categoriesRepository,
     IUnitOfWork unitOfWork) : IRequestHandler<CreateCategoryCommand, ErrorOr<Category>>
 {
-    private readonly ICategoriesRepository _categoriesRepository = categoriesRepository;
-    private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly ICategoriesRepository categoriesRepository = categoriesRepository;
+    private readonly IUnitOfWork unitOfWork = unitOfWork;
 
     public async Task<ErrorOr<Category>> Handle(CreateCategoryCommand request,
         CancellationToken cancellationToken)
     {
         var category = new Category(request.Name);
-        await _categoriesRepository.AddCategoryAsync(category);
-        await _unitOfWork.CommitChangesAsync();
+        await categoriesRepository.AddCategoryAsync(category);
+        await unitOfWork.CommitChangesAsync();
         return category;
     }
 }

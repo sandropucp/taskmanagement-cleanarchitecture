@@ -7,9 +7,9 @@ namespace TaskManagement.Domain.Tasks;
 
 public class Task
 {
-    private readonly List<Guid> _commentIds = [];
-    private readonly List<Guid> _attachmentIds = [];
-    private readonly int _maxAttachments = 10;
+    private readonly List<Guid> commentIds = [];
+    private readonly List<Guid> attachmentIds = [];
+    private readonly int maxAttachments = 10;
     public Guid Id { get; private set; }
     public Guid CategoryId { get; private set; }
     public Guid? AssignedToId { get; private set; }
@@ -48,21 +48,21 @@ public class Task
     }
     public ErrorOr<Success> AddComment(Comment comment)
     {
-        _commentIds.Throw().IfContains(comment.Id);
-        _commentIds.Add(comment.Id);
+        commentIds.Throw().IfContains(comment.Id);
+        commentIds.Add(comment.Id);
 
         return Result.Success;
     }
     public ErrorOr<Success> AddAttachment(Attachment attachment)
     {
-        _attachmentIds.Throw().IfContains(attachment.Id);
+        attachmentIds.Throw().IfContains(attachment.Id);
 
-        if (_attachmentIds.Count >= _maxAttachments)
+        if (attachmentIds.Count >= maxAttachments)
         {
             return TaskErrors.CannotHaveMoreAttachmentsThanAllows;
         }
 
-        _attachmentIds.Add(attachment.Id);
+        attachmentIds.Add(attachment.Id);
 
         return Result.Success;
     }

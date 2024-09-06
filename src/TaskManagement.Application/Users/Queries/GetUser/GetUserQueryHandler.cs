@@ -7,11 +7,11 @@ namespace TaskManagement.Application.Users.Queries.GetUser;
 
 public class GetUserQueryHandler(IUsersRepository usersRepository) : IRequestHandler<GetUserQuery, ErrorOr<User>>
 {
-    private readonly IUsersRepository _usersRepository = usersRepository;
+    private readonly IUsersRepository usersRepository = usersRepository;
 
     public async Task<ErrorOr<User>> Handle(GetUserQuery request, CancellationToken cancellationToken)
     {
-        var user = await _usersRepository.GetByIdAsync(request.UserId);
+        var user = await usersRepository.GetByIdAsync(request.UserId);
         return user is null
             ? Error.NotFound(description: "User not found")
             : user;

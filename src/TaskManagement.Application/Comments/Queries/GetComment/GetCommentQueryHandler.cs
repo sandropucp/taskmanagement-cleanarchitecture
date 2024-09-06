@@ -7,11 +7,11 @@ namespace TaskManagement.Application.Comments.Queries.GetComment;
 
 public class GetCommentQueryHandler(ICommentsRepository commentsRepository) : IRequestHandler<GetCommentQuery, ErrorOr<Comment>>
 {
-    private readonly ICommentsRepository _commentsRepository = commentsRepository;
+    private readonly ICommentsRepository commentsRepository = commentsRepository;
 
     public async Task<ErrorOr<Comment>> Handle(GetCommentQuery request, CancellationToken cancellationToken)
     {
-        var comment = await _commentsRepository.GetByIdAsync(request.CommentId);
+        var comment = await commentsRepository.GetByIdAsync(request.CommentId);
 
         return comment == null
             ? Error.NotFound(description: "Comment not found")

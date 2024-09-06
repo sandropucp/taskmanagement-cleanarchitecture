@@ -7,11 +7,11 @@ namespace TaskManagement.Application.Categories.Queries.GetCategory;
 
 public class GetCategoryQueryHandler(ICategoriesRepository categoriesRepository) : IRequestHandler<GetCategoryQuery, ErrorOr<Category>>
 {
-    private readonly ICategoriesRepository _categoriesRepository = categoriesRepository;
+    private readonly ICategoriesRepository categoriesRepository = categoriesRepository;
 
     public async Task<ErrorOr<Category>> Handle(GetCategoryQuery request, CancellationToken cancellationToken)
     {
-        var category = await _categoriesRepository.GetByIdAsync(request.CategoryId);
+        var category = await categoriesRepository.GetByIdAsync(request.CategoryId);
         return category is null
             ? Error.NotFound(description: "Category not found")
             : category;

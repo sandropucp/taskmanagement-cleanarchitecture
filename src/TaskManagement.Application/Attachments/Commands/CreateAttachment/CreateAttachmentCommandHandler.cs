@@ -9,14 +9,14 @@ public class CreateAttachmentCommandHandler(IAttachmentsRepository attachmentsRe
     ITasksRepository tasksRepository, IUnitOfWork unitOfWork) : IRequestHandler<CreateAttachmentCommand,
     ErrorOr<Attachment>>
 {
-    private readonly IAttachmentsRepository _attachmentsRepository = attachmentsRepository;
-    private readonly ITasksRepository _tasksRepository = tasksRepository;
-    private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly IAttachmentsRepository attachmentsRepository = attachmentsRepository;
+    private readonly ITasksRepository tasksRepository = tasksRepository;
+    private readonly IUnitOfWork unitOfWork = unitOfWork;
 
     public async Task<ErrorOr<Attachment>> Handle(CreateAttachmentCommand request,
         CancellationToken cancellationToken)
     {
-        var task = await _tasksRepository.GetByIdAsync(request.TaskId);
+        var task = await tasksRepository.GetByIdAsync(request.TaskId);
 
         if (task is null)
         {
@@ -34,9 +34,9 @@ public class CreateAttachmentCommandHandler(IAttachmentsRepository attachmentsRe
             return addAttachmentResult.Errors;
         }
 
-        await _tasksRepository.UpdateTaskAsync(task);               //Task with the attachment
-        await _attachmentsRepository.AddAttachmentAsync(attachment);//Add the attachment
-        await _unitOfWork.CommitChangesAsync();
+        await tasksRepository.UpdateTaskAsync(task);               //Task with the attachment
+        await attachmentsRepository.AddAttachmentAsync(attachment);//Add the attachment
+        await unitOfWork.CommitChangesAsync();
 
         return attachment;
     }

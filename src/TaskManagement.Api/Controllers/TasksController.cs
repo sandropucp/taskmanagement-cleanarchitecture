@@ -12,7 +12,7 @@ namespace TaskManagement.Api.Controllers;
 [Route("tasks")]
 public class TasksController(ISender mediator) : ApiController
 {
-    private readonly ISender _mediator = mediator;
+    private readonly ISender mediator = mediator;
 
     [HttpPost]
     public async Task<IActionResult> CreateTask(
@@ -31,7 +31,7 @@ public class TasksController(ISender mediator) : ApiController
         var command = new CreateTaskCommand(request.Name, request.Description,
             request.DueDate, taskStatus, request.CategoryId, request.UserId);
 
-        var createTaskResult = await _mediator.Send(command);
+        var createTaskResult = await mediator.Send(command);
         return createTaskResult.MatchFirst(
             task => Ok(new TaskResponse(task.Id, task.Name)),
             Problem);
@@ -42,7 +42,7 @@ public class TasksController(ISender mediator) : ApiController
     {
         var query = new GetTaskQuery(taskId);
 
-        var getTaskResult = await _mediator.Send(query);
+        var getTaskResult = await mediator.Send(query);
 
         return getTaskResult.Match(
             task => Ok(new TaskResponse(
@@ -56,7 +56,7 @@ public class TasksController(ISender mediator) : ApiController
     {
         var command = new DeleteTaskCommand(taskId);
 
-        var deleteTaskResult = await _mediator.Send(command);
+        var deleteTaskResult = await mediator.Send(command);
 
         return deleteTaskResult.Match(
             _ => NoContent(),
@@ -68,7 +68,7 @@ public class TasksController(ISender mediator) : ApiController
     {
         var command = new ListTasksQuery();
 
-        var listTasksResult = await _mediator.Send(command);
+        var listTasksResult = await mediator.Send(command);
 
         return listTasksResult.Match(
             tasks => Ok(tasks.ConvertAll(task => new TaskResponse(task.Id, task.Name))),

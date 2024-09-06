@@ -6,17 +6,17 @@ using TaskManagement.Infrastructure.Common.Persistence;
 namespace TaskManagement.Infrastructure.Users.Persistence;
 public class UsersRepository(TaskManagementDbContext context) : IUsersRepository
 {
-    private readonly TaskManagementDbContext _context = context;
+    private readonly TaskManagementDbContext context = context;
 
     public async Task AddUserAsync(User user)
     {
-        await _context.Users.AddAsync(user);
-        await _context.SaveChangesAsync();
+        await context.Users.AddAsync(user);
+        await context.SaveChangesAsync();
     }
 
-    public async Task<User?> GetByIdAsync(Guid userId) => await _context.Users.FindAsync(userId);
+    public async Task<User?> GetByIdAsync(Guid userId) => await context.Users.FindAsync(userId);
 
-    public async Task<List<User>> GetAllAsync() => await _context.Users.ToListAsync();
+    public async Task<List<User>> GetAllAsync() => await context.Users.ToListAsync();
 
     Task IUsersRepository.AddUserAsync(User user) => throw new NotImplementedException();
 

@@ -7,12 +7,12 @@ namespace TaskManagement.Application.Tasks.Queries.GetTask;
 
 public class GetTaskQueryHandler(ITasksRepository tasksRepository) : IRequestHandler<GetTaskQuery, ErrorOr<Local.Task>>
 {
-    private readonly ITasksRepository _tasksRepository = tasksRepository;
+    private readonly ITasksRepository tasksRepository = tasksRepository;
 
     public async Task<ErrorOr<Local.Task>> Handle(GetTaskQuery request,
         CancellationToken cancellationToken)
     {
-        var task = await _tasksRepository.GetByIdAsync(request.TaskId);
+        var task = await tasksRepository.GetByIdAsync(request.TaskId);
         return task is null
             ? Error.NotFound(description: "Task not found")
             : task;

@@ -8,20 +8,20 @@ public class DeleteCategoryCommandHandler(
     IUnitOfWork unitOfWork,
     ICategoriesRepository categoriesRepository) : IRequestHandler<DeleteCategoryCommand, ErrorOr<Deleted>>
 {
-    private readonly ICategoriesRepository _categoriesRepository = categoriesRepository;
-    private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly ICategoriesRepository categoriesRepository = categoriesRepository;
+    private readonly IUnitOfWork unitOfWork = unitOfWork;
 
     public async Task<ErrorOr<Deleted>> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
     {
-        var category = await _categoriesRepository.GetByIdAsync(request.CategoryId);
+        var category = await categoriesRepository.GetByIdAsync(request.CategoryId);
 
         if (category is null)
         {
             return Error.NotFound(description: "category not 1 found");
         }
 
-        await _categoriesRepository.RemoveCategoryAsync(category);
-        await _unitOfWork.CommitChangesAsync();
+        await categoriesRepository.RemoveCategoryAsync(category);
+        await unitOfWork.CommitChangesAsync();
 
         return Result.Deleted;
     }

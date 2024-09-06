@@ -11,7 +11,7 @@ namespace TaskManagement.Api.Controllers;
 [Route("categories")]
 public class CategoriesController(ISender mediator) : ApiController
 {
-    private readonly ISender _mediator = mediator;
+    private readonly ISender mediator = mediator;
 
     [HttpPost]
     public async Task<IActionResult> CreateCategory(
@@ -19,7 +19,7 @@ public class CategoriesController(ISender mediator) : ApiController
     {
         var command = new CreateCategoryCommand(request.Name);
 
-        var createCategoryResult = await _mediator.Send(command);
+        var createCategoryResult = await mediator.Send(command);
         return createCategoryResult.MatchFirst(
             category => Ok(new CategoryResponse(category.Id, category.Name)),
             Problem);
@@ -30,7 +30,7 @@ public class CategoriesController(ISender mediator) : ApiController
     {
         var query = new GetCategoryQuery(categoryId);
 
-        var getCategoryResult = await _mediator.Send(query);
+        var getCategoryResult = await mediator.Send(query);
 
         return getCategoryResult.Match(
             category => Ok(new CategoryResponse(
@@ -44,7 +44,7 @@ public class CategoriesController(ISender mediator) : ApiController
     {
         var command = new DeleteCategoryCommand(categoryId);
 
-        var deleteCategoryResult = await _mediator.Send(command);
+        var deleteCategoryResult = await mediator.Send(command);
 
         return deleteCategoryResult.Match(
             _ => NoContent(),
@@ -56,7 +56,7 @@ public class CategoriesController(ISender mediator) : ApiController
     {
         var command = new ListCategoriesQuery();
 
-        var listCategoriesResult = await _mediator.Send(command);
+        var listCategoriesResult = await mediator.Send(command);
 
         return listCategoriesResult.Match(
             categories => Ok(categories.ConvertAll(category => new CategoryResponse(category.Id, category.Name))),

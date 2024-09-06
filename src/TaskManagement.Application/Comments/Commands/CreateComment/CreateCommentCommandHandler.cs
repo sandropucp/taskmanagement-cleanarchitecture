@@ -8,21 +8,21 @@ namespace TaskManagement.Application.Comments.Commands.CreateComment;
 public class CreateCommentCommandHandler(ICommentsRepository commentsRepository,
     IUsersRepository usersRepository, ITasksRepository tasksRepository, IUnitOfWork unitOfWork) : IRequestHandler<CreateCommentCommand, ErrorOr<Comment>>
 {
-    private readonly ICommentsRepository _commentsRepository = commentsRepository;
-    private readonly IUsersRepository _usersRepository = usersRepository;
-    private readonly ITasksRepository _tasksRepository = tasksRepository;
-    private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly ICommentsRepository commentsRepository = commentsRepository;
+    private readonly IUsersRepository usersRepository = usersRepository;
+    private readonly ITasksRepository tasksRepository = tasksRepository;
+    private readonly IUnitOfWork unitOfWork = unitOfWork;
 
     public async Task<ErrorOr<Comment>> Handle(CreateCommentCommand request,
         CancellationToken cancellationToken)
     {
-        var task = await _tasksRepository.GetByIdAsync(request.TaskId);
+        var task = await tasksRepository.GetByIdAsync(request.TaskId);
         if (task is null)
         {
             return Error.NotFound(description: "Task not found");
         }
 
-        var user = await _usersRepository.GetByIdAsync(request.UserId);
+        var user = await usersRepository.GetByIdAsync(request.UserId);
         if (user is null)
         {
             return Error.NotFound(description: "User not found");
@@ -40,9 +40,9 @@ public class CreateCommentCommandHandler(ICommentsRepository commentsRepository,
             return addCommentResult.Errors;
         }
 
-        await _tasksRepository.UpdateTaskAsync(task);               //Task with the comment
-        await _commentsRepository.AddCommentAsync(comment);         //Add the comment
-        await _unitOfWork.CommitChangesAsync();
+        await tasksRepository.UpdateTaskAsync(task);               //Task with the comment
+        await commentsRepository.AddCommentAsync(comment);         //Add the comment
+        await unitOfWork.CommitChangesAsync();
 
         return comment;
     }
