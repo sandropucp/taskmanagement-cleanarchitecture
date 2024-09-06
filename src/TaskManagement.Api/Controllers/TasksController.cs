@@ -31,7 +31,7 @@ public class TasksController : ApiController
                 statusCode: StatusCodes.Status400BadRequest,
                 detail: "Invalid task status");
         }
-    }
+    }}
 
     var command = new CreateTaskCommand(request.Name, request.Description,
         request.DueDate, taskStatus, request.CategoryId, request.UserId);
