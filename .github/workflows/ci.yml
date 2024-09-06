@@ -14,4 +14,4 @@ jobs:
       #     run: dotnet test --configuration Release --no-build
 
       - name: dotnet publish
-        run: dotnet publish src/TaskManagement.Api/TaskManagement.Api.csproj --configuration Release -o artifacts
+        run: dotnet publish src\TaskManagement.Api\TaskManagement.Api.csproj --configuration Release --output publish/
