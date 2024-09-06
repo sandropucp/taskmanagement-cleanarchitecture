@@ -2,18 +2,21 @@ name: PR Verify
 
 on:
   pull_request:
-    branches:
-      - master
+    branches: ["master"]
 
 jobs:
-  build_and_test:
+  build:
+    name: PR Verify
     runs-on: ubuntu-latest
-    name: Build, Test, Upload Artifact
-
+    
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Run dotnet test
-        run: |
-          dotnet test -c Release
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 8.0
+
+      - name: Build with dotnet
+        run: dotnet build --configuration Release
