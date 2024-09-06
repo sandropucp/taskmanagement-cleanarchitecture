@@ -7,7 +7,15 @@ public class WeatherForecastController(ILogger<WeatherForecastController> logger
 {
     private static readonly string[] Summaries =
         [
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering"
+            "Freezing",
+            "Bracing",
+            "Chilly",
+            "Cool",
+            "Mild",
+            "Warm",
+            "Balmy",
+            "Hot",
+            "Sweltering"
         ];
 
     private readonly ILogger<WeatherForecastController> _logger = logger;
