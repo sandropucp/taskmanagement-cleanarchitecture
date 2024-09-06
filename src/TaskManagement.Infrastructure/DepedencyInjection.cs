@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using TaskManagement.Application.Common.Interfaces;
 using TaskManagement.Infrastructure.Attachments.Persistence;
+using TaskManagement.Infrastructure.Categories.Persistence;
 using TaskManagement.Infrastructure.Comments.Persistence;
 using TaskManagement.Infrastructure.Common.Persistence;
 using TaskManagement.Infrastructure.Tasks.Persistence;
