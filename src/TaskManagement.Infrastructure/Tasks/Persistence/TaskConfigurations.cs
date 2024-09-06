@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Local = TaskManagement.Domain.Tasks;
-using TaskManagement.Infrastructure.Common.Persistence;
 
 namespace TaskManagement.Infrastructure.Subscriptions.Persistence;
 

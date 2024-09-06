@@ -1,6 +1,6 @@
 using ErrorOr;
-using Local = TaskManagement.Domain.Tasks;
 using MediatR;
+using Local = TaskManagement.Domain.Tasks;
 
 namespace TaskManagement.Application.Tasks.Queries.GetTask;
 

@@ -4,18 +4,12 @@ using TaskManagement.Application.Common.Interfaces;
 
 namespace TaskManagement.Application.Tasks.Commands.DeleteTask;
 
-public class DeleteTaskCommandHandler : IRequestHandler<DeleteTaskCommand, ErrorOr<Deleted>>
+public class DeleteTaskCommandHandler(
+    IUnitOfWork unitOfWork,
+    ITasksRepository tasksRepository) : IRequestHandler<DeleteTaskCommand, ErrorOr<Deleted>>
 {
-    private readonly ITasksRepository _tasksRepository;
-    private readonly IUnitOfWork _unitOfWork;
-
-    public DeleteTaskCommandHandler(
-        IUnitOfWork unitOfWork,
-        ITasksRepository tasksRepository)
-    {
-        _unitOfWork = unitOfWork;
-        _tasksRepository = tasksRepository;
-    }
+    private readonly ITasksRepository _tasksRepository = tasksRepository;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     public async Task<ErrorOr<Deleted>> Handle(DeleteTaskCommand request, CancellationToken cancellationToken)
     {

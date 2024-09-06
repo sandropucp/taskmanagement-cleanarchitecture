@@ -4,14 +4,9 @@ using TaskManagement.Domain.Comments;
 using TaskManagement.Infrastructure.Common.Persistence;
 
 namespace TaskManagement.Infrastructure.Comments.Persistence;
-public class CommentsRepository : ICommentsRepository
+public class CommentsRepository(TaskManagementDbContext dbContext) : ICommentsRepository
 {
-    private readonly TaskManagementDbContext _dbContext;
-
-    public CommentsRepository(TaskManagementDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
+    private readonly TaskManagementDbContext _dbContext = dbContext;
 
     public async Task AddCommentAsync(Comment comment)
     {
@@ -19,13 +14,7 @@ public class CommentsRepository : ICommentsRepository
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task<Comment?> GetByIdAsync(Guid id)
-    {
-        return await _dbContext.Comments.FirstOrDefaultAsync(comment => comment.Id == id);
-    }
+    public async Task<Comment?> GetByIdAsync(Guid commentId) => await _dbContext.Comments.FirstOrDefaultAsync(comment => comment.Id == commentId);
 
-    public async Task<List<Comment>> GetAllAsync()
-    {
-        return await _dbContext.Comments.ToListAsync();
-    }
+    public async Task<List<Comment>> GetAllAsync() => await _dbContext.Comments.ToListAsync();
 }

@@ -9,19 +9,15 @@ using Local = TaskManagement.Domain.Tasks;
 
 namespace TaskManagement.Infrastructure.Common.Persistence;
 
-public class TaskManagementDbContext : DbContext, IUnitOfWork
+public class TaskManagementDbContext(DbContextOptions options) : DbContext(options), IUnitOfWork
 {
     public DbSet<Local.Task> Tasks { get; set; } = null!;
     public DbSet<Category> Categories { get; set; } = null!;
     public DbSet<Attachment> Attachments { get; set; } = null!;
     public DbSet<User> Users { get; set; } = null!;
     public DbSet<Comment> Comments { get; set; } = null!;
-    public TaskManagementDbContext(DbContextOptions options) : base(options) { }
 
-    public async Task CommitChangesAsync()
-    {
-        await SaveChangesAsync();
-    }
+    public async Task CommitChangesAsync() => await SaveChangesAsync();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

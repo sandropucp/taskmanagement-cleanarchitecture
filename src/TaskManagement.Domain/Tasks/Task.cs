@@ -7,8 +7,8 @@ namespace TaskManagement.Domain.Tasks;
 
 public class Task
 {
-    private readonly List<Guid> _commentIds = new();
-    private readonly List<Guid> _attachmentIds = new();
+    private readonly List<Guid> _commentIds = [];
+    private readonly List<Guid> _attachmentIds = [];
     private readonly int _maxAttachments = 10;
     public Guid Id { get; private set; }
     public Guid CategoryId { get; private set; }

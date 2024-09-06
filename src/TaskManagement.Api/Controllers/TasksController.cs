@@ -1,23 +1,18 @@
-using TaskManagement.Application.Tasks.Commands.CreateTask;
-using TaskManagement.Contracts.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using DomainTaskStatus = TaskManagement.Domain.Tasks.TaskStatus;
+using TaskManagement.Application.Tasks.Commands.CreateTask;
 using TaskManagement.Application.Tasks.Commands.DeleteTask;
 using TaskManagement.Application.Tasks.Queries.GetTask;
 using TaskManagement.Application.Tasks.Queries.ListTasks;
+using TaskManagement.Contracts.Tasks;
+using DomainTaskStatus = TaskManagement.Domain.Tasks.TaskStatus;
 
 namespace TaskManagement.Api.Controllers;
 
 [Route("tasks")]
-public class TasksController : ApiController
+public class TasksController(ISender mediator) : ApiController
 {
-    private readonly ISender _mediator;
-
-    public TasksController(ISender mediator)
-    {
-        _mediator = mediator;
-    }
+    private readonly ISender _mediator = mediator;
 
     [HttpPost]
     public async Task<IActionResult> CreateTask(
@@ -39,7 +34,7 @@ public class TasksController : ApiController
         var createTaskResult = await _mediator.Send(command);
         return createTaskResult.MatchFirst(
             task => Ok(new TaskResponse(task.Id, task.Name)),
-            error => Problem(error));
+            Problem);
     }
 
     [HttpGet("{taskId:guid}")]

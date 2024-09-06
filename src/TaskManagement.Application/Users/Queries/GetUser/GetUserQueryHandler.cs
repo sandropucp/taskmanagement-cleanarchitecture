@@ -1,18 +1,13 @@
 using ErrorOr;
 using MediatR;
-using TaskManagement.Domain.Users;
 using TaskManagement.Application.Common.Interfaces;
+using TaskManagement.Domain.Users;
 
 namespace TaskManagement.Application.Users.Queries.GetUser;
 
-public class GetUserQueryHandler : IRequestHandler<GetUserQuery, ErrorOr<User>>
+public class GetUserQueryHandler(IUsersRepository usersRepository) : IRequestHandler<GetUserQuery, ErrorOr<User>>
 {
-    private readonly IUsersRepository _usersRepository;
-
-    public GetUserQueryHandler(IUsersRepository usersRepository)
-    {
-        _usersRepository = usersRepository;
-    }
+    private readonly IUsersRepository _usersRepository = usersRepository;
 
     public async Task<ErrorOr<User>> Handle(GetUserQuery request, CancellationToken cancellationToken)
     {

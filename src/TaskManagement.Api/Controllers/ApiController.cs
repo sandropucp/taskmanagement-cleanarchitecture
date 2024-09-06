@@ -29,6 +29,10 @@ public class ApiController : ControllerBase
             ErrorType.Conflict => StatusCodes.Status409Conflict,
             ErrorType.Validation => StatusCodes.Status400BadRequest,
             ErrorType.NotFound => StatusCodes.Status404NotFound,
+            ErrorType.Failure => throw new NotImplementedException(),
+            ErrorType.Unexpected => throw new NotImplementedException(),
+            ErrorType.Unauthorized => throw new NotImplementedException(),
+            ErrorType.Forbidden => throw new NotImplementedException(),
             _ => StatusCodes.Status500InternalServerError,
         };
 

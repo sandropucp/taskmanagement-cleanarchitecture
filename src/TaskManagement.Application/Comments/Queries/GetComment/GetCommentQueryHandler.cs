@@ -5,14 +5,9 @@ using TaskManagement.Domain.Comments;
 
 namespace TaskManagement.Application.Comments.Queries.GetComment;
 
-public class GetCommentQueryHandler : IRequestHandler<GetCommentQuery, ErrorOr<Comment>>
+public class GetCommentQueryHandler(ICommentsRepository commentsRepository) : IRequestHandler<GetCommentQuery, ErrorOr<Comment>>
 {
-    private readonly ICommentsRepository _commentsRepository;
-
-    public GetCommentQueryHandler(ICommentsRepository commentsRepository)
-    {
-        _commentsRepository = commentsRepository;
-    }
+    private readonly ICommentsRepository _commentsRepository = commentsRepository;
 
     public async Task<ErrorOr<Comment>> Handle(GetCommentQuery request, CancellationToken cancellationToken)
     {

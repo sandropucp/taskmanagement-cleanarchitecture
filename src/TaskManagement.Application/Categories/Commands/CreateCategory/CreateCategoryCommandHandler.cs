@@ -1,21 +1,15 @@
 using ErrorOr;
 using MediatR;
-using TaskManagement.Domain.Categories;
 using TaskManagement.Application.Common.Interfaces;
+using TaskManagement.Domain.Categories;
 
 namespace TaskManagement.Application.Categories.Commands.CreateCategory;
 
-public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, ErrorOr<Category>>
+public class CreateCategoryCommandHandler(ICategoriesRepository categoriesRepository,
+    IUnitOfWork unitOfWork) : IRequestHandler<CreateCategoryCommand, ErrorOr<Category>>
 {
-    private readonly ICategoriesRepository _categoriesRepository;
-    private readonly IUnitOfWork _unitOfWork;
-
-    public CreateCategoryCommandHandler(ICategoriesRepository categoriesRepository,
-        IUnitOfWork unitOfWork)
-    {
-        _categoriesRepository = categoriesRepository;
-        _unitOfWork = unitOfWork;
-    }
+    private readonly ICategoriesRepository _categoriesRepository = categoriesRepository;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     public async Task<ErrorOr<Category>> Handle(CreateCategoryCommand request,
         CancellationToken cancellationToken)

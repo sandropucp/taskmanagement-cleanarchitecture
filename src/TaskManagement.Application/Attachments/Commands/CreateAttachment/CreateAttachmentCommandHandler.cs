@@ -1,29 +1,22 @@
 using ErrorOr;
 using MediatR;
-using TaskManagement.Domain.Attachments;
 using TaskManagement.Application.Common.Interfaces;
+using TaskManagement.Domain.Attachments;
 
 namespace TaskManagement.Application.Attachments.Commands.CreateAttachment;
 
-public class CreateAttachmentCommandHandler : IRequestHandler<CreateAttachmentCommand,
+public class CreateAttachmentCommandHandler(IAttachmentsRepository attachmentsRepository,
+    ITasksRepository tasksRepository, IUnitOfWork unitOfWork) : IRequestHandler<CreateAttachmentCommand,
     ErrorOr<Attachment>>
 {
-    private readonly IAttachmentsRepository _attachmentsRepository;
-    private readonly ITasksRepository _tasksRepository;
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IAttachmentsRepository _attachmentsRepository = attachmentsRepository;
+    private readonly ITasksRepository _tasksRepository = tasksRepository;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-    public CreateAttachmentCommandHandler(IAttachmentsRepository attachmentsRepository,
-        ITasksRepository tasksRepository, IUnitOfWork unitOfWork)
-    {
-        _attachmentsRepository = attachmentsRepository;
-        _tasksRepository = tasksRepository;
-        _unitOfWork = unitOfWork;
-    }
-
-    public async Task<ErrorOr<Attachment>> Handle(CreateAttachmentCommand command,
+    public async Task<ErrorOr<Attachment>> Handle(CreateAttachmentCommand request,
         CancellationToken cancellationToken)
     {
-        var task = await _tasksRepository.GetByIdAsync(command.TaskId);
+        var task = await _tasksRepository.GetByIdAsync(request.TaskId);
 
         if (task is null)
         {
@@ -31,7 +24,7 @@ public class CreateAttachmentCommandHandler : IRequestHandler<CreateAttachmentCo
         }
 
         var attachment = new Attachment(
-            fileName: command.FileName,
+            fileName: request.FileName,
             taskId: task.Id);
 
         var addAttachmentResult = task.AddAttachment(attachment);

@@ -1,18 +1,13 @@
 using ErrorOr;
 using MediatR;
-using TaskManagement.Domain.Attachments;
 using TaskManagement.Application.Common.Interfaces;
+using TaskManagement.Domain.Attachments;
 
 namespace TaskManagement.Application.Attachments.Queries.GetAttachment;
 
-public class GetAttachmentQueryHandler : IRequestHandler<GetAttachmentQuery, ErrorOr<Attachment>>
+public class GetAttachmentQueryHandler(IAttachmentsRepository attachmentsRepository) : IRequestHandler<GetAttachmentQuery, ErrorOr<Attachment>>
 {
-    private readonly IAttachmentsRepository _attachmentsRepository;
-
-    public GetAttachmentQueryHandler(IAttachmentsRepository attachmentsRepository)
-    {
-        _attachmentsRepository = attachmentsRepository;
-    }
+    private readonly IAttachmentsRepository _attachmentsRepository = attachmentsRepository;
 
     public async Task<ErrorOr<Attachment>> Handle(GetAttachmentQuery request, CancellationToken cancellationToken)
     {

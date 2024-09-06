@@ -1,18 +1,13 @@
 using ErrorOr;
 using MediatR;
-using TaskManagement.Domain.Categories;
 using TaskManagement.Application.Common.Interfaces;
+using TaskManagement.Domain.Categories;
 
 namespace TaskManagement.Application.Categories.Queries.ListCategories;
 
-public class ListCategoriesQueryHandler : IRequestHandler<ListCategoriesQuery, ErrorOr<List<Category>>>
+public class ListCategoriesQueryHandler(ICategoriesRepository categoriesRepository) : IRequestHandler<ListCategoriesQuery, ErrorOr<List<Category>>>
 {
-    private readonly ICategoriesRepository _categoriesRepository;
-
-    public ListCategoriesQueryHandler(ICategoriesRepository categoriesRepository)
-    {
-        _categoriesRepository = categoriesRepository;
-    }
+    private readonly ICategoriesRepository _categoriesRepository = categoriesRepository;
 
     public async Task<ErrorOr<List<Category>>> Handle(ListCategoriesQuery request, CancellationToken cancellationToken)
     {

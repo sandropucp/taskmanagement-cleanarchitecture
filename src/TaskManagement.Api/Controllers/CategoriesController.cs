@@ -1,23 +1,17 @@
-using TaskManagement.Application.Categories.Commands.CreateCategory;
-using TaskManagement.Contracts.Categories;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using DomainTaskStatus = TaskManagement.Domain.Tasks.TaskStatus;
-using TaskManagement.Application.Categories.Queries.GetCategory;
+using TaskManagement.Application.Categories.Commands.CreateCategory;
 using TaskManagement.Application.Categories.Commands.DeleteCategory;
+using TaskManagement.Application.Categories.Queries.GetCategory;
 using TaskManagement.Application.Categories.Queries.ListCategories;
+using TaskManagement.Contracts.Categories;
 
 namespace TaskManagement.Api.Controllers;
 
 [Route("categories")]
-public class CategoriesController : ApiController
+public class CategoriesController(ISender mediator) : ApiController
 {
-    private readonly ISender _mediator;
-
-    public CategoriesController(ISender mediator)
-    {
-        _mediator = mediator;
-    }
+    private readonly ISender _mediator = mediator;
 
     [HttpPost]
     public async Task<IActionResult> CreateCategory(
@@ -28,7 +22,7 @@ public class CategoriesController : ApiController
         var createCategoryResult = await _mediator.Send(command);
         return createCategoryResult.MatchFirst(
             category => Ok(new CategoryResponse(category.Id, category.Name)),
-            error => Problem(error));
+            Problem);
     }
 
     [HttpGet("{categoryId:guid}")]

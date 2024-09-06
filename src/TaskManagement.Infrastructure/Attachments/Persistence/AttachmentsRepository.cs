@@ -3,19 +3,11 @@ using TaskManagement.Domain.Attachments;
 using TaskManagement.Infrastructure.Common.Persistence;
 
 namespace TaskManagement.Infrastructure.Attachments.Persistence;
-public class AttachmentsRepository : IAttachmentsRepository
+public class AttachmentsRepository(TaskManagementDbContext dbContext) : IAttachmentsRepository
 {
-    private readonly TaskManagementDbContext _dbContext;
+    private readonly TaskManagementDbContext _dbContext = dbContext;
 
-    public AttachmentsRepository(TaskManagementDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
-
-    public Task AddAttachmentAsync(Attachment attachment)
-    {
-        throw new NotImplementedException();
-    }
+    public Task AddAttachmentAsync(Attachment attachment) => throw new NotImplementedException();
 
     public async Task<Attachment> CreateAttachmentAsync(Attachment attachment)
     {
@@ -24,18 +16,9 @@ public class AttachmentsRepository : IAttachmentsRepository
         return attachment;
     }
 
-    public Task<List<Attachment>> GetAllAsync()
-    {
-        throw new NotImplementedException();
-    }
+    public Task<List<Attachment>> GetAllAsync() => throw new NotImplementedException();
 
-    public Task<Attachment> GetAttachmentByIdAsync(Guid attachmentId)
-    {
-        throw new NotImplementedException();
-    }
+    public Task<Attachment> GetAttachmentByIdAsync(Guid attachmentId) => throw new NotImplementedException();
 
-    public Task<Attachment> GetByIdAsync(Guid attachmentId)
-    {
-        throw new NotImplementedException();
-    }
+    public Task<Attachment> GetByIdAsync(Guid attachmentId) => throw new NotImplementedException();
 }

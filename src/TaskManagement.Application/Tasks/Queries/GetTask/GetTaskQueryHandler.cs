@@ -5,19 +5,14 @@ using Local = TaskManagement.Domain.Tasks;
 
 namespace TaskManagement.Application.Tasks.Queries.GetTask;
 
-public class GetTaskQueryHandler : IRequestHandler<GetTaskQuery, ErrorOr<Local.Task>>
+public class GetTaskQueryHandler(ITasksRepository tasksRepository) : IRequestHandler<GetTaskQuery, ErrorOr<Local.Task>>
 {
-    private readonly ITasksRepository _tasksRepository;
+    private readonly ITasksRepository _tasksRepository = tasksRepository;
 
-    public GetTaskQueryHandler(ITasksRepository tasksRepository)
-    {
-        _tasksRepository = tasksRepository;
-    }
-
-    public async Task<ErrorOr<Local.Task>> Handle(GetTaskQuery query,
+    public async Task<ErrorOr<Local.Task>> Handle(GetTaskQuery request,
         CancellationToken cancellationToken)
     {
-        var task = await _tasksRepository.GetByIdAsync(query.TaskId);
+        var task = await _tasksRepository.GetByIdAsync(request.TaskId);
         return task is null
             ? Error.NotFound(description: "Task not found")
             : task;

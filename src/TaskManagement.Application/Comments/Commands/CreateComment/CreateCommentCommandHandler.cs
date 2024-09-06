@@ -1,25 +1,17 @@
 using ErrorOr;
 using MediatR;
-using TaskManagement.Domain.Comments;
 using TaskManagement.Application.Common.Interfaces;
+using TaskManagement.Domain.Comments;
 
 namespace TaskManagement.Application.Comments.Commands.CreateComment;
 
-public class CreateCommentCommandHandler : IRequestHandler<CreateCommentCommand, ErrorOr<Comment>>
+public class CreateCommentCommandHandler(ICommentsRepository commentsRepository,
+    IUsersRepository usersRepository, ITasksRepository tasksRepository, IUnitOfWork unitOfWork) : IRequestHandler<CreateCommentCommand, ErrorOr<Comment>>
 {
-    private readonly ICommentsRepository _commentsRepository;
-    private readonly IUsersRepository _usersRepository;
-    private readonly ITasksRepository _tasksRepository;
-    private readonly IUnitOfWork _unitOfWork;
-
-    public CreateCommentCommandHandler(ICommentsRepository commentsRepository,
-        IUsersRepository usersRepository, ITasksRepository tasksRepository, IUnitOfWork unitOfWork)
-    {
-        _commentsRepository = commentsRepository;
-        _usersRepository = usersRepository;
-        _tasksRepository = tasksRepository;
-        _unitOfWork = unitOfWork;
-    }
+    private readonly ICommentsRepository _commentsRepository = commentsRepository;
+    private readonly IUsersRepository _usersRepository = usersRepository;
+    private readonly ITasksRepository _tasksRepository = tasksRepository;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     public async Task<ErrorOr<Comment>> Handle(CreateCommentCommand request,
         CancellationToken cancellationToken)

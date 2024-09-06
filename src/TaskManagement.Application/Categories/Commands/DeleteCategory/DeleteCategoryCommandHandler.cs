@@ -1,25 +1,19 @@
 using ErrorOr;
-using TaskManagement.Application.Common.Interfaces;
 using MediatR;
+using TaskManagement.Application.Common.Interfaces;
 
 namespace TaskManagement.Application.Categories.Commands.DeleteCategory;
 
-public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryCommand, ErrorOr<Deleted>>
+public class DeleteCategoryCommandHandler(
+    IUnitOfWork unitOfWork,
+    ICategoriesRepository categoriesRepository) : IRequestHandler<DeleteCategoryCommand, ErrorOr<Deleted>>
 {
-    private readonly ICategoriesRepository _categoriesRepository;
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly ICategoriesRepository _categoriesRepository = categoriesRepository;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-    public DeleteCategoryCommandHandler(
-        IUnitOfWork unitOfWork,
-        ICategoriesRepository categoriesRepository)
+    public async Task<ErrorOr<Deleted>> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
     {
-        _unitOfWork = unitOfWork;
-        _categoriesRepository = categoriesRepository;
-    }
-
-    public async Task<ErrorOr<Deleted>> Handle(DeleteCategoryCommand command, CancellationToken cancellationToken)
-    {
-        var category = await _categoriesRepository.GetByIdAsync(command.CategoryId);
+        var category = await _categoriesRepository.GetByIdAsync(request.CategoryId);
 
         if (category is null)
         {
