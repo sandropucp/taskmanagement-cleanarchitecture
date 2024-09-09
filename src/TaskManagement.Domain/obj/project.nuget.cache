@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "SGd2NFKjbxCjuyvYsGmPX3NT3m+b03rvLsct1KM9YrcjHgmIIozTzRUvu2cdK2r7fTySTc0M/xiTYsvwm40fhQ==",
+  "dgSpecHash": "I/wuqY1L6uyGI6pnnZ4UL0YWt6I9zA1gBcUMXLt2IuSC3Mb+DOtxN/DyZSEps+cVQTmUsUy56dP5Vm7Na38fcw==",
   "success": true,
-  "projectFilePath": "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Domain\\TaskManagement.Domain.csproj",
+  "projectFilePath": "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Domain\\TaskManagement.Domain.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\sandr\\.nuget\\packages\\ardalis.smartenum\\8.0.0\\ardalis.smartenum.8.0.0.nupkg.sha512",
     "C:\\Users\\sandr\\.nuget\\packages\\erroror\\2.0.1\\erroror.2.0.1.nupkg.sha512",
