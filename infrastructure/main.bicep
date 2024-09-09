@@ -8,7 +8,7 @@ targetScope = 'resourceGroup'
 module app './appservice.bicep' = {
   name: 'appservice'
   params: {
-    appName: 'taskmanagement-sandropucp'
+    appName: 'taskmanagement'
     environment: environment
     location: location
   }
