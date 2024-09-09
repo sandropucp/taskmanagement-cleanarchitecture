@@ -5,7 +5,7 @@ on:
     branches: ["master"]
 
 jobs:
-  build:
+  build_and_test:
     name: CI
     runs-on: ubuntu-latest
 
@@ -26,3 +26,16 @@ jobs:
         with:
           name: dotnet-artifact
           path: publish/
+
+  deploy_dev:
+    name: Deploy Dev
+    needs: build_and_test
+    uses: ./.github/workflows/step-deploy.yml
+    with:
+      env: dev
+      artifact_name: dotnet-artifact
+      resource_group_name: rg-taskmanagement-dev
+      app_service_name: app-taskmanagement-dev
+      app_service_slot_name: slot
+    # Note: use GH Environment Secrets if using a Pro/Enterprise version of GH
+    secrets: inherit
