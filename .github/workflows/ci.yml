@@ -37,5 +37,5 @@ jobs:
       resource_group_name: rg-taskmanagement-dev
       app_service_name: app-taskmanagement-dev
       app_service_slot_name: slot
-    # Note: use GH Environment Secrets if using a Pro/Enterprise version of GH
+    # Note: use GH Environment Secrets if using a Pro/Enterprise version of GH/
     secrets: inherit
