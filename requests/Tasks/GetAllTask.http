@@ -1,3 +1,4 @@
+#https://app-taskmanagement-sandropucp-dev.azurewebsites.net/swagger/index.html
 @HostAddress = http://localhost:5205
 
 GET {{HostAddress}}/tasks

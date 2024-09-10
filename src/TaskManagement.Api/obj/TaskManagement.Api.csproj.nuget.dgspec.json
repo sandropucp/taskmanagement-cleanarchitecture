@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Api\\TaskManagement.Api.csproj": {}
+    "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Api\\TaskManagement.Api.csproj": {}
   },
   "projects": {
-    "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Api\\TaskManagement.Api.csproj": {
+    "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Api\\TaskManagement.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Api\\TaskManagement.Api.csproj",
+        "projectUniqueName": "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Api\\TaskManagement.Api.csproj",
         "projectName": "TaskManagement.Api",
-        "projectPath": "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Api\\TaskManagement.Api.csproj",
+        "projectPath": "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Api\\TaskManagement.Api.csproj",
         "packagesPath": "C:\\Users\\sandr\\.nuget\\packages\\",
-        "outputPath": "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Api\\obj\\",
+        "outputPath": "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Api\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -33,14 +33,14 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Application\\TaskManagement.Application.csproj": {
-                "projectPath": "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Application\\TaskManagement.Application.csproj"
+              "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Application\\TaskManagement.Application.csproj": {
+                "projectPath": "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Application\\TaskManagement.Application.csproj"
               },
-              "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Contracts\\TaskManagement.Contracts.csproj": {
-                "projectPath": "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Contracts\\TaskManagement.Contracts.csproj"
+              "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Contracts\\TaskManagement.Contracts.csproj": {
+                "projectPath": "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Contracts\\TaskManagement.Contracts.csproj"
               },
-              "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Infrastructure\\TaskManagement.Infrastructure.csproj": {
-                "projectPath": "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Infrastructure\\TaskManagement.Infrastructure.csproj"
+              "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Infrastructure\\TaskManagement.Infrastructure.csproj": {
+                "projectPath": "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Infrastructure\\TaskManagement.Infrastructure.csproj"
               }
             }
           }
@@ -98,14 +98,14 @@
         }
       }
     },
-    "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Application\\TaskManagement.Application.csproj": {
+    "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Application\\TaskManagement.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Application\\TaskManagement.Application.csproj",
+        "projectUniqueName": "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Application\\TaskManagement.Application.csproj",
         "projectName": "TaskManagement.Application",
-        "projectPath": "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Application\\TaskManagement.Application.csproj",
+        "projectPath": "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Application\\TaskManagement.Application.csproj",
         "packagesPath": "C:\\Users\\sandr\\.nuget\\packages\\",
-        "outputPath": "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Application\\obj\\",
+        "outputPath": "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Application\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -127,8 +127,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Domain\\TaskManagement.Domain.csproj": {
-                "projectPath": "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Domain\\TaskManagement.Domain.csproj"
+              "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Domain\\TaskManagement.Domain.csproj": {
+                "projectPath": "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Domain\\TaskManagement.Domain.csproj"
               }
             }
           }
@@ -181,14 +181,14 @@
         }
       }
     },
-    "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Contracts\\TaskManagement.Contracts.csproj": {
+    "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Contracts\\TaskManagement.Contracts.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Contracts\\TaskManagement.Contracts.csproj",
+        "projectUniqueName": "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Contracts\\TaskManagement.Contracts.csproj",
         "projectName": "TaskManagement.Contracts",
-        "projectPath": "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Contracts\\TaskManagement.Contracts.csproj",
+        "projectPath": "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Contracts\\TaskManagement.Contracts.csproj",
         "packagesPath": "C:\\Users\\sandr\\.nuget\\packages\\",
-        "outputPath": "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Contracts\\obj\\",
+        "outputPath": "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Contracts\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -246,14 +246,14 @@
         }
       }
     },
-    "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Domain\\TaskManagement.Domain.csproj": {
+    "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Domain\\TaskManagement.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Domain\\TaskManagement.Domain.csproj",
+        "projectUniqueName": "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Domain\\TaskManagement.Domain.csproj",
         "projectName": "TaskManagement.Domain",
-        "projectPath": "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Domain\\TaskManagement.Domain.csproj",
+        "projectPath": "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Domain\\TaskManagement.Domain.csproj",
         "packagesPath": "C:\\Users\\sandr\\.nuget\\packages\\",
-        "outputPath": "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Domain\\obj\\",
+        "outputPath": "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -325,14 +325,14 @@
         }
       }
     },
-    "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Infrastructure\\TaskManagement.Infrastructure.csproj": {
+    "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Infrastructure\\TaskManagement.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Infrastructure\\TaskManagement.Infrastructure.csproj",
+        "projectUniqueName": "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Infrastructure\\TaskManagement.Infrastructure.csproj",
         "projectName": "TaskManagement.Infrastructure",
-        "projectPath": "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Infrastructure\\TaskManagement.Infrastructure.csproj",
+        "projectPath": "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Infrastructure\\TaskManagement.Infrastructure.csproj",
         "packagesPath": "C:\\Users\\sandr\\.nuget\\packages\\",
-        "outputPath": "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Infrastructure\\obj\\",
+        "outputPath": "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -354,8 +354,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Application\\TaskManagement.Application.csproj": {
-                "projectPath": "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Application\\TaskManagement.Application.csproj"
+              "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Application\\TaskManagement.Application.csproj": {
+                "projectPath": "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Application\\TaskManagement.Application.csproj"
               }
             }
           }
@@ -379,7 +379,7 @@
               "target": "Package",
               "version": "[8.0.6, )"
             },
-            "Microsoft.EntityFrameworkCore.Sqlite": {
+            "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
               "version": "[8.0.6, )"
             }

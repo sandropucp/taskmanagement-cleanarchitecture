@@ -17,7 +17,11 @@ public class TasksRepository(TaskManagementDbContext dbContext) : ITasksReposito
 
     public async Task<Local.Task?> GetByIdAsync(Guid taskId) => await dbContext.Tasks.FirstOrDefaultAsync(task => task.Id == taskId);
 
-    public Task UpdateTaskAsync(Local.Task task) => throw new NotImplementedException();
+    public Task UpdateTaskAsync(Local.Task task)
+    {
+        dbContext.Tasks.Update(task);
+        return Task.CompletedTask;
+    }
 
     Task ITasksRepository.RemoveTaskAsync(Local.Task task)
     {

@@ -1,5 +1,6 @@
 using ErrorOr;
 using TaskManagement.Domain.Attachments;
+using TaskManagement.Domain.Categories;
 using TaskManagement.Domain.Comments;
 using Throw;
 
@@ -35,6 +36,12 @@ public class Task
         AssignedToId = assignedToId;
         Id = id ?? Guid.NewGuid();
     }
+    public ErrorOr<Success> UpdateCategory(Category category)
+    {
+        CategoryId = category.Id;
+        return Result.Success;
+    }
+
     public ErrorOr<Success> UpdateStatus(TaskStatus status)
     {
         if (Status == TaskStatus.Completed)
@@ -46,11 +53,9 @@ public class Task
 
         return Result.Success;
     }
-    public ErrorOr<Success> AddComment(Comment comment)
+    public ErrorOr<Success> AddCategory(Category category)
     {
-        commentIds.Throw().IfContains(comment.Id);
-        commentIds.Add(comment.Id);
-
+        CategoryId = category.Id;
         return Result.Success;
     }
     public ErrorOr<Success> AddAttachment(Attachment attachment)
@@ -63,6 +68,22 @@ public class Task
         }
 
         attachmentIds.Add(attachment.Id);
+
+        return Result.Success;
+    }
+    public ErrorOr<Success> RemoveAttachment(Attachment attachment)
+    {
+        attachmentIds.Throw().IfNotContains(attachment.Id);
+
+        attachmentIds.Remove(attachment.Id);
+
+        return Result.Success;
+    }
+    public ErrorOr<Success> AddComment(Comment comment)
+    {
+        commentIds.Throw().IfContains(comment.Id);
+
+        commentIds.Add(comment.Id);
 
         return Result.Success;
     }

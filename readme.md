@@ -64,11 +64,12 @@ dotnet add TaskManagement.Application package MediatR
 dotnet add TaskManagement.Application package Microsoft.Extensions.DependencyInjection.Abstractions
 dotnet add TaskManagement.Infrastructure package Microsoft.EntityFrameworkCore
 dotnet add TaskManagement.Infrastructure package Microsoft.EntityFrameworkCore.Sqlite
+dotnet add TaskManagement.Infrastructure package Microsoft.EntityFrameworkCore.SqlServer
 dotnet add TaskManagement.Api package Microsoft.AspNetCore.OpenApi
 dotnet add TaskManagement.Api package Microsoft.EntityFrameworkCore.Design
 ```
 
-### Install Entity Framework
+### Install Entity Framework (DO IT IN)
 - Install entity framework in computer
 ```
 dotnet tool install --global dotnet-ef --version 8.*

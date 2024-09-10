@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using TaskManagement.Application.Tasks.Commands.CreateTask;
 using TaskManagement.Application.Tasks.Commands.DeleteTask;
+using TaskManagement.Application.Tasks.Commands.UpdateTaskCategory;
 using TaskManagement.Application.Tasks.Queries.GetTask;
 using TaskManagement.Application.Tasks.Queries.ListTasks;
 using TaskManagement.Contracts.Tasks;
@@ -63,6 +64,18 @@ public class TasksController(ISender mediator) : ApiController
             Problem);
     }
 
+    [HttpPatch("{taskId:guid}/category/{categoryId:guid}")]
+    public async Task<IActionResult> UpdateTaskCategory(
+        Guid taskId, Guid categoryId)
+    {
+        var command = new UpdateTaskCategoryCommand(taskId, categoryId);
+
+        var updateTaskCategoryResult = await mediator.Send(command);
+
+        return updateTaskCategoryResult.Match(
+            _ => NoContent(),
+            Problem);
+    }
     [HttpGet]
     public async Task<IActionResult> ListTasks()
     {

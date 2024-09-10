@@ -33,6 +33,19 @@ jobs:
           name: dotnet-artifact
           path: publish/
 
+      - name: Install EntityFrameworkCore Tools
+        run: |
+            dotnet new tool-manifest
+            dotnet tool install dotnet-ef
+            
+      - name: Generate EF Core Migration Script
+        run: dotnet ef migrations script --idempotent --no-build --configuration Release -o .publish/sql/sql-script.sql -p .\src\TaskManagement.Infrastructure -s .\src\TaskManagement.Api
+      
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ddl-updates
+          path: publish/sql/sql-script.sql
+
   deploy_dev:
     name: Deploy Dev
     needs: build_and_test

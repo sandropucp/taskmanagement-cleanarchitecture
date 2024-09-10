@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TaskManagement.Application.Common.Interfaces;
 using TaskManagement.Infrastructure.Attachments.Persistence;
@@ -12,13 +13,16 @@ namespace TaskManagement.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services) => services
-            .AddPersistence();
-    public static IServiceCollection AddPersistence(this IServiceCollection services)
-    {
-        services.AddDbContext<TaskManagementDbContext>(options =>
-            options.UseSqlite("Data Source = TaskManagement.db"));
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration) => services.AddPersistence(configuration);
 
+    // public static IServiceCollection AddInfrastructure(this IServiceCollection services) => services
+    //         .AddPersistence();
+    public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
+    {
+
+        var connectionString = configuration.GetConnectionString("ProjectContext");
+        services.AddDbContext<TaskManagementDbContext>(options =>
+            options.UseSqlServer(connectionString));
         services.AddScoped<ITasksRepository, TasksRepository>();
         services.AddScoped<ICommentsRepository, CommentsRepository>();
         services.AddScoped<ICategoriesRepository, CategoriesRepository>();

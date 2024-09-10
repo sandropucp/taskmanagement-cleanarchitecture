@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "/BPKr20YyqrJ+ndz8oidVQ5V7vKtPPnjuHtX84sNDd9gGrFgM29F39TL0XWl6lcQuRrQ9bZyrh8fTA9oA6DiLA==",
+  "dgSpecHash": "mnY5O26O7zbeHkwGjOikAQ4L9JXlbrwIR2omYKhKSzNjXDuZbwqhjrOyU7mZ9fLxY59Pqh1qx2ae2UY4Vp/PlA==",
   "success": true,
-  "projectFilePath": "c:\\dev\\github\\TasksManagement\\src\\TaskManagement.Contracts\\TaskManagement.Contracts.csproj",
+  "projectFilePath": "C:\\dev\\github\\TasksManagement\\src\\TaskManagement.Contracts\\TaskManagement.Contracts.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }
