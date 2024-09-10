@@ -16,3 +16,5 @@ C:\dev\github\TasksManagement\src\TaskManagement.Infrastructure\obj\Debug\net8.0
 C:\dev\github\TasksManagement\src\TaskManagement.Infrastructure\obj\Debug\net8.0\TaskManagement.Infrastructure.pdb
 C:\dev\github\TasksManagement\src\TaskManagement.Infrastructure\obj\Debug\net8.0\ref\TaskManagement.Infrastructure.dll
 C:\dev\github\TasksManagement\src\TaskManagement.Infrastructure\obj\Debug\net8.0\TaskManagement.Infrastructure.sourcelink.json
+C:\dev\github\TasksManagement\src\TaskManagement.Infrastructure\bin\Debug\net8.0\TaskManagement.Infrastructure.runtimeconfig.json
+C:\dev\github\TasksManagement\src\TaskManagement.Infrastructure\obj\Debug\net8.0\TaskManagement.Infrastructure.genruntimeconfig.cache

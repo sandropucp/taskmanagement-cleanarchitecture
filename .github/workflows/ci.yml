@@ -39,7 +39,11 @@ jobs:
           dotnet tool install dotnet-ef
 
       - name: Generate EF Core Migration Script
-        run: dotnet ef migrations script --idempotent --no-build --configuration Release --output ${{env.DOTNET_ROOT}}/sql/sql-script.sql --context .\src\TaskManagement.Infrastructure --project ${{ github.workspace }}\src\TaskManagement.Infrastructure -s ${{ github.workspace }}\src\TaskManagement.Api
+        # run: dotnet ef migrations script --idempotent --no-build --configuration Release --output publish/sql/sql-script.sql --context src/TaskManagement.Infrastructure/TaskManagement.Infrastructure.csproj --project src/TaskManagement.Infrastructure -s src/TaskManagement.Api
+        run:
+          dotnet ef migrations script --idempotent --no-build --configuration Release --output publish/sql/sql-script.sql --context TaskManagementDbContext --project src/TaskManagement.Infrastructure -s src/TaskManagement.Api 
+          #dotnet ef migrations script --idempotent --no-build --configuration Release --output publish/sql/sql-script.sql --context TaskManagement.Infrastructure.Common.Persistence.TaskManagementContext --project src/TaskManagement.Infrastructure/TaskManagement.Infrastructure.csproj -s src/TaskManagement.Api 
+          
 
       - uses: actions/upload-artifact@v3
         with:
