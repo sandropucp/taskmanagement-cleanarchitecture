@@ -14,8 +14,7 @@ public class CategoriesController(ISender mediator) : ApiController
     private readonly ISender mediator = mediator;
 
     [HttpPost]
-    public async Task<IActionResult> CreateCategory(
-        CreateCategoryRequest request)
+    public async Task<IActionResult> CreateCategory(CreateCategoryRequest request)
     {
         var command = new CreateCategoryCommand(request.Name);
 

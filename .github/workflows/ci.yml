@@ -19,35 +19,38 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+        # Set up .NET Core SDK
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0
 
+        # Create an artifact in folder publish
       - name: dotnet publish
         run: dotnet publish ./src/TaskManagement.Api/TaskManagement.Api.csproj -c Release -o ./publish
 
+        # Upload the artifact to be used in deployment with Name dotnet-artifact
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: dotnet-artifact
           path: publish/
 
+        # Install EF Core Tools  
       - name: Install EntityFrameworkCore Tools
         run: |
           dotnet new tool-manifest
           dotnet tool install dotnet-ef
 
+        # Generate EF Core Migration Script in folder publish/sql 
       - name: Generate EF Core Migration Script
-        # run: dotnet ef migrations script --idempotent --no-build --configuration Release --output publish/sql/sql-script.sql --context src/TaskManagement.Infrastructure/TaskManagement.Infrastructure.csproj --project src/TaskManagement.Infrastructure -s src/TaskManagement.Api
         run:
-          dotnet ef migrations script --idempotent --no-build --configuration Release --output publish/sql/sql-script.sql --context TaskManagementDbContext --project src/TaskManagement.Infrastructure -s src/TaskManagement.Api 
-          #dotnet ef migrations script --idempotent --no-build --configuration Release --output publish/sql/sql-script.sql --context TaskManagement.Infrastructure.Common.Persistence.TaskManagementContext --project src/TaskManagement.Infrastructure/TaskManagement.Infrastructure.csproj -s src/TaskManagement.Api 
-          
+          dotnet ef migrations script --idempotent --no-build --configuration Release --output publish/sql/sql-script.sql --context TaskManagementDbContext --project src/TaskManagement.Infrastructure -s src/TaskManagement.Api           
 
+        # Upload the migration script to be used in deployment with Name sql-script-updates
       - uses: actions/upload-artifact@v4
         with:
-          name: ddl-updates
+          name: sql-script-updates
           path: publish/sql/sql-script.sql
 
   deploy_dev:
@@ -57,8 +60,8 @@ jobs:
     with:
       env: dev
       artifact_name: dotnet-artifact
+      sql_artifact_name: sql-script-updates
       resource_group_name: gr-taskmanagement-dev
       app_service_name: app-taskmanagement-sandropucp-dev
       app_service_slot_name: slot
-    # Note: use GH Environment Secrets if using a Pro/Enterprise version of GH
-    secrets: inherit
+    secrets: inherit # Note: use GH Environment Secrets if using a Pro/Enterprise version of GH

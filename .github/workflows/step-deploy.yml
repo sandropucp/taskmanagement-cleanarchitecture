@@ -9,6 +9,9 @@ on:
       artifact_name:
         required: true
         type: string
+      sql_artifact_name:
+        required: true
+        type: string
       resource_group_name:
         required: true
         type: string
@@ -38,16 +41,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+        # Download the artifact in folder publish
       - uses: actions/download-artifact@v4
         with:
           name: ${{ inputs.artifact_name }}
           path: publish
 
+        # Download the sql artifact in folder ddl-updates
       - uses: actions/download-artifact@v4
         with:
-          name: ddl-updates
+          name: ${{ inputs.sql_artifact_name }}
           path: ddl-updates
 
+        # Azure Login  
       - name: Azure Login
         uses: azure/login@v2
         with:
@@ -55,6 +61,7 @@ jobs:
           tenant-id: ${{ secrets.azure_tenant_id }}
           subscription-id: ${{ secrets.azure_subscription_id }}
 
+        # Run Bicep to create resources (service plan and web app)  
       - name: Run Bicep
         run: |
           az deployment group create \
@@ -64,6 +71,7 @@ jobs:
             --resource-group ${{ inputs.resource_group_name }} \
             --verbose
 
+        # Deploy Web App to Azure App Service    
       - name: Deploy to Azure App Service
         uses: azure/webapps-deploy@v2
         with:
@@ -71,14 +79,14 @@ jobs:
           slot-name: ${{ inputs.app_service_slot_name }}
           package: publish/
 
+        # Swap slots  
       - name: Swap slots
         run: |
           az webapp deployment slot swap -g ${{ inputs.resource_group_name }} -n ${{ inputs.app_service_name }} --slot ${{ inputs.app_service_slot_name }} --target-slot production --verbose
 
+        # Deploy SQL Script to Azure SQL Database  
       - name: Azure SQL Deploy
         uses: Azure/sql-action@v2
         with:
-          # The connection string, including authentication information, for the Azure SQL Server database.
-          connection-string: ${{ secrets.SQL_CONNECTION_STRING }}
-          # Path to the file used for this action. Supported file types are .sql, .dacpac, or .sqlproj.
-          path: ddl-updates/sql-script.sql
+          connection-string: ${{ secrets.SQL_CONNECTION_STRING }} # The connection string, including authentication information, for the Azure SQL Server database.
+          path: ddl-updates/sql-script.sql # Path to the file used for this action. Supported file types are .sql, .dacpac, or .sqlproj.
