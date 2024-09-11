@@ -45,7 +45,7 @@ jobs:
           #dotnet ef migrations script --idempotent --no-build --configuration Release --output publish/sql/sql-script.sql --context TaskManagement.Infrastructure.Common.Persistence.TaskManagementContext --project src/TaskManagement.Infrastructure/TaskManagement.Infrastructure.csproj -s src/TaskManagement.Api 
           
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: ddl-updates
           path: publish/sql/sql-script.sql
