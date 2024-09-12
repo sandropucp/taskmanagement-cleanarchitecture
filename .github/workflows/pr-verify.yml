@@ -21,7 +21,7 @@ jobs:
       - name: dotnet build
         run: dotnet build --configuration Release
 
-      # - name: dotnet test
+      # - name: dotnet test 1
       #   run: dotnet test --configuration Release --no-build
 
       - name: dotnet format
