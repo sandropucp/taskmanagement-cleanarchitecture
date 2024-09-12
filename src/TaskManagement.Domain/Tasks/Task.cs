@@ -42,6 +42,7 @@ public class Task
     public ErrorOr<Success> UpdateCategory(Category category)
     {
         CategoryId = category.Id;
+        CategoryName = category.Name;
         return Result.Success;
     }
 

@@ -69,7 +69,7 @@ dotnet add TaskManagement.Api package Microsoft.AspNetCore.OpenApi
 dotnet add TaskManagement.Api package Microsoft.EntityFrameworkCore.Design
 ```
 
-### Install Entity Framework (DO IT IN)
+### Install Entity Framework (DO IT IN) (https://www.entityframeworktutorial.net/efcore/cli-commands-for-ef-core-migration.aspx)
 - Install entity framework in computer
 ```
 dotnet tool install --global dotnet-ef --version 8.*
@@ -77,12 +77,18 @@ dotnet tool install --global dotnet-ef --version 8.*
 
 - Create folder migrations in the **Infrastructure** project
 ```
-dotnet ef migrations add UpdateTaskCategory -p src/TaskManagement.Infrastructure -s src/TaskManagement.Api
 dotnet ef migrations list InitialCreate -p src/TaskManagement.Infrastructure -s src/TaskManagement.Api
 ```
 
 - Create **Database** in the **Api** project
 ```
+dotnet ef database update -p src/TaskManagement.Infrastructure -s src/TaskManagement.Api
+```
+
+- Add a new Migration and Update **Database** in the **Api** project
+
+```
+dotnet ef migrations add UpdateTaskCategory -p src/TaskManagement.Infrastructure -s src/TaskManagement.Api
 dotnet ef database update -p src/TaskManagement.Infrastructure -s src/TaskManagement.Api
 ```
 
