@@ -16,8 +16,7 @@ public class TasksController(ISender mediator) : ApiController
     private readonly ISender mediator = mediator;
 
     [HttpPost]
-    public async Task<IActionResult> CreateTask(
-        CreateTaskRequest request)
+    public async Task<IActionResult> CreateTask(CreateTaskRequest request)
     {
         if (!DomainTaskStatus.TryFromName(
             request.TaskStatus.ToString(),
@@ -28,13 +27,13 @@ public class TasksController(ISender mediator) : ApiController
                 detail: "Invalid task status");
         }
 
-
         var command = new CreateTaskCommand(request.Name, request.Description,
             request.DueDate, taskStatus, request.CategoryId, request.UserId);
 
         var createTaskResult = await mediator.Send(command);
         return createTaskResult.MatchFirst(
-            task => Ok(new TaskResponse(task.Id, task.Name)),
+            task => Ok(new TaskResponse(task.Id, task.Name, task.Description,
+                task.DueDate, task.Status.ToString(), task.CategoryName)),
             Problem);
     }
 
@@ -48,7 +47,7 @@ public class TasksController(ISender mediator) : ApiController
         return getTaskResult.Match(
             task => Ok(new TaskResponse(
                 task.Id,
-                task.Name)),
+                task.Name, task.Description, task.DueDate, task.Status.ToString(), task.CategoryName)),
             Problem);
     }
 
@@ -84,7 +83,8 @@ public class TasksController(ISender mediator) : ApiController
         var listTasksResult = await mediator.Send(command);
 
         return listTasksResult.Match(
-            tasks => Ok(tasks.ConvertAll(task => new TaskResponse(task.Id, task.Name))),
+            tasks => Ok(tasks.ConvertAll(task => new TaskResponse(task.Id, task.Name, task.Description,
+                task.DueDate, task.Status.ToString(), task.CategoryName))),
             Problem);
     }
 }

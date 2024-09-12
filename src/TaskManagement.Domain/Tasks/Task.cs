@@ -13,7 +13,9 @@ public class Task
     private readonly int maxAttachments = 10;
     public Guid Id { get; private set; }
     public Guid CategoryId { get; private set; }
+    public string? CategoryName { get; private set; }
     public Guid? AssignedToId { get; private set; }
+    public string? AssignedToName { get; private set; }
     public string Name { get; init; } = null!;
     public string Description { get; init; } = null!;
     public DateTime DueDate { get; init; }
@@ -25,14 +27,15 @@ public class Task
 
     private Task() { }
     public Task(string name, string description, DateTime dueDate,
-        TaskStatus taskStatus, Guid categoryId, Guid assignedToId,
-        Guid? id = null)
+        TaskStatus taskStatus, Guid categoryId, string categoryName,
+        Guid assignedToId, Guid? id = null)
     {
         Name = name;
         Description = description;
         DueDate = dueDate;
         Status = taskStatus;
         CategoryId = categoryId;
+        CategoryName = categoryName;
         AssignedToId = assignedToId;
         Id = id ?? Guid.NewGuid();
     }

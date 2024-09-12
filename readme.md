@@ -77,12 +77,13 @@ dotnet tool install --global dotnet-ef --version 8.*
 
 - Create folder migrations in the **Infrastructure** project
 ```
-dotnet ef migrations add InitialCreate -p .\src\TaskManagement.Infrastructure -s .\src\TaskManagement.Api
+dotnet ef migrations add UpdateTaskCategory -p src/TaskManagement.Infrastructure -s src/TaskManagement.Api
+dotnet ef migrations list InitialCreate -p src/TaskManagement.Infrastructure -s src/TaskManagement.Api
 ```
 
 - Create **Database** in the **Api** project
 ```
-dotnet ef database update -p .\src\TaskManagement.Infrastructure -s .\src\TaskManagement.Api
+dotnet ef database update -p src/TaskManagement.Infrastructure -s src/TaskManagement.Api
 ```
 
 ### Run Client API

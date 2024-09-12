@@ -15,4 +15,8 @@ public static class TaskErrors
     public static readonly Error CannotUpdateStatusOfCompletedTask = Error.Validation(
         code: "Task.CannotUpdateStatusOfCompletedTask",
         description: "A task cannot update status of completed task");
+
+    public static readonly Error CategoryNotFound = Error.Validation(
+        code: "Task.CategoryNotFound",
+        description: "Category not found");
 }
