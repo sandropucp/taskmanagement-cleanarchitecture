@@ -79,7 +79,7 @@ jobs:
           slot-name: ${{ inputs.app_service_slot_name }}
           package: publish/
 
-        # Swap slots  
+        # Swap slots  sss
       - name: Swap slots
         run: |
           az webapp deployment slot swap -g ${{ inputs.resource_group_name }} -n ${{ inputs.app_service_name }} --slot ${{ inputs.app_service_slot_name }} --target-slot production --verbose
