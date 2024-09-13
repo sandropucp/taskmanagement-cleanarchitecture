@@ -1,9 +1,9 @@
-#@HostAddress = http://localhost:5205
-@HostAddress = https://app-taskmanagement-sandropucp-dev.azurewebsites.net
+@HostAddress = http://localhost:5205
+#@HostAddress = https://app-taskmanagement-sandropucp-dev.azurewebsites.net
 
 POST {{HostAddress}}/categories/
 Content-Type: application/json
 
 {
-  "Name": "Category01"
+  "Name": "Category012"
 }

@@ -19,10 +19,13 @@ public static class DependencyInjection
     //         .AddPersistence();
     public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
-
         var connectionString = configuration.GetConnectionString("ProjectContext");
         services.AddDbContext<TaskManagementDbContext>(options =>
             options.UseSqlServer(connectionString));
+        // services.AddDbContext<TaskManagementDbContext>(options =>
+        //     options.AddInterceptors(new AuditInterceptor()));
+        services.AddKeyedScoped<List<AuditEntry>>("Audit", (_, _) => new());
+
         services.AddScoped<ITasksRepository, TasksRepository>();
         services.AddScoped<ICommentsRepository, CommentsRepository>();
         services.AddScoped<ICategoriesRepository, CategoriesRepository>();
