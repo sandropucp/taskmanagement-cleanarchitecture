@@ -61,6 +61,8 @@ dotnet add TaskManagement.Domain package Throw
 dotnet add TaskManagement.Domain package Ardalis.SmartEnum
 dotnet add TaskManagement.Application package ErrorOr
 dotnet add TaskManagement.Application package MediatR
+dotnet add TaskManagement.Application package FluentValidation
+dotnet add TaskManagement.Application package FluentValidation.AspNetCore
 dotnet add TaskManagement.Application package Microsoft.Extensions.DependencyInjection.Abstractions
 dotnet add TaskManagement.Infrastructure package Microsoft.EntityFrameworkCore
 dotnet add TaskManagement.Infrastructure package Microsoft.EntityFrameworkCore.Sqlite
@@ -85,10 +87,14 @@ dotnet ef migrations list InitialCreate -p src/TaskManagement.Infrastructure -s 
 dotnet ef database update -p src/TaskManagement.Infrastructure -s src/TaskManagement.Api
 ```
 
-- Add a new Migration and Update **Database** in the **Api** project
+- After **Update Database**
 
 ```
-dotnet ef migrations add UpdateTaskCategory -p src/TaskManagement.Infrastructure -s src/TaskManagement.Api
+dotnet ef migrations add XXXNAMEXXX -p src/TaskManagement.Infrastructure -s src/TaskManagement.Api
+dotnet ef database update -p src/TaskManagement.Infrastructure -s src/TaskManagement.Api
+
+Ex:
+dotnet ef migrations add EventsV1 -p src/TaskManagement.Infrastructure -s src/TaskManagement.Api
 dotnet ef database update -p src/TaskManagement.Infrastructure -s src/TaskManagement.Api
 ```
 

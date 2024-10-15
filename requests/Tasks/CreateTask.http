@@ -4,8 +4,7 @@ POST {{HostAddress}}/tasks/
 Content-Type: application/json
 
 {
-  "Name": "Task 5",
-  "Description": "Task 5 Description",
+  "Name": "Ta",
   "CategoryId": "97620830-4908-4c50-8b72-0fcfa09da742",
   "DueDate": "2024-12-31",
   "Status": "NotStarted"

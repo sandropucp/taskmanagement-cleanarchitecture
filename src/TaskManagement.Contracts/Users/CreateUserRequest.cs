@@ -1,3 +1,3 @@
 namespace TaskManagement.Contracts.Users;
 
-public record CreateUserRequest(string Name);
+public record CreateUserRequest(string Name, string Email);

@@ -4,25 +4,28 @@ using TaskManagement.Domain.Users;
 using TaskManagement.Infrastructure.Common.Persistence;
 
 namespace TaskManagement.Infrastructure.Users.Persistence;
-public class UsersRepository(TaskManagementDbContext context) : IUsersRepository
-{
-    private readonly TaskManagementDbContext context = context;
 
+public class UsersRepository(TaskManagementDbContext dbContext) : IUsersRepository
+{
     public async Task AddUserAsync(User user)
     {
-        await context.Users.AddAsync(user);
-        await context.SaveChangesAsync();
+        await dbContext.Users.AddAsync(user);
+        await dbContext.SaveChangesAsync();
     }
 
-    public async Task<User?> GetByIdAsync(Guid userId) => await context.Users.FindAsync(userId);
+    public async Task<User?> GetByIdAsync(Guid userId) => await dbContext.Users.FirstOrDefaultAsync(user => user.Id == userId);
 
-    public async Task<List<User>> GetAllAsync() => await context.Users.ToListAsync();
+    public async Task<List<User>> GetAllAsync() => await dbContext.Users.ToListAsync();
 
-    Task IUsersRepository.AddUserAsync(User user) => throw new NotImplementedException();
+    public Task UpdateUserAsync(User user)
+    {
+        dbContext.Users.Update(user);
+        return Task.CompletedTask;
+    }
 
-    Task<User> IUsersRepository.GetByIdAsync(Guid userId) => throw new NotImplementedException();
-
-    Task<List<User>> IUsersRepository.GetAllAsync() => throw new NotImplementedException();
-
-    Task IUsersRepository.UpdateUserAsync(User user) => throw new NotImplementedException();
+    public Task RemoveUserAsync(User user)
+    {
+        dbContext.Users.Remove(user);
+        return Task.CompletedTask;
+    }
 }

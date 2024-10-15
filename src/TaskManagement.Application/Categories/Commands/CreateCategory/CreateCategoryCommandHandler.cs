@@ -14,7 +14,7 @@ public class CreateCategoryCommandHandler(ICategoriesRepository categoriesReposi
     public async Task<ErrorOr<Category>> Handle(CreateCategoryCommand request,
         CancellationToken cancellationToken)
     {
-        var category = new Category(request.Name);
+        var category = new Category(request.Name, request.AdminId);
         await categoriesRepository.AddCategoryAsync(category);
         await unitOfWork.CommitChangesAsync();
         return category;

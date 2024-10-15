@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TaskManagement.Application.Common.Interfaces;
+using TaskManagement.Infrastructure.Admins.Persistence;
 using TaskManagement.Infrastructure.Attachments.Persistence;
 using TaskManagement.Infrastructure.Categories.Persistence;
 using TaskManagement.Infrastructure.Comments.Persistence;
@@ -31,6 +32,7 @@ public static class DependencyInjection
         services.AddScoped<ICategoriesRepository, CategoriesRepository>();
         services.AddScoped<IAttachmentsRepository, AttachmentsRepository>();
         services.AddScoped<IUsersRepository, UsersRepository>();
+        services.AddScoped<IAdminsRepository, AdminsRepository>();
         services.AddScoped<IUnitOfWork>(serviceProvider => serviceProvider.GetRequiredService<TaskManagementDbContext>());
 
         return services;

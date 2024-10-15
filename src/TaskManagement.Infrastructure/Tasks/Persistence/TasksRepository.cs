@@ -28,4 +28,12 @@ public class TasksRepository(TaskManagementDbContext dbContext) : ITasksReposito
         dbContext.Tasks.Remove(task);
         return Task.CompletedTask;
     }
+
+    public async Task<List<Local.Task>> GetTasksByCategoryIdAsync(Guid categoryId) => await dbContext.Tasks.Where(task => task.CategoryId == categoryId).ToListAsync();
+    public Task RemoveRangeAsync(List<Local.Task> tasks)
+    {
+        dbContext.RemoveRange(tasks);
+
+        return Task.CompletedTask;
+    }
 }

@@ -10,4 +10,6 @@ public interface ITasksRepository
     Task UpdateTaskAsync(Local.Task task);
     Task<bool> ExistsAsync(Guid id);
     Task RemoveTaskAsync(Local.Task task);
+    Task<List<Local.Task>> GetTasksByCategoryIdAsync(Guid categoryId);
+    Task RemoveRangeAsync(List<Local.Task> tasks);
 }
