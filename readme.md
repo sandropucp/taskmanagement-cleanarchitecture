@@ -769,17 +769,190 @@ Content-Type: application/json
 - In each collection create new requests
 - We can export or import these files to have a copy
 
-# TODOS
-
-
 ## How to push updates to GitHub
+
+### Pushing To Master/Main Branch using alias
+
+```
+gas             # Git add and status
+gc "Comment"    # Git Commit Comment
+gpo             # Git Push to Origin
+```
+
+### How to create a new Feature and Push updates for PR 
+
+```
+gnewbr  new_feature           # Checkout master, pull master and create a new branch
+
+Do Updates in project
+Using a tool like VS Code check updates (Differential) and reverse what we do not need
+After we are 100% sure about out updates
+
+gas                                     # Git add and status
+gc "Adding new feature"                 # Git Commit Comment
+gpo                                     # Git Push to Origin
+
+git remote set-head origin main/master  # if we see any error here  run
+
+pr                                      # To Open a new Pull Request
+```
+
+- Here other option a bit quicker
+
+```
+gnewbr  new_feature                     # Checkout master, pull master and create a new branch
+
+Do Updates in project
+Using a tool like VS Code check updates (Differential) and reverse what we do not need
+After we are 100% sure about out updates
+
+gcpr "Adding new feature"               # Add, Commit, and Open a Pull Request
+```
 
 ## How CI/CD is implemented
 
-## How to Handle Eventual Consistency with Events
+### 1. Setup: PR Verify Workflow
+
+The PR Verify workflow verifies the application on pull requests to the master branch by:
+Checking out the repository.
+Setting up .NET Core SDK.
+Building the application and verifying code format changes.
+This PR Verify workflow is well-suited for running lightweight checks before merging to the master branch.
+
+```
+name: PR Verify
+
+on:
+  pull_request:
+    branches: ["master"]
+
+jobs:
+  build:
+    name: PR Verify
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0
+
+      - name: dotnet build
+        run: dotnet build --configuration Release
+
+      # - name: dotnet test 1
+      #   run: dotnet test --configuration Release --no-build
+
+      - name: dotnet format
+        run: dotnet format -v detailed --verify-no-changes
+
+```
+
+### 2. CI Workflow Configuration
+
+This CI workflow runs on every push to the master branch and includes:
+Build and Publish: The application is built, and the output is published in a publish folder.
+Artifact Upload: Uploads the dotnet-artifact artifact for deployment and generates a SQL migration script for Entity Framework, saved as sql-script-updates.
+
+```
+name: CI
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  pull-requests: write
+  contents: read
+
+jobs:
+  build_and_test:
+    name: CI
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+        # Set up .NET Core SDK
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0
+
+        # Create an artifact in folder publish
+      - name: dotnet publish
+        run: dotnet publish ./src/TaskManagement.Api/TaskManagement.Api.csproj -c Release -o ./publish
+
+        # Upload the artifact to be used in deployment with Name dotnet-artifact
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dotnet-artifact
+          path: publish/
+
+        # Install EF Core Tools  
+      - name: Install EntityFrameworkCore Tools
+        run: |
+          dotnet new tool-manifest
+          dotnet tool install dotnet-ef
+
+        # Generate EF Core Migration Script in folder publish/sql 
+      - name: Generate EF Core Migration Script
+        run:
+          dotnet ef migrations script --idempotent --no-build --configuration Release --output publish/sql/sql-script.sql --context TaskManagementDbContext --project src/TaskManagement.Infrastructure -s src/TaskManagement.Api           
+
+        # Upload the migration script to be used in deployment with Name sql-script-updates
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sql-script-updates
+          path: publish/sql/sql-script.sql
+
+  deploy_dev:
+    name: Deploy Dev
+    needs: build_and_test
+    uses: ./.github/workflows/step-deploy.yml
+    with:
+      env: dev
+      artifact_name: dotnet-artifact
+      sql_artifact_name: sql-script-updates
+      resource_group_name: gr-taskmanagement-dev
+      app_service_name: app-taskmanagement-sandropucp-dev
+      app_service_slot_name: slot
+    secrets: inherit # Note: use GH Environment Secrets if using a Pro/Enterprise version of GH
+
+```
+
+### 3. Azure Deployment via Step-deploy Workflow
+
+The deploy_dev job initiates a deployment to Azure, depending on build_and_test to ensure that the app is ready and artifacts are available.
+Here’s a streamlined process for deployment:
+App Service Configuration: In Azure, configure the App Service and slots (like dev or slot) based on environment.
+Deploy Using GitHub Secrets: Use GitHub Secrets to securely manage Azure credentials (AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, etc.) to avoid exposing sensitive data.
 
 ## How to Handle Validation
 
+
+
+
+# TODOS
+
+
+## How to Handle Eventual Consistency with Events
+
 ## How to add Audit to record changes to database
+
+
+## Deployment to Azure
+
+### Azure Interface
+
+### Infrastructure As Code (Bicep)
+
 
 ## How to Handle Security
