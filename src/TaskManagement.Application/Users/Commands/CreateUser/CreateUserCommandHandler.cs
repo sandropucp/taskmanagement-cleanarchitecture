@@ -11,7 +11,7 @@ public class CreateUserCommandHandler(IUsersRepository usersRepository) : IReque
 
     public async Task<ErrorOr<User>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-        var user = new User(request.Name, request.Email);
+        var user = new User(request.Name, request.Email, request.Role);
         await usersRepository.AddUserAsync(user);
         return user;
     }

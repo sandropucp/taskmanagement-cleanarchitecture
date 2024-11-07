@@ -1,0 +1,147 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "InsertSampleData",
+    "collectionId": "bf641d02-abae-4663-9923-3fa4ecaad9a2",
+    "dateExported": "2024-11-07T05:14:51.348Z",
+    "version": "1.2",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "4fa05c3a-c9cb-4147-86ae-b5b599a078d0",
+            "colId": "bf641d02-abae-4663-9923-3fa4ecaad9a2",
+            "containerId": "",
+            "name": "01_CreateCategory",
+            "url": "{{Root}}/categories",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-09-11T15:48:41.925Z",
+            "modified": "2024-09-11T16:06:21.255Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"Name\": \"Project Management\",\n    \"Description\": \"Tasks related to planning, executing, and tracking project milestones and deliverables.\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "398cf866-11e7-4be5-b59d-69dc67cc2c86",
+            "colId": "bf641d02-abae-4663-9923-3fa4ecaad9a2",
+            "containerId": "",
+            "name": "02_CreateCategory",
+            "url": "{{Root}}/categories",
+            "method": "POST",
+            "sortNum": 15000,
+            "created": "2024-09-11T16:02:45.214Z",
+            "modified": "2024-09-11T16:07:45.443Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"Name\": \"Development\",\n  \"Description\": \"Tasks related to software development, including coding, testing, and debugging.\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "03027f35-a7b9-4b30-a773-0ed5280fd424",
+            "colId": "bf641d02-abae-4663-9923-3fa4ecaad9a2",
+            "containerId": "",
+            "name": "03_CreateCategory",
+            "url": "{{Root}}/categories",
+            "method": "POST",
+            "sortNum": 17500,
+            "created": "2024-09-11T16:04:10.128Z",
+            "modified": "2024-09-11T16:07:48.954Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"Name\": \"Marketing\",\n  \"Description\": \"Tasks focused on promoting products and services, including campaigns, social media, and content creation.\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "e6f60183-563d-4d08-b778-4b3356ecd770",
+            "colId": "bf641d02-abae-4663-9923-3fa4ecaad9a2",
+            "containerId": "",
+            "name": "06_CreateTask",
+            "url": "{{Root}}/tasks",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2024-09-11T15:37:24.494Z",
+            "modified": "2024-09-11T22:46:56.004Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"Name\": \"Write project report\",\n  \"Description\": \"Prepare the final report for the client project, covering all key deliverables.\",\n  \"DueDate\": \"2024-12-31\",\n  \"Status\": \"NotStarted\",\n  \"CategoryId\": \"924ca3b1-2928-491f-be8b-93931c821bb7\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "f1fc8ae8-ce95-4ca1-919c-c4246e157e39",
+            "colId": "bf641d02-abae-4663-9923-3fa4ecaad9a2",
+            "containerId": "",
+            "name": "04_CreateUser",
+            "url": "{{Root}}/categories",
+            "method": "POST",
+            "sortNum": 27500,
+            "created": "2024-09-11T16:47:05.663Z",
+            "modified": "2024-09-11T16:47:05.663Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"Name\": \"Marketing\",\n  \"Description\": \"Tasks focused on promoting products and services, including campaigns, social media, and content creation.\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "5dac3372-2833-4b05-9762-11e9e72cfb2d",
+            "colId": "bf641d02-abae-4663-9923-3fa4ecaad9a2",
+            "containerId": "",
+            "name": "07_CreateTask",
+            "url": "{{Root}}/tasks",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2024-09-11T16:44:10.826Z",
+            "modified": "2024-09-12T03:13:47.025Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"Name\": \"Design new homepage layout\",\n  \"Description\": \"Create a modern homepage layout for the company website.\",\n  \"DueDate\": \"2024-12-31\",\n  \"Status\": \"NotStarted\",\n  \"CategoryId\": \"924ca3b1-2928-491f-be8b-93931c821bb7\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "18e906a8-5761-4cf6-8971-e029c6077515",
+            "colId": "bf641d02-abae-4663-9923-3fa4ecaad9a2",
+            "containerId": "",
+            "name": "05_CreateUser",
+            "url": "{{Root}}/categories",
+            "method": "POST",
+            "sortNum": 37500,
+            "created": "2024-09-11T16:47:38.967Z",
+            "modified": "2024-09-11T16:47:38.967Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"Name\": \"Marketing\",\n  \"Description\": \"Tasks focused on promoting products and services, including campaigns, social media, and content creation.\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "dd8cc2a9-98c4-45cc-9947-6ef735a8995e",
+            "colId": "bf641d02-abae-4663-9923-3fa4ecaad9a2",
+            "containerId": "",
+            "name": "08_CreateTask",
+            "url": "{{Root}}/tasks",
+            "method": "POST",
+            "sortNum": 40000,
+            "created": "2024-09-11T16:45:47.169Z",
+            "modified": "2024-09-11T16:59:12.077Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"Name\": \"Implement new CRM system\",\n  \"Description\": \"Overhaul the company's CRM system to streamline sales and customer interactions.\",\n  \"DueDate\": \"2024-12-31\",\n  \"Status\": \"NotStarted\",\n  \"CategoryId\": \"9b9355ca-514f-43c5-990f-8ab845ee0899\"\n}",
+                "form": []
+            }
+        }
+    ],
+    "ref": "lT0p5dMrq4E5Q09n6fod11DqA_GJx5dgnLtXzwtMeafYwYnJweKc_ZVJcnA84dFR7jXN1kNcyYSrVlgtGeeCuA"
+}

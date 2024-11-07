@@ -27,9 +27,13 @@ The structure of Clean Architecture is typically depicted as a series of concent
 
 This layered approach ensures that each part of the system is only aware of the adjacent layers, promoting low coupling and high cohesion. The dependencies point inward, ensuring that high-level policies are not dependent on low-level details.
 
+![alt text](/images/Clean-Architecture-Diagram-Asp-Net.jpg)
+
 ## Setup
 
 ### Create Projects using CLI
+
+Some commands have to execute in Power Shell
 ```
 cd src
 
@@ -69,32 +73,36 @@ dotnet add TaskManagement.Infrastructure package Microsoft.EntityFrameworkCore.S
 dotnet add TaskManagement.Infrastructure package Microsoft.EntityFrameworkCore.SqlServer
 dotnet add TaskManagement.Api package Microsoft.AspNetCore.OpenApi
 dotnet add TaskManagement.Api package Microsoft.EntityFrameworkCore.Design
+
+
 ```
 
-### Install Entity Framework (DO IT IN) (https://www.entityframeworktutorial.net/efcore/cli-commands-for-ef-core-migration.aspx)
+### Setup Entity Framework
+
+- Good resource https://www.entityframeworktutorial.net/efcore/cli-commands-for-ef-core-migration.aspx
+
 - Install entity framework in computer
+
 ```
+# Install globally in your computer
 dotnet tool install --global dotnet-ef --version 8.*
-```
 
-- Create folder migrations in the **Infrastructure** project
-```
+# Create folder migrations in the Infrastructure project
 dotnet ef migrations list InitialCreate -p src/TaskManagement.Infrastructure -s src/TaskManagement.Api
-```
 
-- Create **Database** in the **Api** project
-```
+# Create Initial **Database** in the **Api** project
 dotnet ef database update -p src/TaskManagement.Infrastructure -s src/TaskManagement.Api
 ```
 
-- After **Update Database**
+
+- Push **Updates to Database** after changes in Clases
 
 ```
 dotnet ef migrations add XXXNAMEXXX -p src/TaskManagement.Infrastructure -s src/TaskManagement.Api
 dotnet ef database update -p src/TaskManagement.Infrastructure -s src/TaskManagement.Api
 
-Ex:
-dotnet ef migrations add EventsV1 -p src/TaskManagement.Infrastructure -s src/TaskManagement.Api
+Example:
+dotnet ef migrations add EventsV4 -p src/TaskManagement.Infrastructure -s src/TaskManagement.Api
 dotnet ef database update -p src/TaskManagement.Infrastructure -s src/TaskManagement.Api
 ```
 
@@ -103,115 +111,241 @@ dotnet ef database update -p src/TaskManagement.Infrastructure -s src/TaskManage
 dotnet run --project src/TaskManagement.Api
 ```
 
+### Test
+
+- We will apply 3 types of testing
+    - Unit Testing to Domain
+    - Subcutaneous Testing to Application
+    - Integration Testing to Api
+
+#### Unit Testing (Domain)
+
+- For this tests we use **Ubiquitous Language**
+
+```
+Go to Root
+mkdir tests (same src level)
+
+cd tests
+dotnet new classlib -o TestCommon 
+dotnet new xunit -o TaskManagement.Domain.UnitTests
+
+dotnet add TaskManagement.Domain.UnitTests package FluentAssertions
+
+cd .. (Root)
+dotnet add tests/TestCommon reference src/TaskManagement.Domain
+dotnet add tests/TaskManagement.Domain.UnitTests reference tests/TestCommon
+
+# This command only run in PowerShell
+dotnet sln add (ls -r **/**.csproj) 
+
+```
+
+#### Unit Testing (Application)
+
+- For this tests we use **Ubiquitous Language**
+
+```
+cd tests
+dotnet new xunit -o TaskManagement.Application.UnitTests
+
+dotnet add TaskManagement.Application.UnitTests package FluentAssertions
+dotnet add TaskManagement.Application.UnitTests package NSubstitute
+
+cd .. (Root)
+dotnet add tests/TaskManagement.Application.UnitTests reference src/TaskManagement.Application
+dotnet add tests/TaskManagement.Application.UnitTests reference tests/TestCommon
+dotnet add tests/TestCommon reference src/TaskManagement.Application
+
+dotnet sln add (ls -r **/**.csproj) # This command only run in PowerShell
+
+```
+
+
+#### Subcutaneous Testing
+
+- For this tests we use **Use Cases**
+
+```
+cd tests
+dotnet new xunit -o TaskManagement.Application.SubcutaneousTests
+
+cd .. (Root)
+dotnet add tests/TaskManagement.Application.SubcutaneousTests reference tests/TestCommon
+dotnet add tests/TaskManagement.Application.SubcutaneousTests reference src/TaskManagement.Api
+
+dotnet add tests/TaskManagement.Application.SubcutaneousTests package Microsoft.AspNetCore.Mvc.Testing
+dotnet add tests/TaskManagement.Application.SubcutaneousTests package FluentAssertions
+dotnet add tests/TaskManagement.Application.SubcutaneousTests package Microsoft.EntityFrameworkCore.Sqlite
+
+dotnet sln add (ls -r **/**.csproj) # This command only run in PowerShell
+```
+
+#### Integration Testing
+
+- For this tests we use **Use Cases**
+
+```
+cd tests
+dotnet new xunit -o TaskManagement.Api.IntegrationTests
+
+cd .. (Root)
+dotnet add tests/TaskManagement.Api.IntegrationTests reference tests/TestCommon
+dotnet add tests/TaskManagement.Api.IntegrationTests reference src/TaskManagement.Api
+
+dotnet add tests/TaskManagement.Api.IntegrationTests package Microsoft.AspNetCore.Mvc.Testing
+dotnet add tests/TaskManagement.Api.IntegrationTests package FluentAssertions
+
+dotnet sln add (ls -r **/**.csproj) # This command only run in PowerShell
+```
 
 ## Domain
 
 The main objectives of this layer is to define the Domain Models, Domain Errors, Execute Business Logic and enforcing Business Rules. We will use **Rich Domain Models** instead of **Anemic Domain Models**
 
-Create Folder with domain object name. For example: 
+### Ubiquitous Language
 
-- Tasks
-    - Task.cs
-    - TaskErrors.cs
+1. A User can creates a new Task.
+2. A Admin or Task Owner can assigns a Task to a User who becomes the Assignee.
+3. The Task Assignee or Admin can changes the Status of the Task.
+4. The Admin or Task Owner can changes the Priority Level of the Task.
+5. The User(Assignee) can adds a Comment to the Task.
+6. The Admin or Task Owner can deletes a Comment.
+7. The Admin or Task Owner can assigns a Category to the Task.
+8. The Admin or Task Owner can creates a new Category.
+9. The User(Assignee) can filter tasks by Category.
+10. The User(Assignee) can views detailed information about a Task.
+11. The Admin or Task Owner can modifies the Task.
+12. The User(Assignee) or Admin can marks the Task as Completed.
+
+
+Create Folder with domain object name as plural. For example: 
+
+- UnitWorks
+    - UnitWork.cs
+    - UnitWorksErrors.cs
 
 ```
-namespace TaskManagement.Domain.Tasks;
+namespace TaskManagement.Domain.WorkItems;
 
-public class Task
+public class WorkItem : Entity
 {
-    public Guid Id { get; private set; }
-    public string Name { get; init; } = null!;
+    private readonly int maxAttachments = 10;
+    private readonly int maxComments = 10;
+    private readonly List<Guid> commentIds = [];
+    private readonly List<Guid> attachmentIds = [];
 
-    private Task(){}
-    public Task(string name, Guid? id = null)
-    {
-        Name = name;
-        Id = id ?? Guid.NewGuid();
-    }
+    public string Name { get; init; } = null!;
+    public string? Description { get; init; } = null!;
 }
 ```
 
 ```
 using ErrorOr;
 
-namespace TaskManagement.Domain.Tasks;
+namespace TaskManagement.Domain.WorkItems;
 
-public static class TaskErrors
+public static class WorkItemErrors
 {
     public static readonly Error CannotNotHaveName = Error.Validation(
-        code: "Task.CannotNotHaveName",
+        code: "WorkItem.CannotNotHaveName",
         description: "A task cannot not have name");
+
+    public static readonly Error CannotNotHaveStatus = Error.Validation(
+        code: "WorkItem.CannotNotHaveStatus",
+        description: "A task cannot not have status");
 }
 ```
-As we can see in the code we applied the Result Pattern to handle the exceptions
 
 ## Application Layer (Use Cases)
 
 - This layer is responsile to execute the application Use Cases. In other words is all the actions that the user can do in the system.
 - Fetch domain objects.
 - Manipulate domain objects.
+- We applied the Result Pattern to handle the exceptions
 
-Examples of Use Cases:
 
-    - Create Task
-    - List Tasks
-    - Complete Task
-    - Update Task
-    - Delete Task
-    - Create Category
+### Use Cases
+
+1. A User creates a new Task by providing a Description, Due Date, Priority Level, and optionally assigning a Category.
+2. The Admin or Task Owner assigns a Task to a User who becomes the Assignee responsible for completing the Task.
+3. The Task Assignee or Admin changes the Status of the Task (e.g., from To-Do to In Progress).
+4. The Admin or Task Owner changes the Priority Level of the Task to reflect its urgency.
+5. The User adds a Comment to the Task to provide updates, ask questions, or leave notes.
+6. The Admin or original author deletes a Comment if it is outdated or incorrect.
+7. The Task Owner or Admin assigns a Category to the Task for organizational purposes.
+8. Admin creates a new Category by providing a Name and Description.
+9. The User selects a Category to filter and view all Tasks under that Category.
+Postconditions: The system displays a list of Tasks associated with the selected Category.
+10. The User views detailed information about a Task, including Description, Due Date, Status, Priority Level, Assignee, Comments, and Category.
+11. The Task Owner or Admin modifies the Description, Due Date, Priority Level, or Category of the Task.
+12. The Task Assignee or Admin marks the Task as Completed.
 
 - For each domain object create a folder with two subfolders Queries and Commands. For example 
     - Tasks Folder
         - Commands.
-            - CreateTask
-                - CreateTaskCommand.cs
-                - CreateTaskCommandHandler.cs
-            - DeleteTask
+            - CreateUnitWork
+                - CreateUnitWorkCommand.cs
+                - CreateUnitWorkCommandHandler.cs
+            - DeleteUnitWork
         - Queries
-            - GetTask
-                - ListTaskCommand.cs
-                - ListTaskCommandHandler.cs
+            - GetUnitWork
+                - ListUnitWorkCommand.cs
+                - ListUnitWorkCommandHandler.cs
 
 
 ```
 using ErrorOr;
 using MediatR;
-using Local = TaskManagement.Domain.Tasks;
+using TaskManagement.Domain.WorkItems;
 
-namespace TaskManagement.Application.Tasks.Commands.CreateTask;
+namespace TaskManagement.Application.WorkItems.Commands.CreateWorkItem;
 
-public record CreateTaskCommand(string Name) : 
-    IRequest<ErrorOr<Local.Task>>;
+public record CreateWorkItemCommand(string Name, string Description,
+    DateTime DueDate, WorkItemStatus TaskStatus,
+    Guid CategoryId, Guid UserAssignedToId) : IRequest<ErrorOr<WorkItem>>;
 ```
 
 ```
 using ErrorOr;
 using MediatR;
-using Local = TaskManagement.Domain.Tasks;
 using TaskManagement.Application.Common.Interfaces;
+using TaskManagement.Domain.WorkItems;
 
-namespace TaskManagement.Application.Tasks.Commands.CreateTask;
 
-public class CreateTaskCommandHandler : 
-    IRequestHandler<CreateTaskCommand, ErrorOr<Local.Task>>
+namespace TaskManagement.Application.WorkItems.Commands.CreateWorkItem;
+
+public class CreateTaskCommandHandler(IWorkItemsRepository workItemsRepository,
+    ICategoriesRepository categoriesRepository,
+    IUsersRepository usersRepository,
+    IUnitOfWork unitOfWork) :
+    IRequestHandler<CreateWorkItemCommand, ErrorOr<WorkItem>>
 {
-    private readonly ITasksRepository _tasksRepository;
-    private readonly IUnitOfWork _unitOfWork;
-
-    public CreateTaskCommandHandler(ITasksRepository tasksRepository, IUnitOfWork unitOfWork)
+    public async Task<ErrorOr<WorkItem>> Handle(
+        CreateWorkItemCommand request, CancellationToken cancellationToken)
     {
-        _tasksRepository = tasksRepository;
-        _unitOfWork = unitOfWork;
-    }
+        var category = await categoriesRepository.GetByIdAsync(request.CategoryId);
+        var assignedUser = await usersRepository.GetByIdAsync(request.UserAssignedToId);
 
-    public async Task<ErrorOr<Local.Task>> Handle(
-        CreateTaskCommand request, CancellationToken cancellationToken)
-    {
-        var task = new Local.Task(
-            name: request.Name);
+        if (category is null)
+        {
+            return WorkItemErrors.CategoryNotFound;
+        }
+        if (assignedUser is null)
+        {
+            return WorkItemErrors.AssignedUserNotFound;
+        }
 
-        await _tasksRepository.AddTaskAsync(task);
-        await _unitOfWork.CommitChangesAsync();
+        var task = new WorkItem(
+            name: request.Name, description: request.Description,
+            dueDate: request.DueDate, workItemStatus: request.TaskStatus,
+            categoryId: request.CategoryId,
+            categoryName: category.Name,
+            assignedToId: request.UserAssignedToId,
+            assignedToName: assignedUser.Name);
+
+        await workItemsRepository.AddWorkItemAsync(task);
+        await unitOfWork.CommitChangesAsync();
 
         return task;
     }
@@ -223,17 +357,24 @@ In the **Application Project** create a Common folder
 
 - Common
     - Interfaces
-        - ITaskRepository.cs
+        - IUnitWorkRepository.cs
         - IUnitOfQWork.cs
 
 ```
-using Local = TaskManagement.Domain.Tasks;
+using TaskManagement.Domain.WorkItems;
 
 namespace TaskManagement.Application.Common.Interfaces;
 
-public interface ITasksRepository
+public interface IWorkItemsRepository
 {
-    Task AddTaskAsync(Local.Task task);
+    Task AddWorkItemAsync(WorkItem workItem);
+    Task<WorkItem?> GetByIdAsync(Guid workItemId);
+    Task<List<WorkItem>> GetAllAsync();
+    Task UpdateWorkItemAsync(WorkItem workItem);
+    Task<bool> ExistsAsync(Guid id);
+    Task RemoveWorkItemAsync(WorkItem workItem);
+    Task<List<WorkItem>> GetWorkItemsByCategoryIdAsync(Guid categoryId);
+    Task RemoveRangeAsync(List<WorkItem> workItems);
 }
 ```
 
@@ -253,34 +394,49 @@ We have 2 projects in this layer **Contracts Project** and **API Project**.
 
 - Create Contracts Project independent to be able to publish to Nuget for the Client. We use this project to have a common language between the **Presentation Layer** and the **Application Layer**
 
-- Tasks
-    - CreateTaskRequest.cs
-    - TaskResponse.cs
+- WorkItems
+    - CreateWorkItemRequest.cs
+    - WorkItemResponse.cs
 
-- Create class CreateTaskRequest.cs
+- Create class CreateWorkItemRequest.cs
+
 ```
-namespace TaskManagement.Contracts.Tasks;
+namespace TaskManagement.Contracts.WorkItems;
 
-public record CreateTaskRequest(string Name);
+public record CreateWorkItemRequest(
+    string Name,
+    string Description,
+    DateTime DueDate,
+    WorkItemStatus WorkItemStatus,
+    Guid CategoryId,
+    Guid UserAssignedToId);
 ```
 
-- Create class TaskReponse.cs
+- Create class WorkItemReponse.cs
 ```
-namespace TaskManagement.Contracts.Tasks;
+namespace TaskManagement.Contracts.WorkItems;
 
-public record TaskResponse(Guid Id, string Name);
+public record WorkItemResponse(
+    Guid Id,
+    string Name,
+    string Description,
+    DateTime DueDate,
+    string Status,
+    string? CategoryName);
+
 ```
 
-- Define EndPoints
 
-    - Post Task
-    - Post User
-    - Post Category
-    - Post Comment
 
 ### API
 
 The API layer will need to use classes from the **Infrastructure Layer** and the **Application Layer** for this we can use **Dependency Injection** and add each class to the Program.cs class or we can create a class DependencyInjection.cs in each Project **(Infrastructure and Application)** and add these 2 classes to Program.cs. In this way the Infrastructure Project and the Application Project are independent of the API.
+
+- Define EndPoints
+  - Post Task
+  - Post User
+  - Post Category
+  - Post Comment
 
 - Controllers
     - ApiController.cs
@@ -376,22 +532,10 @@ public class TasksController : ApiController
 }
 ```
 
-- Create Root Request Folder to Test Api
-- Create REST request
-- CreateTask.http
-```
-@HostAddress = http://localhost:5147
-
-POST {{HostAddress}}/tasks/
-Content-Type: application/json
-
-{
-  "Name": "Task 1"
-}
-```
 
 ## Infrastructure Layer
 
+- In this layer we implements all the repositories interfaces that we define in the **Application Layer**
 - Interacting with the persistence solution
 - Interacting with other services (web clients, message brokers, etc)
 - Interacting with the underlying machine (system clock, files, etc)
@@ -407,88 +551,235 @@ Content-Type: application/json
 - TaskManagementDbContext
 ```
 using System.Reflection;
+using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using TaskManagement.Application.Common.Interfaces;
-using Local = TaskManagement.Domain.Tasks;
+using TaskManagement.Domain.Attachments;
+using TaskManagement.Domain.Categories;
+using TaskManagement.Domain.Comments;
+using TaskManagement.Domain.Common;
+using TaskManagement.Domain.Users;
+using TaskManagement.Domain.WorkItems;
 
 namespace TaskManagement.Infrastructure.Common.Persistence;
 
-public class TaskManagementDbContext : DbContext, IUnitOfWork
+public class TaskManagementDbContext(
+    DbContextOptions options,
+    IHttpContextAccessor httpContextAccessor,
+    IPublisher publisher) : DbContext(options), IUnitOfWork
 {
-    public DbSet<Local.Task> Tasks { get; set; } = null!;
-
-    public TaskManagementDbContext(DbContextOptions options) : base(options){}
+    private readonly IHttpContextAccessor httpContextAccessor = httpContextAccessor;
+    private readonly List<AuditEntry> auditEntriesList = [];
+    public DbSet<WorkItem> WorkItems { get; set; } = null!;
+    public DbSet<Category> Categories { get; set; } = null!;
+    public DbSet<Attachment> Attachments { get; set; } = null!;
+    public DbSet<User> Users { get; set; } = null!;
+    public DbSet<Comment> Comments { get; set; } = null!;
+    public DbSet<AuditEntry> AuditEntries { get; set; } = null!;
 
     public async Task CommitChangesAsync()
     {
+        // get hold of all the domain events
+        var domainEvents = ChangeTracker.Entries<Entity>()
+            .Select(entry => entry.Entity.PopDomainEvents())
+            .SelectMany(x => x)
+            .ToList();
+        // // store them in the http context for later if user is waiting online
+        if (IsUserWaitingOnline())
+        {
+            AddDomainEventsToOfflineProcessingQueue(domainEvents);
+        }
+        else
+        {
+            await PublishDomainEvents(publisher, domainEvents);
+        }
         await SaveChangesAsync();
     }
 
+    private void AddDomainEventsToOfflineProcessingQueue(List<IDomainEvent> domainEvents)
+    {
+        // fetch queue from http context or create a new queue if it doesn't exist
+        var domainEventsQueue = httpContextAccessor.HttpContext!.Items
+            .TryGetValue("DomainEventsQueue", out var value) && value is Queue<IDomainEvent> existingDomainEvents
+                ? existingDomainEvents
+                : new Queue<IDomainEvent>();
+
+        // add the domain events to the end of the queue
+        domainEvents.ForEach(domainEventsQueue.Enqueue);
+
+        // store the queue in the http context
+        httpContextAccessor.HttpContext!.Items["DomainEventsQueue"] = domainEventsQueue;
+    }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
         base.OnModelCreating(modelBuilder);
+    }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.AddInterceptors(new AuditInterceptor(auditEntriesList));
+        base.OnConfiguring(optionsBuilder);
+    }
+
+    private bool IsUserWaitingOnline() => httpContextAccessor.HttpContext is not null;
+
+    private static async Task PublishDomainEvents(IPublisher _publisher, List<IDomainEvent> domainEvents)
+    {
+        foreach (var domainEvent in domainEvents)
+        {
+            await _publisher.Publish(domainEvent);
+        }
     }
 }
 ```
 
 - Create Tasks --> Persistence Folder
-    - Tasks
+    - WorkItems
         - Persistence
-            - TaskRepository.cs
+            - WorkItemRepository.cs
 
-- TaskRepository.cs
+- WorkItemRepository.cs
 ```
+using Microsoft.EntityFrameworkCore;
 using TaskManagement.Application.Common.Interfaces;
 using TaskManagement.Infrastructure.Common.Persistence;
-using Local = TaskManagement.Domain.Tasks;
+using TaskManagement.Domain.WorkItems;
 
-namespace TaskManagement.Infrastructure.Tasks.Persistence;
+namespace TaskManagement.Infrastructure.WorkItems.Persistence;
 
-public class TasksRepository : ITasksRepository
+public class WorkItemsRepository(TaskManagementDbContext dbContext) : IWorkItemsRepository
 {
-    private readonly TaskManagementDbContext _dbContext;
+    private readonly TaskManagementDbContext dbContext = dbContext;
 
-    public TasksRepository(TaskManagementDbContext dbContext)
+    public async Task AddWorkItemAsync(WorkItem workItem) => await dbContext.WorkItems.AddAsync(workItem);
+
+    public Task<bool> ExistsAsync(Guid id) => throw new NotImplementedException();
+
+    public async Task<List<WorkItem>> GetAllAsync() => await dbContext.WorkItems.ToListAsync();
+
+    public async Task<WorkItem?> GetByIdAsync(Guid workItemId) => await dbContext.WorkItems.FirstOrDefaultAsync(workItem => workItem.Id == workItemId);
+
+    public Task UpdateWorkItemAsync(WorkItem workItem)
     {
-        _dbContext = dbContext;
+        dbContext.WorkItems.Update(workItem);
+        return Task.CompletedTask;
     }
 
-    public async Task AddTaskAsync(Local.Task task)
+    Task IWorkItemsRepository.RemoveWorkItemAsync(WorkItem workItem)
     {
-        await _dbContext.Tasks.AddAsync(task);
+        dbContext.WorkItems.Remove(workItem);
+        return Task.CompletedTask;
+    }
+
+    public async Task<List<WorkItem>> GetWorkItemsByCategoryIdAsync(Guid categoryId) => await dbContext.WorkItems.Where(workItem => workItem.CategoryId == categoryId).ToListAsync();
+    public Task RemoveRangeAsync(List<WorkItem> workItems)
+    {
+        dbContext.RemoveRange(workItems);
+
+        return Task.CompletedTask;
     }
 }
 ```
 
 - Create a file to handle Dependency Injection for the API (DependencyInjection.cs)
 ```
-using TaskManagement.Application.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using TaskManagement.Application.Common.Interfaces;
+using TaskManagement.Infrastructure.Attachments.Persistence;
+using TaskManagement.Infrastructure.Categories.Persistence;
+using TaskManagement.Infrastructure.Comments.Persistence;
 using TaskManagement.Infrastructure.Common.Persistence;
-using TaskManagement.Infrastructure.Tasks.Persistence;
+using TaskManagement.Infrastructure.WorkItems.Persistence;
+using TaskManagement.Infrastructure.Users.Persistence;
 
 namespace TaskManagement.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services)
-    {
-        return services
-            .AddPersistence();
-    }
-    public static IServiceCollection AddPersistence(this IServiceCollection services)
-    {
-        services.AddDbContext<TaskManagementDbContext>(options =>
-            options.UseSqlite("Data Source = TaskManagement.db"));
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration) => services.AddPersistence(configuration);
 
-        services.AddScoped<ITasksRepository, TasksRepository>();
+    public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
+    {
+        var connectionString = configuration.GetConnectionString("ProjectContext");
+        services.AddDbContext<TaskManagementDbContext>(options =>
+            options.UseSqlServer(connectionString));
+        // services.AddDbContext<TaskManagementDbContext>(options =>
+        //     options.AddInterceptors(new AuditInterceptor()));
+        services.AddKeyedScoped<List<AuditEntry>>("Audit", (_, _) => new());
+
+        services.AddScoped<IWorkItemsRepository, WorkItemsRepository>();
+        services.AddScoped<ICommentsRepository, CommentsRepository>();
+        services.AddScoped<ICategoriesRepository, CategoriesRepository>();
+        services.AddScoped<IAttachmentsRepository, AttachmentsRepository>();
+        services.AddScoped<IUsersRepository, UsersRepository>();
         services.AddScoped<IUnitOfWork>(serviceProvider => serviceProvider.GetRequiredService<TaskManagementDbContext>());
 
         return services;
     }
 }
 ```
+- To Add **Middleware** for applying Eventual Consistency
 
+```
+using TaskManagement.Infrastructure.Common.Middleware;
+using Microsoft.AspNetCore.Builder;
+
+namespace TaskManagement.Infrastructure;
+
+public static class RequestPipeline
+{
+    public static IApplicationBuilder AddInfrastructureMiddleware(this IApplicationBuilder builder)
+    {
+        builder.UseMiddleware<EventualConsistencyMiddleware>();
+
+        return builder;
+    }
+}
+```
+
+## Testing API (Option 1)
+
+- Create requests folder in Root project
+- Create folder (plural) for each domain class
+- Create http file CreateTask.http
+
+```
+@HostAddress = http://localhost:5205
+
+POST {{HostAddress}}/tasks/
+Content-Type: application/json
+
+{
+  "Name": "Ta",
+  "CategoryId": "97620830-4908-4c50-8b72-0fcfa09da742",
+  "DueDate": "2024-12-31",
+  "Status": "NotStarted"
+}
+```
+
+## Testing API (Option 2)
+
+- Install Thundar Client in VS Code
+- Under Env Tab 2 variables for local testing and azure testing
+- Under Collections Tab create collection for InsertSampleData, Queries and Update
+- In each collection create new requests
+- We can export or import these files to have a copy
+
+# TODOS
+
+
+## How to push updates to GitHub
+
+## How CI/CD is implemented
+
+## How to Handle Eventual Consistency with Events
+
+## How to Handle Validation
+
+## How to add Audit to record changes to database
+
+## How to Handle Security

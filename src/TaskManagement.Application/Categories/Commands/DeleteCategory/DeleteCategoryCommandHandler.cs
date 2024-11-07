@@ -6,11 +6,11 @@ using TaskManagement.Application.Common.Interfaces;
 namespace TaskManagement.Application.Categories.Commands.DeleteCategory;
 
 public class DeleteCategoryCommandHandler(
-    IAdminsRepository adminsRepository,
+    IUsersRepository usersRepository,
     IUnitOfWork unitOfWork,
     ICategoriesRepository categoriesRepository) : IRequestHandler<DeleteCategoryCommand, ErrorOr<Deleted>>
 {
-    private readonly IAdminsRepository adminsRepository = adminsRepository;
+    private readonly IUsersRepository usersRepository = usersRepository;
     private readonly ICategoriesRepository categoriesRepository = categoriesRepository;
     private readonly IUnitOfWork unitOfWork = unitOfWork;
 
@@ -23,18 +23,18 @@ public class DeleteCategoryCommandHandler(
             return Error.NotFound(description: "category not 1 found");
         }
 
-        var admin = await adminsRepository.GetByIdAsync(category.AdminId);
+        var user = await usersRepository.GetByIdAsync(request.UserId);
 
-        if (admin is null)
+        if (user is null)
         {
             return Error.Unexpected(description: "Admin not found");
         }
 
-        admin.DeleteCategory(request.CategoryId);
+        user.DeleteCategory(request.CategoryId);
 
         //await categoriesRepository.RemoveCategoryAsync(category);
-        await adminsRepository.UpdateAsync(admin);
-        await unitOfWork.CommitChangesAsync();
+        //await usersRepository.UpdateAsync(admin);
+        //await unitOfWork.CommitChangesAsync();
 
         return Result.Deleted;
     }

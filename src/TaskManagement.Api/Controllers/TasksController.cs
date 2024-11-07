@@ -1,12 +1,12 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using TaskManagement.Application.Tasks.Commands.CreateTask;
-using TaskManagement.Application.Tasks.Commands.DeleteTask;
-using TaskManagement.Application.Tasks.Commands.UpdateTaskCategory;
-using TaskManagement.Application.Tasks.Queries.GetTask;
-using TaskManagement.Application.Tasks.Queries.ListTasks;
-using TaskManagement.Contracts.Tasks;
-using DomainTaskStatus = TaskManagement.Domain.Tasks.TaskStatus;
+using TaskManagement.Application.WorkItems.Commands.CreateWorkItem;
+using TaskManagement.Application.WorkItems.Commands.DeleteWorkItem;
+using TaskManagement.Application.WorkItems.Commands.UpdateWorkItemCategory;
+using TaskManagement.Application.WorkItems.Queries.GetWorkItem;
+using TaskManagement.Application.WorkItems.Queries.ListWorkItems;
+using TaskManagement.Contracts.WorkItems;
+using DomainWorkItemStatus = TaskManagement.Domain.WorkItems.WorkItemStatus;
 
 namespace TaskManagement.Api.Controllers;
 
@@ -16,10 +16,10 @@ public class TasksController(ISender mediator) : ApiController
     private readonly ISender mediator = mediator;
 
     [HttpPost]
-    public async Task<IActionResult> CreateTask(CreateTaskRequest request)
+    public async Task<IActionResult> CreateTask(CreateWorkItemRequest request)
     {
-        if (!DomainTaskStatus.TryFromName(
-            request.TaskStatus.ToString(),
+        if (!DomainWorkItemStatus.TryFromName(
+            request.WorkItemStatus.ToString(),
             out var taskStatus))
         {
             return Problem(
@@ -27,64 +27,64 @@ public class TasksController(ISender mediator) : ApiController
                 detail: "Invalid task status");
         }
 
-        var command = new CreateTaskCommand(request.Name, request.Description,
-            request.DueDate, taskStatus, request.CategoryId, request.UserId);
+        var command = new CreateWorkItemCommand(request.Name, request.Description,
+            request.DueDate, taskStatus, request.CategoryId, request.UserAssignedToId);
 
         var createTaskResult = await mediator.Send(command);
         return createTaskResult.MatchFirst(
-            task => Ok(new TaskResponse(task.Id, task.Name, task.Description,
-                task.DueDate, task.Status.ToString(), task.CategoryName)),
+            workItem => Ok(new WorkItemResponse(workItem.Id, workItem.Name, workItem.Description,
+                workItem.DueDate, workItem.Status.ToString(), workItem.CategoryName)),
             Problem);
     }
 
-    [HttpGet("{taskId:guid}")]
-    public async Task<IActionResult> GetTask(Guid taskId)
+    [HttpGet("{workItemId:guid}")]
+    public async Task<IActionResult> GetTask(Guid workItemId)
     {
-        var query = new GetTaskQuery(taskId);
+        var query = new GetWorkItemQuery(workItemId);
 
-        var getTaskResult = await mediator.Send(query);
+        var getWorkItemResult = await mediator.Send(query);
 
-        return getTaskResult.Match(
-            task => Ok(new TaskResponse(
-                task.Id,
-                task.Name, task.Description, task.DueDate, task.Status.ToString(), task.CategoryName)),
+        return getWorkItemResult.Match(
+            workItem => Ok(new WorkItemResponse(
+                workItem.Id,
+                workItem.Name, workItem.Description, workItem.DueDate, workItem.Status.ToString(), workItem.CategoryName)),
             Problem);
     }
 
     [HttpDelete("{taskId:guid}")]
-    public async Task<IActionResult> DeleteTask(Guid taskId)
+    public async Task<IActionResult> DeleteWorkItem(Guid taskId)
     {
-        var command = new DeleteTaskCommand(taskId);
+        var command = new DeleteWorkItemCommand(taskId);
 
-        var deleteTaskResult = await mediator.Send(command);
+        var deleteWorkItemResult = await mediator.Send(command);
 
-        return deleteTaskResult.Match(
+        return deleteWorkItemResult.Match(
             _ => NoContent(),
             Problem);
     }
 
     [HttpPatch("{taskId:guid}/category/{categoryId:guid}")]
-    public async Task<IActionResult> UpdateTaskCategory(
+    public async Task<IActionResult> UpdateWorkItemCategory(
         Guid taskId, Guid categoryId)
     {
-        var command = new UpdateTaskCategoryCommand(taskId, categoryId);
+        var command = new UpdateWorkItemCategoryCommand(taskId, categoryId);
 
-        var updateTaskCategoryResult = await mediator.Send(command);
+        var updateWorkItemCategoryResult = await mediator.Send(command);
 
-        return updateTaskCategoryResult.Match(
+        return updateWorkItemCategoryResult.Match(
             _ => NoContent(),
             Problem);
     }
     [HttpGet]
-    public async Task<IActionResult> ListTasks()
+    public async Task<IActionResult> ListWorkItems()
     {
-        var command = new ListTasksQuery();
+        var command = new ListWorkItemsQuery();
 
         var listTasksResult = await mediator.Send(command);
 
         return listTasksResult.Match(
-            tasks => Ok(tasks.ConvertAll(task => new TaskResponse(task.Id, task.Name, task.Description,
-                task.DueDate, task.Status.ToString(), task.CategoryName))),
+            workItems => Ok(workItems.ConvertAll(workItem => new WorkItemResponse(workItem.Id, workItem.Name, workItem.Description,
+                workItem.DueDate, workItem.Status.ToString(), workItem.CategoryName))),
             Problem);
     }
 }

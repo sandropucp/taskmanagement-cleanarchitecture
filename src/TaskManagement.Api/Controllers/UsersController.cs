@@ -16,7 +16,7 @@ public class UsersController(ISender mediator) : ApiController
     [HttpPost]
     public async Task<IActionResult> CreateUser(CreateUserRequest request)
     {
-        var command = new CreateUserCommand(request.Name, request.Email);
+        var command = new CreateUserCommand(request.Name, request.Email, request.Role);
 
         var createUserResult = await mediator.Send(command);
         return createUserResult.MatchFirst(

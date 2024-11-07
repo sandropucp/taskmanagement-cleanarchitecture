@@ -1,5 +1,5 @@
 using TaskManagement.Application.Common.Interfaces;
-using TaskManagement.Domain.Admins.Events;
+using TaskManagement.Domain.Users.Events;
 using MediatR;
 
 namespace TaskManagement.Application.Categories.Events;

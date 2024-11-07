@@ -1,4 +1,5 @@
 using System.Reflection;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using TaskManagement.Application.Common.Interfaces;
@@ -7,24 +8,23 @@ using TaskManagement.Domain.Categories;
 using TaskManagement.Domain.Comments;
 using TaskManagement.Domain.Common;
 using TaskManagement.Domain.Users;
-using TaskManagement.Domain.Admins;
-using Local = TaskManagement.Domain.Tasks;
+using TaskManagement.Domain.WorkItems;
 
 namespace TaskManagement.Infrastructure.Common.Persistence;
 
 public class TaskManagementDbContext(
     DbContextOptions options,
-    IHttpContextAccessor httpContextAccessor) : DbContext(options), IUnitOfWork
+    IHttpContextAccessor httpContextAccessor,
+    IPublisher publisher) : DbContext(options), IUnitOfWork
 {
     private readonly IHttpContextAccessor httpContextAccessor = httpContextAccessor;
     private readonly List<AuditEntry> auditEntriesList = [];
-    public DbSet<Local.Task> Tasks { get; set; } = null!;
+    public DbSet<WorkItem> WorkItems { get; set; } = null!;
     public DbSet<Category> Categories { get; set; } = null!;
     public DbSet<Attachment> Attachments { get; set; } = null!;
     public DbSet<User> Users { get; set; } = null!;
     public DbSet<Comment> Comments { get; set; } = null!;
     public DbSet<AuditEntry> AuditEntries { get; set; } = null!;
-    public DbSet<Admin> Admins { get; set; } = null!;
 
     public async Task CommitChangesAsync()
     {
@@ -33,19 +33,15 @@ public class TaskManagementDbContext(
             .Select(entry => entry.Entity.PopDomainEvents())
             .SelectMany(x => x)
             .ToList();
-
-        AddDomainEventsToOfflineProcessingQueue(domainEvents);
-
         // // store them in the http context for later if user is waiting online
-        // if (IsUserWaitingOnline())
-        // {
-        //     AddDomainEventsToOfflineProcessingQueue(domainEvents);
-        // }
-        // else
-        // {
-        //     await PublishDomainEvents(_publisher, domainEvents);
-        // }
-
+        if (IsUserWaitingOnline())
+        {
+            AddDomainEventsToOfflineProcessingQueue(domainEvents);
+        }
+        else
+        {
+            await PublishDomainEvents(publisher, domainEvents);
+        }
         await SaveChangesAsync();
     }
 
@@ -66,7 +62,6 @@ public class TaskManagementDbContext(
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
         base.OnModelCreating(modelBuilder);
     }
 
@@ -74,5 +69,15 @@ public class TaskManagementDbContext(
     {
         optionsBuilder.AddInterceptors(new AuditInterceptor(auditEntriesList));
         base.OnConfiguring(optionsBuilder);
+    }
+
+    private bool IsUserWaitingOnline() => httpContextAccessor.HttpContext is not null;
+
+    private static async Task PublishDomainEvents(IPublisher _publisher, List<IDomainEvent> domainEvents)
+    {
+        foreach (var domainEvent in domainEvents)
+        {
+            await _publisher.Publish(domainEvent);
+        }
     }
 }

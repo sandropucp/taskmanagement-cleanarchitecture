@@ -16,7 +16,7 @@ public class CategoriesController(ISender mediator) : ApiController
     [HttpPost]
     public async Task<IActionResult> CreateCategory(CreateCategoryRequest request)
     {
-        var command = new CreateCategoryCommand(request.Name, request.AdminId);
+        var command = new CreateCategoryCommand(request.Name);
 
         var createCategoryResult = await mediator.Send(command);
         return createCategoryResult.MatchFirst(
@@ -39,9 +39,9 @@ public class CategoriesController(ISender mediator) : ApiController
     }
 
     [HttpDelete("{categoryId:guid}")]
-    public async Task<IActionResult> DeleteCategory(Guid categoryId)
+    public async Task<IActionResult> DeleteCategory(Guid categoryId, Guid userId)
     {
-        var command = new DeleteCategoryCommand(categoryId);
+        var command = new DeleteCategoryCommand(categoryId, userId);
 
         var deleteCategoryResult = await mediator.Send(command);
 

@@ -4,5 +4,7 @@ using TaskManagement.Domain.Comments;
 
 namespace TaskManagement.Application.Comments.Commands.CreateComment;
 
-public record CreateCommentCommand(Guid TaskId, Guid UserId, string CommentText) :
+public record CreateCommentCommand(Guid WorkItemId,
+    Guid UserId,
+    string CommentText) :
     IRequest<ErrorOr<Comment>>;

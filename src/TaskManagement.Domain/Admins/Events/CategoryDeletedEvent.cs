@@ -1,5 +1,5 @@
-using TaskManagement.Domain.Common;
+// using TaskManagement.Domain.Common;
 
-namespace TaskManagement.Domain.Admins.Events;
+// namespace TaskManagement.Domain.Admins.Events;
 
-public record CategoryDeletedEvent(Guid CategoryId) : IDomainEvent;
+// public record CategoryDeletedEvent(Guid CategoryId) : IDomainEvent;

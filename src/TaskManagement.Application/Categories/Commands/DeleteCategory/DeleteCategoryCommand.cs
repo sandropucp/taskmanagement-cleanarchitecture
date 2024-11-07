@@ -3,4 +3,4 @@ using MediatR;
 
 namespace TaskManagement.Application.Categories.Commands.DeleteCategory;
 
-public record DeleteCategoryCommand(Guid CategoryId) : IRequest<ErrorOr<Deleted>>;
+public record DeleteCategoryCommand(Guid CategoryId, Guid UserId) : IRequest<ErrorOr<Deleted>>;
