@@ -1,6 +1,59 @@
-# Clean Architecture
+# Clean Architecture (Task Management API)
 
-## Introduction to Clean Architecture
+<details>
+<summary>Run Application</summary>
+
+### Run Client API
+
+```
+dotnet run --project src/TaskManagement.Api
+```
+
+## How to Push Updates to GitHub
+
+### Pushing To Master/Main Branch using alias
+
+```
+gas             # Git add and status
+gc "Comment"    # Git Commit Comment
+gpo             # Git Push to Origin
+```
+
+### How to create a new Feature and Push updates for PR
+
+```
+gnewbr  new_feature           # Checkout master, pull master and create a new branch
+
+Do Updates in project
+Using a tool like VS Code check updates (Differential) and reverse what we do not need
+After we are 100% sure about out updates
+
+gas                                     # Git add and status
+gc "Adding new feature"                 # Git Commit Comment
+gpo                                     # Git Push to Origin
+
+git remote set-head origin main/master  # if we see any error here  run
+
+pr                                      # To Open a new Pull Request
+```
+
+- Here other option a bit quicker
+
+```
+gnewbr  new_feature                     # Checkout master, pull master and create a new branch
+
+Do Updates in project
+Using a tool like VS Code check updates (Differential) and reverse what we do not need
+After we are 100% sure about out updates
+
+gcpr "Adding new feature"               # Add, Commit, and Open a Pull Request
+```
+
+</details>
+
+<details>
+<summary>Introduction to Clean Architecture</summary>
+
 
 Clean Architecture is a software design philosophy introduced by Robert C. Martin, also known as Uncle Bob. It emphasizes the separation of concerns and the organization of code in a way that makes it more maintainable, testable, and scalable. The key principles of Clean Architecture include:
 
@@ -29,7 +82,14 @@ This layered approach ensures that each part of the system is only aware of the 
 
 ![alt text](/images/Clean-Architecture-Diagram-Asp-Net.jpg)
 
-## Setup
+Final Result:
+
+![alt text](/images/SwaggerV1.jpg)
+
+</details>
+
+<details>
+<summary>Initial Project Setup</summary>
 
 ### Create Projects using CLI
 
@@ -57,6 +117,7 @@ dotnet build
 ```
 
 ### Install external libraries
+
 ```
 cd src
 
@@ -106,10 +167,7 @@ dotnet ef migrations add EventsV4 -p src/TaskManagement.Infrastructure -s src/Ta
 dotnet ef database update -p src/TaskManagement.Infrastructure -s src/TaskManagement.Api
 ```
 
-### Run Client API
-```
-dotnet run --project src/TaskManagement.Api
-```
+
 
 ### Test
 
@@ -117,6 +175,8 @@ dotnet run --project src/TaskManagement.Api
     - Unit Testing to Domain
     - Subcutaneous Testing to Application
     - Integration Testing to Api
+
+![alt text](/images/TestingV1.jpg)
 
 #### Unit Testing (Domain)
 
@@ -199,6 +259,12 @@ dotnet add tests/TaskManagement.Api.IntegrationTests package FluentAssertions
 dotnet sln add (ls -r **/**.csproj) # This command only run in PowerShell
 ```
 
+</details>
+
+
+<details>
+<summary>Project Layers</summary>
+
 ## Domain
 
 The main objectives of this layer is to define the Domain Models, Domain Errors, Execute Business Logic and enforcing Business Rules. We will use **Rich Domain Models** instead of **Anemic Domain Models**
@@ -263,6 +329,7 @@ public static class WorkItemErrors
 - Fetch domain objects.
 - Manipulate domain objects.
 - We applied the Result Pattern to handle the exceptions
+- We applied validation using Fluent Validation
 
 
 ### Use Cases
@@ -388,6 +455,7 @@ public interface IUnitOfWork
 ```
 
 ## Presentation Layer
+
 We have 2 projects in this layer **Contracts Project** and **API Project**.
 
 ### Contracts
@@ -425,8 +493,6 @@ public record WorkItemResponse(
     string? CategoryName);
 
 ```
-
-
 
 ### API
 
@@ -531,7 +597,6 @@ public class TasksController : ApiController
     }
 }
 ```
-
 
 ## Infrastructure Layer
 
@@ -741,7 +806,12 @@ public static class RequestPipeline
 }
 ```
 
-## Testing API (Option 1)
+</details>
+
+<details>
+<summary>Utilities</summary>
+
+## Manual Testing API (Option 1)
 
 - Create requests folder in Root project
 - Create folder (plural) for each domain class
@@ -761,7 +831,7 @@ Content-Type: application/json
 }
 ```
 
-## Testing API (Option 2)
+## Manual Testing API (Option 2)
 
 - Install Thundar Client in VS Code
 - Under Env Tab 2 variables for local testing and azure testing
@@ -769,45 +839,8 @@ Content-Type: application/json
 - In each collection create new requests
 - We can export or import these files to have a copy
 
-## How to push updates to GitHub
+![alt text](/images/ThunderClientV1.jpg)
 
-### Pushing To Master/Main Branch using alias
-
-```
-gas             # Git add and status
-gc "Comment"    # Git Commit Comment
-gpo             # Git Push to Origin
-```
-
-### How to create a new Feature and Push updates for PR 
-
-```
-gnewbr  new_feature           # Checkout master, pull master and create a new branch
-
-Do Updates in project
-Using a tool like VS Code check updates (Differential) and reverse what we do not need
-After we are 100% sure about out updates
-
-gas                                     # Git add and status
-gc "Adding new feature"                 # Git Commit Comment
-gpo                                     # Git Push to Origin
-
-git remote set-head origin main/master  # if we see any error here  run
-
-pr                                      # To Open a new Pull Request
-```
-
-- Here other option a bit quicker
-
-```
-gnewbr  new_feature                     # Checkout master, pull master and create a new branch
-
-Do Updates in project
-Using a tool like VS Code check updates (Differential) and reverse what we do not need
-After we are 100% sure about out updates
-
-gcpr "Adding new feature"               # Add, Commit, and Open a Pull Request
-```
 
 ## How CI/CD is implemented
 
@@ -937,16 +970,72 @@ Deploy Using GitHub Secrets: Use GitHub Secrets to securely manage Azure credent
 
 ## How to Handle Validation
 
+- For validation we use FluentValidation library. We applied validation in the Application layer
+- For each command that we want to validate we create a class to validate the command
+- After we register all these validations in the DependencyInjection file
+
+- Here is an example of how we register all the validations
+```
+using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
+using TaskManagement.Application.Common.Behaviors;
+
+namespace TaskManagement.Application;
+
+public static class DependencyInjection
+{
+    public static IServiceCollection AddApplication(this IServiceCollection services)
+    {
+        services.AddMediatR(options =>
+        {
+            options.RegisterServicesFromAssemblyContaining(typeof(DependencyInjection));
+
+            options.AddOpenBehavior(typeof(ValidationBehavior<,>));
+        });
+
+        services.AddValidatorsFromAssemblyContaining(typeof(DependencyInjection));
+        return services;
+    }
+}
+
+````
+
+- Here is an example of a command validation
+```
+using FluentValidation;
+using TaskManagement.Application.Comments.Commands.CreateComment;
+
+namespace TaskManagement.Application.Users.Commands.CreateTask;
+
+public class CreateCommentCommandValidator : AbstractValidator<CreateCommentCommand>
+{
+    public CreateCommentCommandValidator()
+    {
+        RuleFor(x => x.CommentText)
+            .NotEmpty()
+            .MinimumLength(3)
+            .MaximumLength(50);
+        RuleFor(x => x.WorkItemId)
+            .NotEmpty();
+        RuleFor(x => x.UserId)
+            .NotEmpty();
+    }
+}
+
+````
+
+
+</details>
 
 
 
-# TODOS
+<details>
+<summary>TODO</summary>
 
 
 ## How to Handle Eventual Consistency with Events
 
 ## How to add Audit to record changes to database
-
 
 ## Deployment to Azure
 
@@ -954,5 +1043,6 @@ Deploy Using GitHub Secrets: Use GitHub Secrets to securely manage Azure credent
 
 ### Infrastructure As Code (Bicep)
 
-
 ## How to Handle Security
+
+</details>
