@@ -9,19 +9,19 @@ public class ValidationBehavior<TRequest, TResponse>(IValidator<TRequest>? valid
         where TRequest : IRequest<TResponse>
         where TResponse : IErrorOr
 {
-    private readonly IValidator<TRequest>? _validator = validator;
+    //private readonly IValidator<TRequest>? _validator = validator;
 
     public async Task<TResponse> Handle(
         TRequest request,
         RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
     {
-        if (_validator is null)
+        if (validator is null)
         {
             return await next();
         }
 
-        var validationResult = await _validator.ValidateAsync(request, cancellationToken);
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
 
         if (validationResult.IsValid)
         {

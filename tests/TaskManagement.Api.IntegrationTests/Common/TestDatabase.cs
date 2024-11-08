@@ -11,8 +11,6 @@ namespace TaskManagement.Api.IntegrationTests.Common;
 /// </summary>
 public class SqlServerTestDatabase : IDisposable
 {
-    //public SqliteConnection Connection { get; }
-
     public DbConnection Connection { get; }
 
     public static SqlServerTestDatabase CreateAndInitialize()
@@ -44,5 +42,5 @@ public class SqlServerTestDatabase : IDisposable
 
     private SqlServerTestDatabase(string connectionString) =>
         Connection = new SqlConnection(connectionString);
-    public void Dispose() => Connection.Close();
+    public void Dispose() => GC.SuppressFinalize(this);
 }

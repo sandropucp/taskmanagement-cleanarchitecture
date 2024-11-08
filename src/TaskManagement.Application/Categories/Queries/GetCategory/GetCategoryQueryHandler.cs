@@ -7,8 +7,6 @@ namespace TaskManagement.Application.Categories.Queries.GetCategory;
 
 public class GetCategoryQueryHandler(ICategoriesRepository categoriesRepository) : IRequestHandler<GetCategoryQuery, ErrorOr<Category>>
 {
-    private readonly ICategoriesRepository categoriesRepository = categoriesRepository;
-
     public async Task<ErrorOr<Category>> Handle(GetCategoryQuery request, CancellationToken cancellationToken)
     {
         var category = await categoriesRepository.GetByIdAsync(request.CategoryId);

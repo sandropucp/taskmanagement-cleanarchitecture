@@ -7,8 +7,6 @@ namespace TaskManagement.Application.Users.Queries.GetUser;
 
 public class GetUserQueryHandler(IUsersRepository usersRepository) : IRequestHandler<GetUserQuery, ErrorOr<User>>
 {
-    private readonly IUsersRepository usersRepository = usersRepository;
-
     public async Task<ErrorOr<User>> Handle(GetUserQuery request, CancellationToken cancellationToken)
     {
         var user = await usersRepository.GetByIdAsync(request.UserId);

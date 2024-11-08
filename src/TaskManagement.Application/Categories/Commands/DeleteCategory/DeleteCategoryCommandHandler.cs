@@ -10,10 +10,6 @@ public class DeleteCategoryCommandHandler(
     IUnitOfWork unitOfWork,
     ICategoriesRepository categoriesRepository) : IRequestHandler<DeleteCategoryCommand, ErrorOr<Deleted>>
 {
-    private readonly IUsersRepository usersRepository = usersRepository;
-    private readonly ICategoriesRepository categoriesRepository = categoriesRepository;
-    private readonly IUnitOfWork unitOfWork = unitOfWork;
-
     public async Task<ErrorOr<Deleted>> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
     {
         var category = await categoriesRepository.GetByIdAsync(request.CategoryId);
@@ -32,6 +28,7 @@ public class DeleteCategoryCommandHandler(
 
         user.DeleteCategory(request.CategoryId);
 
+        // Do this asynchronusly with Event Sourcing
         //await categoriesRepository.RemoveCategoryAsync(category);
         //await usersRepository.UpdateAsync(admin);
         await unitOfWork.CommitChangesAsync(); // FYI: This will publish the domain events

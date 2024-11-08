@@ -5,8 +5,8 @@ using TaskManagement.Application.Common.Interfaces;
 namespace TaskManagement.Application.Users.Commands.DeleteUser;
 
 public class DeleteUserCommandHandler(
-    IUnitOfWork unitOfWork,
-    IUsersRepository usersRepository) : IRequestHandler<DeleteUserCommand, ErrorOr<Deleted>>
+    IUsersRepository usersRepository,
+    IUnitOfWork unitOfWork) : IRequestHandler<DeleteUserCommand, ErrorOr<Deleted>>
 {
     public async Task<ErrorOr<Deleted>> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
     {

@@ -951,7 +951,7 @@ Deploy Using GitHub Secrets: Use GitHub Secrets to securely manage Azure credent
 
 </details>
 
-## Validation (FluentValidation-Mediator Pipeline Behaviour)
+## Validation (Mediator Pipeline Behaviour and FluentValidation)
 
 <details>
 <summary><b>Content</b></summary>
@@ -1265,7 +1265,7 @@ public class CategoryDeletedEventHandler(
 
 </details>
 
-## Send Requests to API
+## Send Requests to API (Http Files or Thunder Client)
 
 <details>
 <summary><b>Content</b></summary>
@@ -1302,7 +1302,7 @@ Content-Type: application/json
 
 </details>
 
-## Log Audit Using EF Interceptors
+## Log Audit (EF Interceptors)
 
 <details>
 <summary><b>Content</b></summary>

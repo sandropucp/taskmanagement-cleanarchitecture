@@ -7,8 +7,6 @@ namespace TaskManagement.Application.WorkItems.Queries.GetWorkItem;
 
 public class GetTaskQueryHandler(IWorkItemsRepository workItemsRepository) : IRequestHandler<GetWorkItemQuery, ErrorOr<WorkItem>>
 {
-    private readonly IWorkItemsRepository workItemsRepository = workItemsRepository;
-
     public async Task<ErrorOr<WorkItem>> Handle(GetWorkItemQuery request,
         CancellationToken cancellationToken)
     {

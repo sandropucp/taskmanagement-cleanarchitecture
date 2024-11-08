@@ -8,8 +8,6 @@ namespace TaskManagement.Application.Tasks.Queries.ListWorkItems;
 
 public class ListWorkItemsQueryHandler(IWorkItemsRepository workItemsRepository) : IRequestHandler<ListWorkItemsQuery, ErrorOr<List<WorkItem>>>
 {
-    private readonly IWorkItemsRepository workItemsRepository = workItemsRepository;
-
     public async Task<ErrorOr<List<WorkItem>>> Handle(ListWorkItemsQuery request,
         CancellationToken cancellationToken)
     {

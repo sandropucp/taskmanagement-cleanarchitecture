@@ -5,14 +5,12 @@ using TaskManagement.Domain.Attachments;
 
 namespace TaskManagement.Application.Attachments.Commands.CreateAttachment;
 
-public class CreateAttachmentCommandHandler(IAttachmentsRepository attachmentsRepository,
-    IWorkItemsRepository workItemsRepository, IUnitOfWork unitOfWork) : IRequestHandler<CreateAttachmentCommand,
+public class CreateAttachmentCommandHandler(
+    IAttachmentsRepository attachmentsRepository,
+    IWorkItemsRepository workItemsRepository,
+    IUnitOfWork unitOfWork) : IRequestHandler<CreateAttachmentCommand,
     ErrorOr<Attachment>>
 {
-    private readonly IAttachmentsRepository attachmentsRepository = attachmentsRepository;
-    private readonly IWorkItemsRepository workItemsRepository = workItemsRepository;
-    private readonly IUnitOfWork unitOfWork = unitOfWork;
-
     public async Task<ErrorOr<Attachment>> Handle(CreateAttachmentCommand request,
         CancellationToken cancellationToken)
     {

@@ -1,5 +1,3 @@
-using TaskManagement.Application.SubcutaneousTests.Common;
-
 namespace TaskManagement.Application.SubcutaneousTests.Common;
 
 [CollectionDefinition(CollectionName)]

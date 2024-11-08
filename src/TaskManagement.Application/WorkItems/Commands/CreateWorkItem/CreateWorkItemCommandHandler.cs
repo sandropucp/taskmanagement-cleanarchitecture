@@ -6,7 +6,7 @@ using TaskManagement.Domain.WorkItems;
 
 namespace TaskManagement.Application.WorkItems.Commands.CreateWorkItem;
 
-public class CreateTaskCommandHandler(IWorkItemsRepository workItemsRepository,
+public class CreateWorkItemCommandHandler(IWorkItemsRepository workItemsRepository,
     ICategoriesRepository categoriesRepository,
     IUsersRepository usersRepository,
     IUnitOfWork unitOfWork) :

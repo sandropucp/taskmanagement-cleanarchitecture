@@ -4,13 +4,10 @@ using TaskManagement.Application.Common.Interfaces;
 
 namespace TaskManagement.Application.WorkItems.Commands.DeleteWorkItem;
 
-public class DeleteTaskCommandHandler(
-    IUnitOfWork unitOfWork,
-    IWorkItemsRepository workItemsRepository) : IRequestHandler<DeleteWorkItemCommand, ErrorOr<Deleted>>
+public class DeleteWorkItemCommandHandler(
+    IWorkItemsRepository workItemsRepository,
+    IUnitOfWork unitOfWork) : IRequestHandler<DeleteWorkItemCommand, ErrorOr<Deleted>>
 {
-    private readonly IWorkItemsRepository workItemsRepository = workItemsRepository;
-    private readonly IUnitOfWork unitOfWork = unitOfWork;
-
     public async Task<ErrorOr<Deleted>> Handle(DeleteWorkItemCommand request, CancellationToken cancellationToken)
     {
         var workItem = await workItemsRepository.GetByIdAsync(request.WorkItemId);
