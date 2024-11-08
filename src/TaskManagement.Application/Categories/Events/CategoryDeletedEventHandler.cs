@@ -8,20 +8,14 @@ public class CategoryDeletedEventHandler(
     ICategoriesRepository categoriesRepository,
     IUnitOfWork unitOfWork) : INotificationHandler<CategoryDeletedEvent>
 {
-    private readonly ICategoriesRepository categoriesRepository = categoriesRepository;
-    private readonly IUnitOfWork unitOfWork = unitOfWork;
+    private readonly ICategoriesRepository _categoriesRepository = categoriesRepository;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     public async Task Handle(CategoryDeletedEvent notification, CancellationToken cancellationToken)
     {
-        var category = await categoriesRepository.GetByIdAsync(notification.CategoryId);
+        var category = await _categoriesRepository.GetByIdAsync(notification.CategoryId) ?? throw new InvalidOperationException();
 
-        if (category is null)
-        {
-            // resilient error handling
-            throw new InvalidOperationException();
-        }
-
-        await categoriesRepository.RemoveCategoryAsync(category);
-        await unitOfWork.CommitChangesAsync();
+        await _categoriesRepository.RemoveCategoryAsync(category);
+        await _unitOfWork.CommitChangesAsync();
     }
 }

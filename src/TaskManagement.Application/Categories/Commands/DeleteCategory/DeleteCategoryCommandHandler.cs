@@ -34,7 +34,7 @@ public class DeleteCategoryCommandHandler(
 
         //await categoriesRepository.RemoveCategoryAsync(category);
         //await usersRepository.UpdateAsync(admin);
-        //await unitOfWork.CommitChangesAsync();
+        await unitOfWork.CommitChangesAsync(); // FYI: This will publish the domain events
 
         return Result.Deleted;
     }

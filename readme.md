@@ -1,9 +1,10 @@
 # Clean Architecture (Task Management API)
 
-<details>
-<summary>Run Application</summary>
+## Run Application
 
-### Run Client API
++++ Content
+
+## Run Client API
 
 ```
 dotnet run --project src/TaskManagement.Api
@@ -49,11 +50,11 @@ After we are 100% sure about out updates
 gcpr "Adding new feature"               # Add, Commit, and Open a Pull Request
 ```
 
-</details>
++++
 
-<details>
-<summary>Introduction to Clean Architecture</summary>
+## Introduction to Clean Architecture 
 
++++ Content
 
 Clean Architecture is a software design philosophy introduced by Robert C. Martin, also known as Uncle Bob. It emphasizes the separation of concerns and the organization of code in a way that makes it more maintainable, testable, and scalable. The key principles of Clean Architecture include:
 
@@ -86,10 +87,11 @@ Final Result:
 
 ![alt text](/images/SwaggerV1.jpg)
 
-</details>
++++
 
-<details>
-<summary>Initial Project Setup</summary>
+## Initial Project Setup
+
++++ Content
 
 ### Create Projects using CLI
 
@@ -259,13 +261,13 @@ dotnet add tests/TaskManagement.Api.IntegrationTests package FluentAssertions
 dotnet sln add (ls -r **/**.csproj) # This command only run in PowerShell
 ```
 
-</details>
++++
 
+## Project Layers
 
-<details>
-<summary>Project Layers</summary>
++++ Content
 
-## Domain
+## 1. Domain
 
 The main objectives of this layer is to define the Domain Models, Domain Errors, Execute Business Logic and enforcing Business Rules. We will use **Rich Domain Models** instead of **Anemic Domain Models**
 
@@ -323,7 +325,7 @@ public static class WorkItemErrors
 }
 ```
 
-## Application Layer (Use Cases)
+## 2. Application Layer (Use Cases)
 
 - This layer is responsile to execute the application Use Cases. In other words is all the actions that the user can do in the system.
 - Fetch domain objects.
@@ -454,11 +456,11 @@ public interface IUnitOfWork
 }
 ```
 
-## Presentation Layer
+## 3. Presentation Layer
 
 We have 2 projects in this layer **Contracts Project** and **API Project**.
 
-### Contracts
+### 3.1 Contracts
 
 - Create Contracts Project independent to be able to publish to Nuget for the Client. We use this project to have a common language between the **Presentation Layer** and the **Application Layer**
 
@@ -494,7 +496,7 @@ public record WorkItemResponse(
 
 ```
 
-### API
+### 3.2 API
 
 The API layer will need to use classes from the **Infrastructure Layer** and the **Application Layer** for this we can use **Dependency Injection** and add each class to the Program.cs class or we can create a class DependencyInjection.cs in each Project **(Infrastructure and Application)** and add these 2 classes to Program.cs. In this way the Infrastructure Project and the Application Project are independent of the API.
 
@@ -598,7 +600,7 @@ public class TasksController : ApiController
 }
 ```
 
-## Infrastructure Layer
+## 4. Infrastructure Layer
 
 - In this layer we implements all the repositories interfaces that we define in the **Application Layer**
 - Interacting with the persistence solution
@@ -614,6 +616,7 @@ public class TasksController : ApiController
             - TaskManagementDbContext.cs
 
 - TaskManagementDbContext
+
 ```
 using System.Reflection;
 using MediatR;
@@ -706,6 +709,7 @@ public class TaskManagementDbContext(
             - WorkItemRepository.cs
 
 - WorkItemRepository.cs
+
 ```
 using Microsoft.EntityFrameworkCore;
 using TaskManagement.Application.Common.Interfaces;
@@ -749,6 +753,7 @@ public class WorkItemsRepository(TaskManagementDbContext dbContext) : IWorkItems
 ```
 
 - Create a file to handle Dependency Injection for the API (DependencyInjection.cs)
+
 ```
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -806,43 +811,11 @@ public static class RequestPipeline
 }
 ```
 
-</details>
++++
 
-<details>
-<summary>Utilities</summary>
+## CI/CD implementation
 
-## Manual Testing API (Option 1)
-
-- Create requests folder in Root project
-- Create folder (plural) for each domain class
-- Create http file CreateTask.http
-
-```
-@HostAddress = http://localhost:5205
-
-POST {{HostAddress}}/tasks/
-Content-Type: application/json
-
-{
-  "Name": "Ta",
-  "CategoryId": "97620830-4908-4c50-8b72-0fcfa09da742",
-  "DueDate": "2024-12-31",
-  "Status": "NotStarted"
-}
-```
-
-## Manual Testing API (Option 2)
-
-- Install Thundar Client in VS Code
-- Under Env Tab 2 variables for local testing and azure testing
-- Under Collections Tab create collection for InsertSampleData, Queries and Update
-- In each collection create new requests
-- We can export or import these files to have a copy
-
-![alt text](/images/ThunderClientV1.jpg)
-
-
-## How CI/CD is implemented
++++ Content
 
 ### 1. Setup: PR Verify Workflow
 
@@ -961,6 +934,8 @@ jobs:
 
 ```
 
+![alt text](/images/CIV1.jpg)
+
 ### 3. Azure Deployment via Step-deploy Workflow
 
 The deploy_dev job initiates a deployment to Azure, depending on build_and_test to ensure that the app is ready and artifacts are available.
@@ -968,13 +943,18 @@ Here’s a streamlined process for deployment:
 App Service Configuration: In Azure, configure the App Service and slots (like dev or slot) based on environment.
 Deploy Using GitHub Secrets: Use GitHub Secrets to securely manage Azure credentials (AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, etc.) to avoid exposing sensitive data.
 
-## How to Handle Validation
++++
+
+## Validation (FluentValidation)
+
++++ Content
 
 - For validation we use FluentValidation library. We applied validation in the Application layer
 - For each command that we want to validate we create a class to validate the command
 - After we register all these validations in the DependencyInjection file
 
 - Here is an example of how we register all the validations
+
 ```
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
@@ -1001,6 +981,7 @@ public static class DependencyInjection
 ````
 
 - Here is an example of a command validation
+
 ```
 using FluentValidation;
 using TaskManagement.Application.Comments.Commands.CreateComment;
@@ -1024,16 +1005,186 @@ public class CreateCommentCommandValidator : AbstractValidator<CreateCommentComm
 
 ````
 
++++
 
-</details>
+## Eventual Consistency with Events
+
++++ Content
+
+- Eventual consistency is a consistency model used in distributed computing to achieve high availability. In this model, updates to a distributed system are propagated to all nodes asynchronously. This means that, while the system will eventually become consistent, it may not be immediately consistent after an update.
+- In this project we applied when the user deletes a Category. The system published an event (CategoryDeletedEvent). 
+
+- In DeleteCategoryCommandHandler.cs (Application)
+
+```
+user.DeleteCategory(request.CategoryId);
+await unitOfWork.CommitChangesAsync(); // FYI: This will publish the domain events
+```
+
+- In User.cs (Domain)
+
+```
+public void DeleteCategory(Guid categoryId) =>
+        _domainEvents.Add(new CategoryDeletedEvent(categoryId));
+```
+
+- In TaskManagementDBContext.cs (Infrastruture) - Publish Events using Mediator
+
+```
+    public async Task CommitChangesAsync()
+    {
+        // get hold of all the domain events
+        var domainEvents = ChangeTracker.Entries<Entity>()
+            .Select(entry => entry.Entity.PopDomainEvents())
+            .SelectMany(x => x)
+            .ToList();
+        // // store them in the http context for later if user is waiting online
+        if (IsUserWaitingOnline())
+        {
+            AddDomainEventsToOfflineProcessingQueue(domainEvents);
+        }
+        else
+        {
+            await PublishDomainEvents(publisher, domainEvents);
+        }
+        await SaveChangesAsync();
+    }
+
+    private void AddDomainEventsToOfflineProcessingQueue(List<IDomainEvent> domainEvents)
+    {
+        // fetch queue from http context or create a new queue if it doesn't exist
+        var domainEventsQueue = _httpContextAccessor.HttpContext!.Items
+            .TryGetValue("DomainEventsQueue", out var value) && value is Queue<IDomainEvent> existingDomainEvents
+                ? existingDomainEvents
+                : new Queue<IDomainEvent>();
+
+        // add the domain events to the end of the queue
+        domainEvents.ForEach(domainEventsQueue.Enqueue);
+
+        // store the queue in the http context
+        _httpContextAccessor.HttpContext!.Items["DomainEventsQueue"] = domainEventsQueue;
+    }
+
+    private bool IsUserWaitingOnline() => _httpContextAccessor.HttpContext is not null;
+
+    private static async Task PublishDomainEvents(IPublisher _publisher, List<IDomainEvent> domainEvents)
+    {
+        foreach (var domainEvent in domainEvents)
+        {
+            await _publisher.Publish(domainEvent);
+        }
+    }
+```
+
+- At this time the User already got his Response and the rest of the process will be assyncronous
+
+- We Use the notification of Mediator (MediatR.INotificationHandler) to Notify about the published events.
+
+- In CategoryDeletedEventHandler.cs (Application-->Categories-->Events)
+
+```
+using TaskManagement.Application.Common.Interfaces;
+using TaskManagement.Domain.Users.Events;
+using MediatR;
+
+namespace TaskManagement.Application.Categories.Events;
+
+public class CategoryDeletedEventHandler(
+    ICategoriesRepository categoriesRepository,
+    IUnitOfWork unitOfWork) : INotificationHandler<CategoryDeletedEvent>
+{
+    private readonly ICategoriesRepository _categoriesRepository = categoriesRepository;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
+
+    public async Task Handle(CategoryDeletedEvent notification, CancellationToken cancellationToken)
+    {
+        var category = await _categoriesRepository.GetByIdAsync(notification.CategoryId) ?? throw new InvalidOperationException();
+
+        await _categoriesRepository.RemoveCategoryAsync(category);
+        await _unitOfWork.CommitChangesAsync();
+    }
+}
+
+
+```
+
+- In CategoryDeletedEventHandler.cs (Application-->WorkItems-->Events)
+
+```
+using TaskManagement.Application.Common.Interfaces;
+using TaskManagement.Domain.Users.Events;
+using MediatR;
+
+namespace TaskManagement.Application.Tasks.Events;
+
+public class CategoryDeletedEventHandler(
+    IWorkItemsRepository workItemsRepository,
+    IUnitOfWork unitOfWork): INotificationHandler<CategoryDeletedEvent>
+{
+    private readonly IWorkItemsRepository workItemsRepository = workItemsRepository;
+    private readonly IUnitOfWork unitOfWork = unitOfWork;
+
+    public async Task Handle(CategoryDeletedEvent notification, CancellationToken cancellationToken)
+    {
+        var workItems = await workItemsRepository.GetWorkItemsByCategoryIdAsync(notification.CategoryId);
+
+        await workItemsRepository.RemoveRangeAsync(workItems);
+        await unitOfWork.CommitChangesAsync();
+    }
+}
+
+```
+
+### Key Points
+
+1. **Asynchronous Updates**: Changes are propagated to other nodes in the background.
+2. **Temporary Inconsistency**: There may be a period where different nodes have different data.
+3. **Eventual Consistency**: Given enough time, all nodes will converge to the same state.
+
+
++++
+
+## Send Requests to API
+
++++ Content
+
+## Manual Testing API (Option 1)
+
+- Create requests folder in Root project
+- Create folder (plural) for each domain class
+- Create http file CreateTask.http
+
+```
+@HostAddress = http://localhost:5205
+
+POST {{HostAddress}}/tasks/
+Content-Type: application/json
+
+{
+  "Name": "Ta",
+  "CategoryId": "97620830-4908-4c50-8b72-0fcfa09da742",
+  "DueDate": "2024-12-31",
+  "Status": "NotStarted"
+}
+```
+
+## Manual Testing API (Option 2)
+
+- Install Thundar Client in VS Code
+- Under Env Tab 2 variables for local testing and azure testing
+- Under Collections Tab create collection for InsertSampleData, Queries and Update
+- In each collection create new requests
+- We can export or import these files to have a copy
+
+![alt text](/images/ThunderClientV1.jpg)
 
 
 
-<details>
-<summary>TODO</summary>
++++
 
+## TODO
 
-## How to Handle Eventual Consistency with Events
++++ Content
 
 ## How to add Audit to record changes to database
 
@@ -1045,4 +1196,4 @@ public class CreateCommentCommandValidator : AbstractValidator<CreateCommentComm
 
 ## How to Handle Security
 
-</details>
++++

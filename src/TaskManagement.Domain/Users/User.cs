@@ -2,9 +2,9 @@ using TaskManagement.Domain.Common;
 using TaskManagement.Domain.Users.Events;
 
 namespace TaskManagement.Domain.Users;
-public class User: Entity
+
+public class User : Entity
 {
-    //public Guid Id { get; private set; }
     public string Name { get; private set; } = null!;
     public string Email { get; private set; } = null!;
     public string Role { get; private set; } = null!;
@@ -16,7 +16,6 @@ public class User: Entity
         Role = role;
         Id = id ?? Guid.NewGuid();
     }
-
     public void DeleteCategory(Guid categoryId) =>
-        domainEvents.Add(new CategoryDeletedEvent(categoryId));
+        _domainEvents.Add(new CategoryDeletedEvent(categoryId));
 }
