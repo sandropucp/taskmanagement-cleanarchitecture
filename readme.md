@@ -56,7 +56,8 @@ gcpr "Adding new feature"               # Add, Commit, and Open a Pull Request
 
 +++ Content
 
-Clean Architecture is a software design philosophy introduced by Robert C. Martin, also known as Uncle Bob. It emphasizes the separation of concerns and the organization of code in a way that makes it more maintainable, testable, and scalable. The key principles of Clean Architecture include:
+Clean Architecture is a software design philosophy introduced by Robert C. Martin, also known as Uncle Bob. It emphasizes the separation of concerns and the organization of code in a way that makes it more maintainable, testable, and scalable. 
+The key principles of Clean Architecture include:
 
 ### Key Principles
 
