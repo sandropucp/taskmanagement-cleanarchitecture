@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using TaskManagement.Application.Common.Interfaces;
 using TaskManagement.Domain.Attachments;
+using TaskManagement.Domain.AuditEntries;
 using TaskManagement.Domain.Categories;
 using TaskManagement.Domain.Comments;
 using TaskManagement.Domain.Common;

@@ -1,8 +1,9 @@
-namespace TaskManagement.Infrastructure.Common.Persistence;
+using TaskManagement.Domain.Common;
 
-public class AuditEntry
+namespace TaskManagement.Domain.AuditEntries;
+
+public class AuditEntry : Entity
 {
-    public Guid Id { get; set; }
     public string Metadata { get; set; } = null!;
     public DateTime StartTimeUtc { get; set; }
     public DateTime EndTimeUtc { get; set; }

@@ -2,7 +2,7 @@
 
 ## Run Application
 
-<details>
+<details open>
 <summary>Content</summary>
 
 ## Run Client API
@@ -78,7 +78,7 @@ The key principles of Clean Architecture include:
 The structure of Clean Architecture is typically depicted as a series of concentric circles, each representing different layers of the system:
 
 - **Entities (Domain)**: Represent the core business logic and enterprise-wide rules. They are the most inner circle and are independent of any external system.
-- **Use Cases (Application)**: Encapsulate the application's business rules and orchestrate the flow of data to and from the entities.
+- **Use Cases (Application)**: Encapsulate the application's business rules and orchestrate the flow of data to and from the entities. Also define the Repositories Interfaces.
 - **Interface Adapters (Presentation)**: Convert data from the use cases to a format suitable for frameworks and external systems such as databases, web, or external APIs.
 - **Frameworks and Drivers (Infrastructure)**: The outermost layer includes UI frameworks, databases, and external tools, which interact with the interface adapters.
 
@@ -818,7 +818,7 @@ public static class RequestPipeline
 
 </details>
 
-## CI/CD implementation
+## CI/CD implementation (GitHub Actions and Biceps)
 
 <details>
 <summary><b>Content</b></summary>
@@ -951,7 +951,7 @@ Deploy Using GitHub Secrets: Use GitHub Secrets to securely manage Azure credent
 
 </details>
 
-## Validation (FluentValidation)
+## Validation (FluentValidation-Mediator Pipeline Behaviour)
 
 <details>
 <summary><b>Content</b></summary>
@@ -959,6 +959,50 @@ Deploy Using GitHub Secrets: Use GitHub Secrets to securely manage Azure credent
 - For validation we use FluentValidation library. We applied validation in the Application layer
 - For each command that we want to validate we create a class to validate the command
 - After we register all these validations in the DependencyInjection file
+
+- Here is how we define the behavior in the Pipeline using Mediator
+
+```
+using ErrorOr;
+using FluentValidation;
+using MediatR;
+
+namespace TaskManagement.Application.Common.Behaviors;
+
+public class ValidationBehavior<TRequest, TResponse>(IValidator<TRequest>? validator = null)
+    : IPipelineBehavior<TRequest, TResponse>
+        where TRequest : IRequest<TResponse>
+        where TResponse : IErrorOr
+{
+    private readonly IValidator<TRequest>? _validator = validator;
+
+    public async Task<TResponse> Handle(
+        TRequest request,
+        RequestHandlerDelegate<TResponse> next,
+        CancellationToken cancellationToken)
+    {
+        if (_validator is null)
+        {
+            return await next();
+        }
+
+        var validationResult = await _validator.ValidateAsync(request, cancellationToken);
+
+        if (validationResult.IsValid)
+        {
+            return await next();
+        }
+
+        var errors = validationResult.Errors
+            .ConvertAll(error => Error.Validation(
+                code: error.PropertyName,
+                description: error.ErrorMessage));
+
+        return (dynamic)errors;
+    }
+}
+
+```
 
 - Here is an example of how we register all the validations
 
@@ -1014,7 +1058,7 @@ public class CreateCommentCommandValidator : AbstractValidator<CreateCommentComm
 
 </details>
 
-## Eventual Consistency with Events
+## Eventual Consistency with Events (Mediator and Middleware)
 
 <details>
 <summary><b>Content</b></summary>
@@ -1085,6 +1129,76 @@ public void DeleteCategory(Guid categoryId) =>
 ```
 
 - At this time the User already got his Response and the rest of the process will be assyncronous
+
+- Here we setup the Middleware to Publish the events after the user got the response. EventualConsistencyMiddleware.cs (Infrastructure-->Middleware)
+
+```
+using TaskManagement.Domain.Common;
+using TaskManagement.Infrastructure.Common.Persistence;
+using MediatR;
+using Microsoft.AspNetCore.Http;
+
+namespace TaskManagement.Infrastructure.Common.Middleware;
+
+public class EventualConsistencyMiddleware(RequestDelegate next)
+{
+    private readonly RequestDelegate _next = next;
+
+    public async Task InvokeAsync(HttpContext context, IPublisher publisher, TaskManagementDbContext dbContext)
+    {
+        var transaction = await dbContext.Database.BeginTransactionAsync();
+
+        context.Response.OnCompleted(async () =>
+        {
+            try
+            {
+                if (context.Items.TryGetValue("DomainEventsQueue", out var value) &&
+                    value is Queue<IDomainEvent> domainEventsQueue)
+                {
+                    while (domainEventsQueue!.TryDequeue(out var domainEvent))
+                    {
+                        await publisher.Publish(domainEvent);
+                    }
+                }
+
+                await transaction.CommitAsync();
+            }
+            catch (Exception)
+            {
+                // notify the client that even though they got a good response, the changes didn't take place
+                // due to an unexpected error
+            }
+            finally
+            {
+                await transaction.DisposeAsync();
+            }
+
+        });
+
+        await _next(context);
+    }
+}
+
+```
+
+- Here we register Middleware. RequestPipeline.cs (Infrastructure)
+
+```
+using TaskManagement.Infrastructure.Common.Middleware;
+using Microsoft.AspNetCore.Builder;
+
+namespace TaskManagement.Infrastructure;
+
+public static class RequestPipeline
+{
+    public static IApplicationBuilder AddInfrastructureMiddleware(this IApplicationBuilder builder)
+    {
+        builder.UseMiddleware<EventualConsistencyMiddleware>();
+
+        return builder;
+    }
+}
+```
 
 - We Use the notification of Mediator (MediatR.INotificationHandler) to Notify about the published events.
 
@@ -1188,12 +1302,172 @@ Content-Type: application/json
 
 </details>
 
+## Log Audit Using EF Interceptors
+
+<details>
+<summary><b>Content</b></summary>
+
+- To populate an AuditEntry in the context of an AuditInterceptor, I use an intercept the save changes operation and capture the necessary audit information. 
+
+- Here is the **AuditEntry** class to hold the Audit information (Domain)
+
+```csharp
+using TaskManagement.Domain.Common;
+
+namespace TaskManagement.Domain.AuditEntries;
+
+public class AuditEntry : Entity
+{
+    public string Metadata { get; set; } = null!;
+    public DateTime StartTimeUtc { get; set; }
+    public DateTime EndTimeUtc { get; set; }
+    public bool Succeded { get; set; }
+    public string ErrorMessage { get; set; } = null!;
+}
+
+```
+
+- To**Implement the SaveChangesInterceptor** I created a class that inherits from SaveChangesInterceptor and override the SavingChangesAsync to capture the audit information
+
+- Here is the AuditInterceptor.cs class (nfrastructure-->Common-->Persistence)
+
+```csharp
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using TaskManagement.Domain.AuditEntries;
+
+namespace TaskManagement.Infrastructure.Common.Persistence;
+
+public class AuditInterceptor : SaveChangesInterceptor
+{
+    private readonly List<AuditEntry> auditEntriesList;
+    public AuditInterceptor() => auditEntriesList = [];
+    public AuditInterceptor(List<AuditEntry> auditEntries) => auditEntriesList = auditEntries;
+
+    public override ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result, CancellationToken cancellationToken = default)
+    {
+        if (eventData.Context is null)
+        {
+            return base.SavingChangesAsync(eventData, result, cancellationToken);
+        }
+        var startTime = DateTime.UtcNow;
+        var entries = eventData.Context.ChangeTracker
+            .Entries()
+            .Where(entry => entry.Entity is not AuditEntry
+                &&
+                entry.State is EntityState.Added or EntityState.Modified or EntityState.Deleted)
+            .Select(entry => new AuditEntry
+            {
+                Id = Guid.NewGuid(),
+                Metadata = entry.DebugView.LongView,
+                StartTimeUtc = startTime,
+                Succeded = true,
+                ErrorMessage = string.Empty
+            }).ToList();
+        if (entries.Count == 0)
+        {
+            return base.SavingChangesAsync(eventData, result, cancellationToken);
+        }
+        auditEntriesList.AddRange(entries);
+        return base.SavingChangesAsync(eventData, result, cancellationToken);
+    }
+    public override async ValueTask<int> SavedChangesAsync(SaveChangesCompletedEventData eventData, int result, CancellationToken cancellationToken = default)
+    {
+        if (auditEntriesList is null)
+        {
+            return await base.SavedChangesAsync(eventData, result, cancellationToken);
+        }
+        var endTime = DateTime.UtcNow;
+        foreach (var entry in auditEntriesList)
+        {
+            entry.EndTimeUtc = endTime;
+            entry.Succeded = true;
+        }
+        if (auditEntriesList.Count > 0 && eventData.Context is not null)
+        {
+            // Save audit entries to the database
+            // Better approah is to write audit entries to a message bus and let another service handle the audit entries
+            eventData.Context.Set<AuditEntry>().AddRange(auditEntriesList);
+            auditEntriesList.Clear();
+            await eventData.Context.SaveChangesAsync(cancellationToken);
+        }
+        return await base.SavedChangesAsync(eventData, result, cancellationToken);
+    }
+    public override async void SaveChangesFailed(DbContextErrorEventData eventData)
+    {
+        if (auditEntriesList is null)
+        {
+            return;
+        }
+        var endTime = DateTime.UtcNow;
+        foreach (var entry in auditEntriesList)
+        {
+            entry.EndTimeUtc = endTime;
+            entry.Succeded = false;
+            entry.ErrorMessage = eventData.Exception.Message;
+        }
+        if (auditEntriesList.Count > 0 && eventData.Context is not null)
+        {
+            // Save audit entries to the database
+            // Better approah is to write audit entries to a message bus and let another service handle the audit entries
+            eventData.Context.Set<AuditEntry>().AddRange(auditEntriesList);
+            auditEntriesList.Clear();
+            await eventData.Context.SaveChangesAsync();
+        }
+        return;
+    }
+}
+
+```
+
+- To **Register the Interceptor**: I user the  TaskManagementDbContext
+
+```csharp
+protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+{
+    optionsBuilder.AddInterceptors(new AuditInterceptor(_auditEntriesList));
+    base.OnConfiguring(optionsBuilder);
+}
+```
+
+- Here is the DepencyInjection.cs to add it
+
+```csharp
+public static class DependencyInjection
+{
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration) => services.AddPersistence(configuration);
+
+    public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
+    {
+        var connectionString = configuration.GetConnectionString("ProjectContext");
+        services.AddDbContext<TaskManagementDbContext>(options =>
+            options.UseSqlServer(connectionString));
+        // services.AddDbContext<TaskManagementDbContext>(options =>
+        //     options.AddInterceptors(new AuditInterceptor()));
+        services.AddKeyedScoped<List<AuditEntry>>("Audit", (_, _) => new());
+
+        services.AddScoped<IWorkItemsRepository, WorkItemsRepository>();
+        services.AddScoped<ICommentsRepository, CommentsRepository>();
+        services.AddScoped<ICategoriesRepository, CategoriesRepository>();
+        services.AddScoped<IAttachmentsRepository, AttachmentsRepository>();
+        services.AddScoped<IUsersRepository, UsersRepository>();
+        services.AddScoped<IUnitOfWork>(serviceProvider => serviceProvider.GetRequiredService<TaskManagementDbContext>());
+
+        return services;
+    }
+}
+```
+
+- This setup captures changes to entities and populates the AuditEntry with relevant information such as table name, action, key values, old values, new values, timestamp, and user ID. 
+
+</details>
+
 ## TODO
 
 <details>
 <summary><b>Content</b></summary>
 
-## How to add Audit to record changes to database
+
 
 ## Deployment to Azure
 

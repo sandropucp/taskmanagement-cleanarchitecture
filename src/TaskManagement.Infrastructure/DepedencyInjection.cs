@@ -8,6 +8,7 @@ using TaskManagement.Infrastructure.Comments.Persistence;
 using TaskManagement.Infrastructure.Common.Persistence;
 using TaskManagement.Infrastructure.WorkItems.Persistence;
 using TaskManagement.Infrastructure.Users.Persistence;
+using TaskManagement.Domain.AuditEntries;
 
 namespace TaskManagement.Infrastructure;
 

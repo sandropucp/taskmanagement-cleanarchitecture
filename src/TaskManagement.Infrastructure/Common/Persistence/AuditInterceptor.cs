@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using TaskManagement.Domain.AuditEntries;
 
 namespace TaskManagement.Infrastructure.Common.Persistence;
 
