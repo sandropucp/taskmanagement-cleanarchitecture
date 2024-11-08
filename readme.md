@@ -2,7 +2,8 @@
 
 ## Run Application
 
-+++ Content
+<details>
+<summary>Content</summary>
 
 ## Run Client API
 
@@ -50,11 +51,12 @@ After we are 100% sure about out updates
 gcpr "Adding new feature"               # Add, Commit, and Open a Pull Request
 ```
 
-+++
+</details>
 
 ## Introduction to Clean Architecture 
 
-+++ Content
+<details>
+<summary><b>Content</b></summary>
 
 Clean Architecture is a software design philosophy introduced by Robert C. Martin, also known as Uncle Bob. It emphasizes the separation of concerns and the organization of code in a way that makes it more maintainable, testable, and scalable. 
 The key principles of Clean Architecture include:
@@ -88,11 +90,12 @@ Final Result:
 
 ![alt text](/images/SwaggerV1.jpg)
 
-+++
+</details>
 
 ## Initial Project Setup
 
-+++ Content
+<details>
+<summary><b>Content</b></summary>
 
 ### Create Projects using CLI
 
@@ -262,11 +265,12 @@ dotnet add tests/TaskManagement.Api.IntegrationTests package FluentAssertions
 dotnet sln add (ls -r **/**.csproj) # This command only run in PowerShell
 ```
 
-+++
+</details>
 
 ## Project Layers
 
-+++ Content
+<details>
+<summary><b>Content</b></summary>
 
 ## 1. Domain
 
@@ -812,11 +816,12 @@ public static class RequestPipeline
 }
 ```
 
-+++
+</details>
 
 ## CI/CD implementation
 
-+++ Content
+<details>
+<summary><b>Content</b></summary>
 
 ### 1. Setup: PR Verify Workflow
 
@@ -944,11 +949,12 @@ Here’s a streamlined process for deployment:
 App Service Configuration: In Azure, configure the App Service and slots (like dev or slot) based on environment.
 Deploy Using GitHub Secrets: Use GitHub Secrets to securely manage Azure credentials (AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, etc.) to avoid exposing sensitive data.
 
-+++
+</details>
 
 ## Validation (FluentValidation)
 
-+++ Content
+<details>
+<summary><b>Content</b></summary>
 
 - For validation we use FluentValidation library. We applied validation in the Application layer
 - For each command that we want to validate we create a class to validate the command
@@ -1006,11 +1012,12 @@ public class CreateCommentCommandValidator : AbstractValidator<CreateCommentComm
 
 ````
 
-+++
+</details>
 
 ## Eventual Consistency with Events
 
-+++ Content
+<details>
+<summary><b>Content</b></summary>
 
 - Eventual consistency is a consistency model used in distributed computing to achieve high availability. In this model, updates to a distributed system are propagated to all nodes asynchronously. This means that, while the system will eventually become consistent, it may not be immediately consistent after an update.
 - In this project we applied when the user deletes a Category. The system published an event (CategoryDeletedEvent). 
@@ -1142,12 +1149,12 @@ public class CategoryDeletedEventHandler(
 2. **Temporary Inconsistency**: There may be a period where different nodes have different data.
 3. **Eventual Consistency**: Given enough time, all nodes will converge to the same state.
 
-
-+++
+</details>
 
 ## Send Requests to API
 
-+++ Content
+<details>
+<summary><b>Content</b></summary>
 
 ## Manual Testing API (Option 1)
 
@@ -1179,13 +1186,12 @@ Content-Type: application/json
 
 ![alt text](/images/ThunderClientV1.jpg)
 
-
-
-+++
+</details>
 
 ## TODO
 
-+++ Content
+<details>
+<summary><b>Content</b></summary>
 
 ## How to add Audit to record changes to database
 
@@ -1197,4 +1203,4 @@ Content-Type: application/json
 
 ## How to Handle Security
 
-+++
+</details>
