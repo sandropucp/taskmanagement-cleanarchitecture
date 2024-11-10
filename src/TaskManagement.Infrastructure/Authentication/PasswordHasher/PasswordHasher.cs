@@ -13,10 +13,7 @@ public partial class PasswordHasher : IPasswordHasher
             ? Error.Validation(description: "Password too weak")
             : BCrypt.Net.BCrypt.EnhancedHashPassword(password);
 
-    public bool IsCorrectPassword(string password, string hash)
-    {
-        return BCrypt.Net.BCrypt.EnhancedVerify(password, hash);
-    }
+    public bool IsCorrectPassword(string password, string hash) => BCrypt.Net.BCrypt.EnhancedVerify(password, hash);
 
     // https://stackoverflow.com/a/34715674/10091553
     [GeneratedRegex("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", RegexOptions.Compiled)]

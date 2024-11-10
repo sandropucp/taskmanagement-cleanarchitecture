@@ -1,11 +1,10 @@
-using ErrorOr;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TaskManagement.Application.Authentication.Commands.Register;
 using TaskManagement.Application.Authentication.Common;
 using TaskManagement.Application.Authentication.Queries.Login;
 using TaskManagement.Contracts.Authentication;
-using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 
 namespace TaskManagement.Api.Controllers;
 
@@ -48,14 +47,11 @@ public class AuthenticationController(ISender mediator) : ApiController
             Problem);
     }
 
-    private static AuthenticationResponse MapToAuthResponse(AuthenticationResult authResult)
-    {
-        return new AuthenticationResponse(
+    private static AuthenticationResponse MapToAuthResponse(AuthenticationResult authResult) => new(
             authResult.User.Id,
             authResult.User.FirstName,
             authResult.User.LastName,
             authResult.User.Email,
             authResult.Token);
-    }
 
 }

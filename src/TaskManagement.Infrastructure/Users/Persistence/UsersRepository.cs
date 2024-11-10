@@ -28,13 +28,7 @@ public class UsersRepository(TaskManagementDbContext dbContext) : IUsersReposito
         dbContext.Users.Remove(user);
         return Task.CompletedTask;
     }
-    public async Task<bool> ExistsByEmailAsync(string email)
-    {
-        return await dbContext.Users.AnyAsync(user => user.Email == email);
-    }
+    public async Task<bool> ExistsByEmailAsync(string email) => await dbContext.Users.AnyAsync(user => user.Email == email);
 
-    public async Task<User?> GetByEmailAsync(string email)
-    {
-        return await dbContext.Users.FirstOrDefaultAsync(user => user.Email == email);
-    }
+    public async Task<User?> GetByEmailAsync(string email) => await dbContext.Users.FirstOrDefaultAsync(user => user.Email == email);
 }

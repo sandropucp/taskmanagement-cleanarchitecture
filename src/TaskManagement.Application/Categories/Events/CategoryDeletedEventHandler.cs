@@ -1,6 +1,6 @@
+using MediatR;
 using TaskManagement.Application.Common.Interfaces;
 using TaskManagement.Domain.Users.Events;
-using MediatR;
 
 namespace TaskManagement.Application.Categories.Events;
 

@@ -15,14 +15,14 @@ public class RegisterCommandHandler(
     IUnitOfWork unitOfWork)
         : IRequestHandler<RegisterCommand, ErrorOr<AuthenticationResult>>
 {
-    public async Task<ErrorOr<AuthenticationResult>> Handle(RegisterCommand command, CancellationToken cancellationToken)
+    public async Task<ErrorOr<AuthenticationResult>> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
-        if (await usersRepository.ExistsByEmailAsync(command.Email))
+        if (await usersRepository.ExistsByEmailAsync(request.Email))
         {
             return Error.Conflict(description: "User already exists");
         }
 
-        var hashPasswordResult = passwordHasher.HashPassword(command.Password);
+        var hashPasswordResult = passwordHasher.HashPassword(request.Password);
 
         if (hashPasswordResult.IsError)
         {
@@ -30,9 +30,9 @@ public class RegisterCommandHandler(
         }
 
         var user = new User(
-            command.FirstName,
-            command.LastName,
-            command.Email,
+            request.FirstName,
+            request.LastName,
+            request.Email,
             hashPasswordResult.Value);
 
         await usersRepository.AddUserAsync(user);

@@ -1,7 +1,7 @@
-using TaskManagement.Domain.Common;
-using TaskManagement.Infrastructure.Common.Persistence;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using TaskManagement.Domain.Common;
+using TaskManagement.Infrastructure.Common.Persistence;
 
 namespace TaskManagement.Infrastructure.Common.Middleware;
 

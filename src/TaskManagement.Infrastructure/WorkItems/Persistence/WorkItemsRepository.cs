@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TaskManagement.Application.Common.Interfaces;
-using TaskManagement.Infrastructure.Common.Persistence;
 using TaskManagement.Domain.WorkItems;
+using TaskManagement.Infrastructure.Common.Persistence;
 
 namespace TaskManagement.Infrastructure.WorkItems.Persistence;
 

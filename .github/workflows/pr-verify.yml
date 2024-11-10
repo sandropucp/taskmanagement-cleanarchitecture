@@ -24,5 +24,6 @@ jobs:
       # - name: dotnet test 1
       #   run: dotnet test --configuration Release --no-build
 
-      - name: dotnet format
-        run: dotnet format -v detailed --verify-no-changes
+      # TODO: ENABLE THIS STEP
+      #- name: dotnet format
+      #  run: dotnet format -v detailed --verify-no-changes

@@ -1,14 +1,4 @@
 using System.Text;
-using TaskManagement.Application.Common.Interfaces;
-using TaskManagement.Infrastructure.Attachments.Persistence;
-using TaskManagement.Infrastructure.Categories.Persistence;
-using TaskManagement.Infrastructure.Comments.Persistence;
-using TaskManagement.Infrastructure.Common.Persistence;
-using TaskManagement.Infrastructure.WorkItems.Persistence;
-using TaskManagement.Infrastructure.Users.Persistence;
-using TaskManagement.Domain.AuditEntries;
-using TaskManagement.Domain.Common.Interfaces;
-using TaskManagement.Api.Authentication.TokenGenerator;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,13 +6,23 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using TaskManagement.Api.Authentication.PasswordHasher;
+using TaskManagement.Api.Authentication.TokenGenerator;
+using TaskManagement.Application.Common.Interfaces;
+using TaskManagement.Domain.AuditEntries;
+using TaskManagement.Domain.Common.Interfaces;
+using TaskManagement.Infrastructure.Attachments.Persistence;
+using TaskManagement.Infrastructure.Categories.Persistence;
+using TaskManagement.Infrastructure.Comments.Persistence;
+using TaskManagement.Infrastructure.Common.Persistence;
+using TaskManagement.Infrastructure.Users.Persistence;
+using TaskManagement.Infrastructure.WorkItems.Persistence;
 
 
 namespace TaskManagement.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration) => 
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration) =>
         services
             .AddAuthentication(configuration)
             .AddPersistence(configuration);

@@ -1,10 +1,10 @@
-using TaskManagement.Infrastructure.Common.Persistence;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using TaskManagement.Infrastructure.Common.Persistence;
 
 namespace TaskManagement.Api.IntegrationTests.Common;
 
@@ -18,13 +18,10 @@ public class TaskManagementApiFactory : WebApplicationFactory<IAssemblyMarker>, 
     {
         _testDatabase = SqlServerTestDatabase.CreateAndInitialize();
 
-        builder.ConfigureTestServices(services =>
-        {
-            services
+        builder.ConfigureTestServices(services => services
                 .RemoveAll<DbContextOptions<TaskManagementDbContext>>()
                 .AddDbContext<TaskManagementDbContext>((sp, options) =>
-                    options.UseSqlServer(_testDatabase.Connection));
-        });
+                    options.UseSqlServer(_testDatabase.Connection)));
     }
 
     public Task InitializeAsync()
@@ -41,8 +38,5 @@ public class TaskManagementApiFactory : WebApplicationFactory<IAssemblyMarker>, 
         return Task.CompletedTask;
     }
 
-    public void ResetDatabase()
-    {
-        _testDatabase.ResetDatabase();
-    }
+    public void ResetDatabase() => _testDatabase.ResetDatabase();
 }

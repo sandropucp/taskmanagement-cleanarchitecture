@@ -1,12 +1,12 @@
 using FluentAssertions;
-using TaskManagement.Application.SubcutaneousTests.Common;
-using TaskManagement.Domain.WorkItems;
 using MediatR;
+using TaskManagement.Application.SubcutaneousTests.Common;
+using TaskManagement.Domain.Categories;
+using TaskManagement.Domain.Users;
+using TaskManagement.Domain.WorkItems;
+using TestCommon.Categories;
 using TestCommon.Comments;
 using TestCommon.WorkItems;
-using TaskManagement.Domain.Users;
-using TaskManagement.Domain.Categories;
-using TestCommon.Categories;
 
 namespace TaskManagement.Application.SubcutaneousTests.Comments.Commands;
 
@@ -24,7 +24,7 @@ public class CreateCommentTests(MediatorFactory mediatorFactory)
         var workItem = await CreateWorkItem(category.Id, user.Id);
 
         // Create a valid CreateCommentCommand
-        var createCommentCommand = CommentCommandFactory.CreateCreateCommentCommand(workItemId: workItem.Id, userId: user.Id);  
+        var createCommentCommand = CommentCommandFactory.CreateCreateCommentCommand(workItemId: workItem.Id, userId: user.Id);
 
         // Act
         var createCommentResult = await _mediator.Send(createCommentCommand);

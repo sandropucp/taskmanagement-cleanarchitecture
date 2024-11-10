@@ -1,8 +1,8 @@
 using System.Reflection;
 using ErrorOr;
+using MediatR;
 using TaskManagement.Application.Common.Authorization;
 using TaskManagement.Application.Common.Interfaces;
-using MediatR;
 
 namespace TaskManagement.Application.Common.Behaviors;
 

@@ -12,11 +12,11 @@ public class LoginQueryHandler(
     IUsersRepository usersRepository)
         : IRequestHandler<LoginQuery, ErrorOr<AuthenticationResult>>
 {
-    public async Task<ErrorOr<AuthenticationResult>> Handle(LoginQuery query, CancellationToken cancellationToken)
+    public async Task<ErrorOr<AuthenticationResult>> Handle(LoginQuery request, CancellationToken cancellationToken)
     {
-        var user = await usersRepository.GetByEmailAsync(query.Email);
+        var user = await usersRepository.GetByEmailAsync(request.Email);
 
-        return user is null || !user.IsCorrectPasswordHash(query.Password, passwordHasher)
+        return user is null || !user.IsCorrectPasswordHash(request.Password, passwordHasher)
             ? AuthenticationErrors.InvalidCredentials
             : new AuthenticationResult(user, jwtTokenGenerator.GenerateToken(user));
     }

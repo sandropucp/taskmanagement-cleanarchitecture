@@ -1,6 +1,6 @@
-using TaskManagement.Infrastructure.Common.Persistence;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
+using TaskManagement.Infrastructure.Common.Persistence;
 
 namespace TaskManagement.Application.SubcutaneousTests.Common;
 

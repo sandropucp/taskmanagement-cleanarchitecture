@@ -1,8 +1,8 @@
-using TaskManagement.Infrastructure.Common.Persistence;
-//using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
 using System.Data.Common;
 using Microsoft.Data.SqlClient;
+//using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
+using TaskManagement.Infrastructure.Common.Persistence;
 
 namespace TaskManagement.Api.IntegrationTests.Common;
 

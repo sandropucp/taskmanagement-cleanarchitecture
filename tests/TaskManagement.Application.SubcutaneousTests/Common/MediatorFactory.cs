@@ -1,5 +1,3 @@
-using TaskManagement.Api;
-using TaskManagement.Infrastructure.Common.Persistence;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -7,6 +5,8 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using TaskManagement.Api;
+using TaskManagement.Infrastructure.Common.Persistence;
 
 namespace TaskManagement.Application.SubcutaneousTests.Common;
 
@@ -18,12 +18,9 @@ public class MediatorFactory : WebApplicationFactory<IAssemblyMarker>, IAsyncLif
     {
         _testDatabase = SqliteTestDatabase.CreateAndInitialize();
 
-        builder.ConfigureTestServices(services =>
-        {
-            services
+        builder.ConfigureTestServices(services => services
                 .RemoveAll<DbContextOptions<TaskManagementDbContext>>()
-                .AddDbContext<TaskManagementDbContext>((sp, options) => options.UseSqlite(_testDatabase.Connection));
-        });
+                .AddDbContext<TaskManagementDbContext>((sp, options) => options.UseSqlite(_testDatabase.Connection)));
     }
 
     public IMediator CreateMediator()

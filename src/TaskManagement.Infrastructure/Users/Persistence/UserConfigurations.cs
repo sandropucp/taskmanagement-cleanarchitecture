@@ -1,6 +1,6 @@
-using TaskManagement.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using TaskManagement.Domain.Users;
 
 namespace TaskManagement.Infrastructure.Users;
 
