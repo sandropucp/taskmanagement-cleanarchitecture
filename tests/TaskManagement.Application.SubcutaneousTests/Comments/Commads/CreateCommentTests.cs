@@ -1,4 +1,3 @@
-using ErrorOr;
 using FluentAssertions;
 using TaskManagement.Application.SubcutaneousTests.Common;
 using TaskManagement.Domain.WorkItems;
@@ -24,7 +23,7 @@ public class CreateCommentTests(MediatorFactory mediatorFactory)
         var category = await CreateCategory();
         var workItem = await CreateWorkItem(category.Id, user.Id);
 
-        // Create a valid CreateGymCommand
+        // Create a valid CreateCommentCommand
         var createCommentCommand = CommentCommandFactory.CreateCreateCommentCommand(workItemId: workItem.Id, userId: user.Id);  
 
         // Act
@@ -35,23 +34,7 @@ public class CreateCommentTests(MediatorFactory mediatorFactory)
         createCommentResult.Value.WorkItemId.Should().Be(workItem.Id);
     }
 
-    // [Theory]
-    // [InlineData(0)]
-    // [InlineData(1)]
-    // [InlineData(200)]
-    // public async Task CreateGym_WhenCommandContainsInvalidData_ShouldReturnValidationError(int gymNameLength)
-    // {
-    //     // Arrange
-    //     string gymName = new('a', gymNameLength);
-    //     var createGymCommand = GymCommandFactory.CreateCreateGymCommand(name: gymName);
 
-    //     // Act
-    //     var result = await _mediator.Send(createGymCommand);
-
-    //     // Assert
-    //     result.IsError.Should().BeTrue();
-    //     result.FirstError.Code.Should().Be("Name");
-    // }
 
     private async Task<WorkItem> CreateWorkItem(Guid categoryId, Guid userId)
     {
@@ -69,14 +52,14 @@ public class CreateCommentTests(MediatorFactory mediatorFactory)
     private async Task<User> CreateUser()
     {
         //  1. Create a CreateSubscriptionCommand
-        var createUserCommand = UserCommandFactory.CreateCreateUserCommand();
+        var createRegisterCommand = UserCommandFactory.CreateRegisterCommand();
 
         //  2. Sending it to MediatR
-        var result = await _mediator.Send(createUserCommand);
+        var result = await _mediator.Send(createRegisterCommand);
 
         //  3. Making sure it was created successfully
         //result.IsError.Should().BeFalse();
-        return result.Value;
+        return result.Value.User;
     }
 
     private async Task<Category> CreateCategory()

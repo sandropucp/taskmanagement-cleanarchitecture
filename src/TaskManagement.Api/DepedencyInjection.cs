@@ -1,3 +1,6 @@
+using TaskManagement.Api.Services;
+using TaskManagement.Application.Common.Interfaces;
+
 namespace TaskManagement.Api;
 
 public static class DependencyInjection
@@ -10,7 +13,7 @@ public static class DependencyInjection
         services.AddProblemDetails();
         services.AddHttpContextAccessor();
 
-        //services.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
+        services.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
 
         return services;
     }

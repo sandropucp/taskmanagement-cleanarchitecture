@@ -1,21 +1,34 @@
 using TaskManagement.Domain.Common;
+using TaskManagement.Domain.Common.Interfaces;
 using TaskManagement.Domain.Users.Events;
 
 namespace TaskManagement.Domain.Users;
 
 public class User : Entity
 {
-    public string Name { get; private set; } = null!;
-    public string Email { get; private set; } = null!;
-    public string Role { get; private set; } = null!;
+    public string FirstName { get; } = null!;
+    public string LastName { get; } = null!;
+    public string Email { get; } = null!;
+    private readonly string _passwordHash = null!;
+
     private User() { }
-    public User(string name, string email, string role, Guid? id = null)
+    public User(
+        string firstName,
+        string lastName,
+        string email,
+        string passwordHash,
+        Guid? id = null) : base(id ?? Guid.NewGuid())
     {
-        Name = name;
+        FirstName = firstName;
+        LastName = lastName;
         Email = email;
-        Role = role;
+        _passwordHash = passwordHash;
         Id = id ?? Guid.NewGuid();
     }
+
+    public bool IsCorrectPasswordHash(string password, IPasswordHasher passwordHasher) =>
+        passwordHasher.IsCorrectPassword(password, _passwordHash);
+
     public void DeleteCategory(Guid categoryId) =>
         _domainEvents.Add(new CategoryDeletedEvent(categoryId));
 }

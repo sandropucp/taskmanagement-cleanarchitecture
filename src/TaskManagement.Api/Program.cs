@@ -4,13 +4,6 @@ using TaskManagement.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 {
-    //builder.Services.AddControllers();
-    //builder.Services.AddEndpointsApiExplorer();
-    //builder.Services.AddSwaggerGen();
-    //builder.Services.AddProblemDetails();
-
-    //builder.Services.AddHttpContextAccessor();
-
     builder.Services
         .AddPresentation()
         .AddApplication()
@@ -34,8 +27,6 @@ var app = builder.Build();
     app.UseHttpsRedirection();
     app.UseAuthorization();
     app.MapControllers();
-
-    //app.AddHttpContextAccessor();
 
     app.Run();
 }

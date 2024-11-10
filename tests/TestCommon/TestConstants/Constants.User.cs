@@ -9,5 +9,6 @@ public static partial class Constants
         public const string DefaultName = "Test User";
         public const string DefaultEmail = "sss@gmail.com";
         public const string DefaultRole = "Standard";
+        public const string DefaultPassword = "1234";
     }
 }

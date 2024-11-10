@@ -1,15 +1,17 @@
-using TaskManagement.Application.Users.Commands.CreateUser;
+using TaskManagement.Application.Authentication.Commands.Register;
 using TestCommon.TestConstants;
 
 namespace TestCommon.Comments;
 
 public static class UserCommandFactory
 {
-    public static CreateUserCommand CreateCreateUserCommand(
+    public static RegisterCommand CreateRegisterCommand(
         string name = null,
         string email = null,
-        string role = null) => new(
+        string role = null,
+        string password = null) => new(
             name ?? Constants.User.DefaultName,
             email ?? Constants.User.DefaultEmail,
-            role ?? Constants.User.DefaultRole);
+            role ?? Constants.User.DefaultRole,
+            password ?? Constants.User.DefaultPassword);
 }

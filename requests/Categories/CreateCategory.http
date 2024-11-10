@@ -5,5 +5,99 @@ POST {{HostAddress}}/categories/
 Content-Type: application/json
 
 {
-  "Name": "New Category012"
+    "Name": "Project Management",
+    "Description": "Tasks related to planning, executing, and tracking project milestones and deliverables."
 }
+
+### Response
+@HostAddress = http://localhost:5205
+POST {{HostAddress}}/categories/
+Content-Type: application/json
+{
+  "Name": "Development",
+  "Description": "Tasks related to software development, including coding, testing, and debugging."
+}
+
+###
+POST {{HostAddress}}/categories/
+Content-Type: application/json
+{
+  "Name": "Marketing",
+  "Description": "Tasks focused on promoting products and services, including campaigns, social media, and content creation."
+}
+
+{
+  "Name": "Design",
+  "Description": "Tasks related to graphic design, user experience, and visual branding."
+}
+
+{
+  "Name": "Research",
+  "Description": "Tasks related to gathering and analyzing data, conducting surveys, and studying market trends."
+}
+
+{
+  "Name": "Meetings",
+  "Description": "Tasks related to scheduling, preparing for, and conducting meetings with team members and stakeholders."
+}
+
+{
+  "Name": "Training",
+  "Description": "Tasks focused on employee training and development, including onboarding, skills enhancement, and certification programs."
+}
+
+{
+  "Name": "Documentation",
+  "Description": "Tasks related to creating, updating, and organizing project documentation, including reports, manuals, and guides."
+}
+
+{
+  "Name": "Quality Assurance",
+  "Description": "Tasks focused on ensuring product quality and customer satisfaction through testing, feedback collection, and process improvement."
+}
+
+{
+  "Name": "Support",
+  "Description": "Tasks related to providing customer support, troubleshooting issues, and resolving user inquiries."
+}
+
+{
+  "Name": "Sales",
+  "Description": "Tasks focused on generating revenue and acquiring new customers through sales strategies, lead generation, and client engagement."
+}
+
+{
+  "Name": "Finance",
+  "Description": "Tasks related to financial management, budgeting, forecasting, and accounting processes."
+}
+
+{
+  "Name": "Human Resources",
+  "Description": "Tasks focused on recruiting, hiring, training, and managing employees, as well as maintaining compliance with labor laws and regulations."
+}
+
+{
+  "Name": "Legal",
+  "Description": "Tasks related to legal matters, contracts, intellectual property protection, and compliance with laws and regulations."
+}
+
+{
+  "Name": "Operations",
+  "Description": "Tasks related to day-to-day operations, logistics, supply chain management, and process optimization."
+}
+
+{
+  "Name": "Customer Service",
+  "Description": "Tasks focused on providing excellent customer service, resolving issues, and maintaining positive relationships with clients."
+}
+
+{
+  "Name": "Product Management",
+  "Description": "Tasks related to product development, feature planning, and roadmap execution, as well as gathering feedback and prioritizing enhancements."
+}
+
+{
+  "Name": "Research and Development",
+  "Description": "Tasks focused on innovation, experimentation, and exploring new technologies, products, and services."
+}
+

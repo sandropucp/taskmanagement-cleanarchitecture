@@ -1,0 +1,25 @@
+version: "1"
+services:
+  taskmanagement-api-db:
+    image: mcr.microsoft.com/mssql/server:2019-CU3-ubuntu-18.04
+    container_name: taskmanagement.api-db
+    environment:
+      SA_PASSWORD: "P@ssW0rd!"
+      ACCEPT_EULA: "Y"
+    ports:
+      - 1434:1433 # exposed just for debugging purposes
+
+  taskmanagement-api:
+    build:
+      context: .
+      dockerfile: ./src/TaskManagement.Api/Dockerfile
+    image: taskmanagement.api
+    container_name: taskmanagement.api
+    ports:
+      - 5200:80
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - "ASPNETCORE_URLS=http://+"
+    restart: on-failure
+    depends_on:
+      - taskmanagement-api-db

@@ -9,9 +9,10 @@ public static class UserFactory
         Guid? id = null,
         string name = null,
         string email = null,
-        string role = null) => new(
+        string role = null,
+        string password = null) => new(
             name ?? Constants.User.DefaultName,
             email ?? Constants.User.DefaultEmail,
             role ?? Constants.User.DefaultRole,
-            id ?? Constants.User.Id);
+            password ?? Constants.User.DefaultPassword);
 }

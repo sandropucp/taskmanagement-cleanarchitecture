@@ -33,7 +33,7 @@ public class CreateWorkItemCommandHandler(IWorkItemsRepository workItemsReposito
             categoryId: request.CategoryId,
             categoryName: category.Name,
             assignedToId: request.UserAssignedToId,
-            assignedToName: assignedUser.Name);
+            assignedToName: assignedUser.FirstName + " " + assignedUser.LastName);
 
         await workItemsRepository.AddWorkItemAsync(task);
         await unitOfWork.CommitChangesAsync();

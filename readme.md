@@ -127,6 +127,8 @@ dotnet build
 ```
 cd src
 
+dotnet add TaskManagement.Api package Microsoft.AspNetCore.OpenApi
+dotnet add TaskManagement.Api package Microsoft.EntityFrameworkCore.Design
 dotnet add TaskManagement.Domain package ErrorOr
 dotnet add TaskManagement.Domain package Throw
 dotnet add TaskManagement.Domain package Ardalis.SmartEnum
@@ -138,9 +140,9 @@ dotnet add TaskManagement.Application package Microsoft.Extensions.DependencyInj
 dotnet add TaskManagement.Infrastructure package Microsoft.EntityFrameworkCore
 dotnet add TaskManagement.Infrastructure package Microsoft.EntityFrameworkCore.Sqlite
 dotnet add TaskManagement.Infrastructure package Microsoft.EntityFrameworkCore.SqlServer
-dotnet add TaskManagement.Api package Microsoft.AspNetCore.OpenApi
-dotnet add TaskManagement.Api package Microsoft.EntityFrameworkCore.Design
-
+dotnet add TaskManagement.Infrastructure package BCrypt.Net-Next
+dotnet add TaskManagement.Infrastructure package Microsoft.AspNetCore.Authentication.JwtBearer
+dotnet add TaskManagement.Infrastructure package Microsoft.Extensions.Identity.Core
 
 ```
 

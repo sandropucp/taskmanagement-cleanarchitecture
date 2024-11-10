@@ -23,9 +23,16 @@ public class WorkItem : Entity
     public DateTime DueDate { get; private set; }
     public WorkItemStatus Status { get; private set; } = null!;
     private WorkItem() { }
-    public WorkItem(string name, string? description, DateTime dueDate,
-        WorkItemStatus workItemStatus, Guid categoryId, string categoryName,
-        Guid assignedToId, string assignedToName, Guid? id = null)
+    public WorkItem(
+        string name,
+        string? description,
+        DateTime dueDate,
+        WorkItemStatus workItemStatus,
+        Guid categoryId,
+        string categoryName,
+        Guid assignedToId,
+        string assignedToName,
+        Guid? id = null) : base(id ?? Guid.NewGuid())
     {
         //Invarient: DueDate >= currentDate at the time of settin
         if (dueDate < DateTime.UtcNow)
