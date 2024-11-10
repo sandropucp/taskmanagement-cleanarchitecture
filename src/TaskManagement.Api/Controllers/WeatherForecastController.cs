@@ -13,7 +13,8 @@ public class WeatherForecastController(ILogger<WeatherForecastController> logger
             "Warm",
             "Balmy",
             "Hot",
-            "Sweltering"
+            "Sweltering",
+            "Barcelona"
         ];
 
     private readonly ILogger<WeatherForecastController> logger = logger;
