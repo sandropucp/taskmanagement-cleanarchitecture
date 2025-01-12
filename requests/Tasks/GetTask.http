@@ -1,4 +1,8 @@
-@HostAddress = http://localhost:5205
+@HostAddress = http://localhost:52
 @taskId=b77df9b2-bf88-43dc-8041-43d028b203d6
 
 GET {{HostAddress}}/tasks/{{taskId}}
+
+###
+
+GET http://localhost:5000/weatherforecast/

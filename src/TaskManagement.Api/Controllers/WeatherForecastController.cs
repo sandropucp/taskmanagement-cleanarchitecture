@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TaskManagement.Api.Controllers;
 
 [Route("WeatherForecast")]
+[AllowAnonymous]
 public class WeatherForecastController(ILogger<WeatherForecastController> logger) : ApiController
 {
     private static readonly string[] Summaries =

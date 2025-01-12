@@ -1,13 +1,16 @@
+version: '3.8'
+
 services:
-  taskmanagement.api:
-    image: taskmanagementapi-image
+  webapi:
     build:
       context: .
-      dockerfile: src/TaskManagement.Api/Dockerfile
+      dockerfile: ./src/TaskManagement.Api/Dockerfile
     container_name: taskmanagement.api-container
+    image: taskmanagement.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
-      - MSSQL_SA_PASSWORD=Password_1
+      - MSSQL_SA_PASSWORD=Password1*
+      - MSSQL_PID=Express
     ports:
       - "5000:8080"
     depends_on:
@@ -16,7 +19,7 @@ services:
     container_name: database-container
     image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
-      - "ACCEPT_EULA=Y"
-      - "MSSQL_SA_PASSWORD=Password_1"
+      - ACCEPT_EULA=y
+      - MSSQL_SA_PASSWORD=Password1*
     ports:
-      - "1435:1433"
+      - "1433:1433"

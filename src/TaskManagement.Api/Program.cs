@@ -4,10 +4,14 @@ using TaskManagement.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 {
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    var password = Environment.GetEnvironmentVariable("MSSQL_SA_PASSWORD");
+    connectionString = string.Format(connectionString, password);
+
     builder.Services
         .AddPresentation()
         .AddApplication()
-        .AddInfrastructure(builder.Configuration);
+        .AddInfrastructure(builder.Configuration, connectionString);
 }
 
 var app = builder.Build();

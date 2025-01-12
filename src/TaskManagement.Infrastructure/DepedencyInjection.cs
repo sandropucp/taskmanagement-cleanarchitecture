@@ -22,14 +22,19 @@ namespace TaskManagement.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration) =>
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration, string cs) =>
         services
             .AddAuthentication(configuration)
-            .AddPersistence(configuration);
+            .AddPersistence(configuration, cs);
 
-    public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration, string connectionString)
     {
-        var connectionString = configuration.GetConnectionString("ProjectContext");
+        //var password = @"Password1*";
+        //var connectionString = configuration.GetConnectionString("DefaultConnection");
+        //connectionString = string.Format(connectionString, password);
+        Console.WriteLine(connectionString);
+
+        //var connectionString = configuration.GetConnectionString("DefaultConnection");
         services.AddDbContext<TaskManagementDbContext>(options =>
             options.UseSqlServer(connectionString));
         // services.AddDbContext<TaskManagementDbContext>(options =>
